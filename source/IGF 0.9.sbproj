@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <CustomPreprocessorDefinesEditionIndieFramework>
+  </CustomPreprocessorDefinesEditionIndieFramework>
+  <CustomPreprocessorDefinesEditionProStudio>SUNBURN_PRO</CustomPreprocessorDefinesEditionProStudio>
+  <ExcludedProjectNamesEditionIndieFramework>Indiefreaks.Game.PostProcess Windows (SunBurn Pro).csproj; Indiefreaks.Game.PostProcess Xbox 360 (SunBurn Pro).csproj</ExcludedProjectNamesEditionIndieFramework>
+  <ExcludedProjectNamesEditionProStudio>
+  </ExcludedProjectNamesEditionProStudio>
+  <ResourceGuid>c2c72b02-aa6f-4a27-8ee8-efd5b7be90ec</ResourceGuid>
+  <ResourceType>Plugin</ResourceType>
+  <LicenseType>MSPL</LicenseType>
+  <Name>Indiefreaks Game Framework v0.9.2.0</Name>
+  <Description>The Indiefreaks Game Framework or IGF is a set of assemblies to ease SunBurn developers' life to make games for Windows, Xbox 360 &amp; WP7.1.
+
+You can peak as many features as you want and leave others behind.
+
+Features:
+- Application framework
+- Smart Synchronous/Asynchronous Content management system
+- Input manager
+- Easy hardware instancing
+- Cameras
+- Improved Sprite system
+- Gui &amp; Menu system
+- Particle system
+- Post processing effects (DOF)
+- BEPUPhysics v1.1 physics &amp; collisions
+- Logic components &amp; behaviors (Steering behaviors, Finite State Machines, Goal driven AI)
+- Network abstraction: code once for single player, Xbox Live, or Windows multiplayer games
+- IndieCity.com SDK integration (Windows only)
+
+More info at my website: http://indiefreaks.com
+</Description>
+  <Instructions>How to plug IGF into your game:
+
+- Verify SunBurn is installed on your pc 
+- Choose the download associated with your SunBurn version
+- Double click the SunBurn plugin file and follow the installation instructions
+- Open your Visual Studio game solution
+- In the SunBurn Plugin Manager form, pick the game project you want to plug IGF to and select the assemblies you desire depending on the features you want to use.
+- Start integrating IGF in your code
+
+You can get tutorials on how to use IGF in your game going to the Indiefreaks Game Framework Codeplex documentation page:
+
+http://igf.codeplex.com
+
+IGF is free to use. It'd still be great if you could put a line in your game you used it ;)</Instructions>
+  <AuthorUrl>http://indiefreaks.com</AuthorUrl>
+  <Screenshot1>..\..\..\..\..\Indiefreaks\IGF\00 - Documentation\Art\IGFSplashScreen.jpg</Screenshot1>
+  <Screenshot2>
+  </Screenshot2>
+  <Screenshot3>
+  </Screenshot3>
+  <SunBurnVersion>2.0.18.7</SunBurnVersion>
+  <WindowsSolution>Windows IGF Plugin.sln</WindowsSolution>
+  <XboxSolution>Xbox 360 IGF Plugin.sln</XboxSolution>
+  <WindowsPhoneSolution>WP7.1 IGF Plugin.sln</WindowsPhoneSolution>
+  <TargetEditionFramework>False</TargetEditionFramework>
+  <TargetEditionIndie>True</TargetEditionIndie>
+  <TargetEditionProStudio>True</TargetEditionProStudio>
+  <TargetPlatformXbox360>True</TargetPlatformXbox360>
+  <TargetPlatformWindowsPhone>True</TargetPlatformWindowsPhone>
+  <FileName>D:\Projects\IGF\1 - Source\Main\Indiefreaks Game Framework Solution\IGF 0.9.sbproj</FileName>
+  <ExcludedProjectNamesEditionIndieFrameworkList>System.Collections.Generic.List`1[System.String]</ExcludedProjectNamesEditionIndieFrameworkList>
+  <ExcludedProjectNamesEditionProStudioList>System.Collections.Generic.List`1[System.String]</ExcludedProjectNamesEditionProStudioList>
+  <Screenshot4>
+  </Screenshot4>
+</project>

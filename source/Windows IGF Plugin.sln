@@ -1,0 +1,108 @@
+
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indiefreaks.Game.Framework Windows (SunBurn Indie)", "Indiefreaks.Game.Framework\Indiefreaks.Game.Framework Windows (SunBurn Indie).csproj", "{4A36AD18-0CFB-427D-A2D3-38FEAC6E3451}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indiefreaks.Game.Instancing Windows (SunBurn Indie)", "Indiefreaks.Game.Instancing\Indiefreaks.Game.Instancing Windows (SunBurn Indie).csproj", "{1839FF81-94B9-425F-9A1D-3C2C0AA4E325}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indiefreaks.Game.Logic Windows (SunBurn Indie)", "Indiefreaks.Game.Logic\Indiefreaks.Game.Logic Windows (SunBurn Indie).csproj", "{F19521E6-3E5B-4870-A94F-03F3D4BE5FED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indiefreaks.Game.AI Windows (SunBurn Indie)", "Indiefreaks.Game.AI\Indiefreaks.Game.AI Windows (SunBurn Indie).csproj", "{983AE97F-1C16-48D3-9471-A815EB9B0F8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indiefreaks.Game.Lidgren Windows (SunBurn Indie)", "Indiefreaks.Game.Lidgren\Indiefreaks.Game.Lidgren Windows (SunBurn Indie).csproj", "{0ED1948C-09D9-4695-9871-5AE3A32202C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indiefreaks.Game.Particles Windows (SunBurn Indie)", "Indiefreaks.Game.Particles\Indiefreaks.Game.Particles Windows (SunBurn Indie).csproj", "{BE91080C-DCF4-4ED3-80EF-52778737FAAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indiefreaks.Game.Physics Windows (SunBurn Indie)", "Indiefreaks.Game.Physics\Indiefreaks.Game.Physics Windows (SunBurn Indie).csproj", "{2274811A-E7AF-483E-9E96-F076713E4019}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indiefreaks.Game.PostProcess Windows (SunBurn Pro)", "Indiefreaks.Game.PostProcess\Indiefreaks.Game.PostProcess Windows (SunBurn Pro).csproj", "{24C26C05-DC98-446F-A4E3-62B193406418}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indiefreaks.Game.Sprites Windows (SunBurn Indie)", "Indiefreaks.Game.Sprites\Indiefreaks.Game.Sprites Windows (SunBurn Indie).csproj", "{D190548D-C1E6-4384-B1ED-63A0ABD25541}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indiefreaks.Game.UI Windows (SunBurn Indie)", "Indiefreaks.Game.UI\Indiefreaks.Game.UI Windows (SunBurn Indie).csproj", "{593B28BD-0BAB-4B6C-B4D2-6BD0825946C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indiefreaks.Game.IndieCity Windows (SunBurn Indie)", "Indiefreaks.Game.IndieCity\Indiefreaks.Game.IndieCity Windows (SunBurn Indie).csproj", "{C317EB34-FAD0-4F63-9F54-57D001FFF987}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indiefreaks.Game.Mercury Windows (SunBurn Indie)", "Indiefreaks.Game.Mercury\Indiefreaks.Game.Mercury Windows (SunBurn Indie).csproj", "{D70E9AA3-9B8D-49BD-9706-85C06D2936CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Distribution|x86 = Distribution|x86
+		Release|x86 = Release|x86
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4A36AD18-0CFB-427D-A2D3-38FEAC6E3451}.Debug|x86.ActiveCfg = Debug|x86
+		{4A36AD18-0CFB-427D-A2D3-38FEAC6E3451}.Debug|x86.Build.0 = Debug|x86
+		{4A36AD18-0CFB-427D-A2D3-38FEAC6E3451}.Distribution|x86.ActiveCfg = Distribution|x86
+		{4A36AD18-0CFB-427D-A2D3-38FEAC6E3451}.Distribution|x86.Build.0 = Distribution|x86
+		{4A36AD18-0CFB-427D-A2D3-38FEAC6E3451}.Release|x86.ActiveCfg = Release|x86
+		{4A36AD18-0CFB-427D-A2D3-38FEAC6E3451}.Release|x86.Build.0 = Release|x86
+		{1839FF81-94B9-425F-9A1D-3C2C0AA4E325}.Debug|x86.ActiveCfg = Debug|x86
+		{1839FF81-94B9-425F-9A1D-3C2C0AA4E325}.Debug|x86.Build.0 = Debug|x86
+		{1839FF81-94B9-425F-9A1D-3C2C0AA4E325}.Distribution|x86.ActiveCfg = Distribution|x86
+		{1839FF81-94B9-425F-9A1D-3C2C0AA4E325}.Distribution|x86.Build.0 = Distribution|x86
+		{1839FF81-94B9-425F-9A1D-3C2C0AA4E325}.Release|x86.ActiveCfg = Release|x86
+		{1839FF81-94B9-425F-9A1D-3C2C0AA4E325}.Release|x86.Build.0 = Release|x86
+		{F19521E6-3E5B-4870-A94F-03F3D4BE5FED}.Debug|x86.ActiveCfg = Debug|x86
+		{F19521E6-3E5B-4870-A94F-03F3D4BE5FED}.Debug|x86.Build.0 = Debug|x86
+		{F19521E6-3E5B-4870-A94F-03F3D4BE5FED}.Distribution|x86.ActiveCfg = Distribution|x86
+		{F19521E6-3E5B-4870-A94F-03F3D4BE5FED}.Distribution|x86.Build.0 = Distribution|x86
+		{F19521E6-3E5B-4870-A94F-03F3D4BE5FED}.Release|x86.ActiveCfg = Release|x86
+		{F19521E6-3E5B-4870-A94F-03F3D4BE5FED}.Release|x86.Build.0 = Release|x86
+		{983AE97F-1C16-48D3-9471-A815EB9B0F8D}.Debug|x86.ActiveCfg = Debug|x86
+		{983AE97F-1C16-48D3-9471-A815EB9B0F8D}.Debug|x86.Build.0 = Debug|x86
+		{983AE97F-1C16-48D3-9471-A815EB9B0F8D}.Distribution|x86.ActiveCfg = Distribution|x86
+		{983AE97F-1C16-48D3-9471-A815EB9B0F8D}.Distribution|x86.Build.0 = Distribution|x86
+		{983AE97F-1C16-48D3-9471-A815EB9B0F8D}.Release|x86.ActiveCfg = Release|x86
+		{983AE97F-1C16-48D3-9471-A815EB9B0F8D}.Release|x86.Build.0 = Release|x86
+		{0ED1948C-09D9-4695-9871-5AE3A32202C6}.Debug|x86.ActiveCfg = Debug|x86
+		{0ED1948C-09D9-4695-9871-5AE3A32202C6}.Debug|x86.Build.0 = Debug|x86
+		{0ED1948C-09D9-4695-9871-5AE3A32202C6}.Distribution|x86.ActiveCfg = Distribution|x86
+		{0ED1948C-09D9-4695-9871-5AE3A32202C6}.Distribution|x86.Build.0 = Distribution|x86
+		{0ED1948C-09D9-4695-9871-5AE3A32202C6}.Release|x86.ActiveCfg = Release|x86
+		{0ED1948C-09D9-4695-9871-5AE3A32202C6}.Release|x86.Build.0 = Release|x86
+		{BE91080C-DCF4-4ED3-80EF-52778737FAAC}.Debug|x86.ActiveCfg = Debug|x86
+		{BE91080C-DCF4-4ED3-80EF-52778737FAAC}.Debug|x86.Build.0 = Debug|x86
+		{BE91080C-DCF4-4ED3-80EF-52778737FAAC}.Distribution|x86.ActiveCfg = Distribution|x86
+		{BE91080C-DCF4-4ED3-80EF-52778737FAAC}.Distribution|x86.Build.0 = Distribution|x86
+		{BE91080C-DCF4-4ED3-80EF-52778737FAAC}.Release|x86.ActiveCfg = Release|x86
+		{BE91080C-DCF4-4ED3-80EF-52778737FAAC}.Release|x86.Build.0 = Release|x86
+		{2274811A-E7AF-483E-9E96-F076713E4019}.Debug|x86.ActiveCfg = Debug|x86
+		{2274811A-E7AF-483E-9E96-F076713E4019}.Debug|x86.Build.0 = Debug|x86
+		{2274811A-E7AF-483E-9E96-F076713E4019}.Distribution|x86.ActiveCfg = Distribution|x86
+		{2274811A-E7AF-483E-9E96-F076713E4019}.Distribution|x86.Build.0 = Distribution|x86
+		{2274811A-E7AF-483E-9E96-F076713E4019}.Release|x86.ActiveCfg = Release|x86
+		{2274811A-E7AF-483E-9E96-F076713E4019}.Release|x86.Build.0 = Release|x86
+		{24C26C05-DC98-446F-A4E3-62B193406418}.Debug|x86.ActiveCfg = Debug|x86
+		{24C26C05-DC98-446F-A4E3-62B193406418}.Debug|x86.Build.0 = Debug|x86
+		{24C26C05-DC98-446F-A4E3-62B193406418}.Distribution|x86.ActiveCfg = Distribution|x86
+		{24C26C05-DC98-446F-A4E3-62B193406418}.Distribution|x86.Build.0 = Distribution|x86
+		{24C26C05-DC98-446F-A4E3-62B193406418}.Release|x86.ActiveCfg = Release|x86
+		{24C26C05-DC98-446F-A4E3-62B193406418}.Release|x86.Build.0 = Release|x86
+		{D190548D-C1E6-4384-B1ED-63A0ABD25541}.Debug|x86.ActiveCfg = Debug|x86
+		{D190548D-C1E6-4384-B1ED-63A0ABD25541}.Debug|x86.Build.0 = Debug|x86
+		{D190548D-C1E6-4384-B1ED-63A0ABD25541}.Distribution|x86.ActiveCfg = Distribution|x86
+		{D190548D-C1E6-4384-B1ED-63A0ABD25541}.Distribution|x86.Build.0 = Distribution|x86
+		{D190548D-C1E6-4384-B1ED-63A0ABD25541}.Release|x86.ActiveCfg = Release|x86
+		{D190548D-C1E6-4384-B1ED-63A0ABD25541}.Release|x86.Build.0 = Release|x86
+		{593B28BD-0BAB-4B6C-B4D2-6BD0825946C7}.Debug|x86.ActiveCfg = Debug|x86
+		{593B28BD-0BAB-4B6C-B4D2-6BD0825946C7}.Debug|x86.Build.0 = Debug|x86
+		{593B28BD-0BAB-4B6C-B4D2-6BD0825946C7}.Distribution|x86.ActiveCfg = Distribution|x86
+		{593B28BD-0BAB-4B6C-B4D2-6BD0825946C7}.Distribution|x86.Build.0 = Distribution|x86
+		{593B28BD-0BAB-4B6C-B4D2-6BD0825946C7}.Release|x86.ActiveCfg = Release|x86
+		{593B28BD-0BAB-4B6C-B4D2-6BD0825946C7}.Release|x86.Build.0 = Release|x86
+		{C317EB34-FAD0-4F63-9F54-57D001FFF987}.Debug|x86.ActiveCfg = Debug|x86
+		{C317EB34-FAD0-4F63-9F54-57D001FFF987}.Debug|x86.Build.0 = Debug|x86
+		{C317EB34-FAD0-4F63-9F54-57D001FFF987}.Distribution|x86.ActiveCfg = Distribution|x86
+		{C317EB34-FAD0-4F63-9F54-57D001FFF987}.Distribution|x86.Build.0 = Distribution|x86
+		{C317EB34-FAD0-4F63-9F54-57D001FFF987}.Release|x86.ActiveCfg = Release|x86
+		{C317EB34-FAD0-4F63-9F54-57D001FFF987}.Release|x86.Build.0 = Release|x86
+		{D70E9AA3-9B8D-49BD-9706-85C06D2936CC}.Debug|x86.ActiveCfg = Debug|x86
+		{D70E9AA3-9B8D-49BD-9706-85C06D2936CC}.Debug|x86.Build.0 = Debug|x86
+		{D70E9AA3-9B8D-49BD-9706-85C06D2936CC}.Distribution|x86.ActiveCfg = Distribution|x86
+		{D70E9AA3-9B8D-49BD-9706-85C06D2936CC}.Distribution|x86.Build.0 = Distribution|x86
+		{D70E9AA3-9B8D-49BD-9706-85C06D2936CC}.Release|x86.ActiveCfg = Release|x86
+		{D70E9AA3-9B8D-49BD-9706-85C06D2936CC}.Release|x86.Build.0 = Release|x86
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+EndGlobal

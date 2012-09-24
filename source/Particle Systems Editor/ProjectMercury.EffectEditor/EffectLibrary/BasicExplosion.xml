@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent>
+  <Asset Type="ProjectMercury.ParticleEffect">
+    <Name>Basic Explosion</Name>
+    <Author>Matt Davey</Author>
+    <Description>A simple explosion effect.</Description>
+    <Emitters>
+      <Item Type="ProjectMercury.Emitters.SphereEmitter">
+        <Name>Smoke Trail</Name>
+        <Budget>500</Budget>
+        <Term>2.5</Term>
+        <ReleaseQuantity>16</ReleaseQuantity>
+        <Enabled>true</Enabled>
+        <ReleaseSpeed>[-64,64]</ReleaseSpeed>
+        <ReleaseColour>
+          <Red>[0.5019608,0.5019608]</Red>
+          <Green>[0.5019608,0.5019608]</Green>
+          <Blue>[0.5019608,0.5019608]</Blue>
+        </ReleaseColour>
+        <ReleaseOpacity>[1,1]</ReleaseOpacity>
+        <ReleaseScale>[16,16]</ReleaseScale>
+        <ReleaseRotation>
+          <Pitch>[0,0]</Pitch>
+          <Yaw>[0,0]</Yaw>
+          <Roll>[0,0]</Roll>
+        </ReleaseRotation>
+        <ParticleTextureAssetPath>Cloud001</ParticleTextureAssetPath>
+        <BlendMode>Alpha</BlendMode>
+        <Radius>1</Radius>
+        <Shell>true</Shell>
+        <Radiate>true</Radiate>
+        <Modifiers>
+          <Modifier Type="ProjectMercury.Modifiers.OpacityInterpolator2">
+            <InitialOpacity>0.2</InitialOpacity>
+            <FinalOpacity>0</FinalOpacity>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.ScaleInterpolator2">
+            <InitialScale>48</InitialScale>
+            <FinalScale>255</FinalScale>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.DampingModifier">
+            <DampingCoefficient>1</DampingCoefficient>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.RotationModifier">
+            <RotationRate>0 0 1</RotationRate>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.ColourInterpolator2">
+            <InitialColour>0.305882365 0.254901975 0.211764708</InitialColour>
+            <FinalColour>0.5019608 0.5019608 0.5019608</FinalColour>
+          </Modifier>
+        </Modifiers>
+        <Controllers>
+          <Controller Type="ProjectMercury.Controllers.CooldownController">
+            <CooldownPeriod>0.25</CooldownPeriod>
+          </Controller>
+        </Controllers>
+      </Item>
+      <Item Type="ProjectMercury.Emitters.SphereEmitter">
+        <Name>Flames</Name>
+        <Budget>1000</Budget>
+        <Term>1</Term>
+        <ReleaseQuantity>64</ReleaseQuantity>
+        <Enabled>true</Enabled>
+        <ReleaseSpeed>[-50,50]</ReleaseSpeed>
+        <ReleaseColour>
+          <Red>[0.8,1]</Red>
+          <Green>[0.5,0.5]</Green>
+          <Blue>[0,0]</Blue>
+        </ReleaseColour>
+        <ReleaseOpacity>[1,1]</ReleaseOpacity>
+        <ReleaseScale>[32,64]</ReleaseScale>
+        <ReleaseRotation>
+          <Pitch>[0,0]</Pitch>
+          <Yaw>[0,0]</Yaw>
+          <Roll>[-1.471,1.471]</Roll>
+        </ReleaseRotation>
+        <ParticleTextureAssetPath>Particle004</ParticleTextureAssetPath>
+        <BlendMode>Add</BlendMode>
+        <Radius>1</Radius>
+        <Shell>true</Shell>
+        <Radiate>true</Radiate>
+        <Modifiers>
+          <Modifier Type="ProjectMercury.Modifiers.OpacityInterpolator2">
+            <InitialOpacity>0.5</InitialOpacity>
+            <FinalOpacity>0</FinalOpacity>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.RotationModifier">
+            <RotationRate>0 0 1</RotationRate>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.DampingModifier">
+            <DampingCoefficient>1</DampingCoefficient>
+          </Modifier>
+        </Modifiers>
+        <Controllers>
+          <Controller Type="ProjectMercury.Controllers.CooldownController">
+            <CooldownPeriod>0.25</CooldownPeriod>
+          </Controller>
+        </Controllers>
+      </Item>
+      <Item Type="ProjectMercury.Emitters.PointEmitter">
+        <Name>Sparks</Name>
+        <Budget>250</Budget>
+        <Term>0.75</Term>
+        <ReleaseQuantity>35</ReleaseQuantity>
+        <Enabled>true</Enabled>
+        <ReleaseSpeed>[-125,125]</ReleaseSpeed>
+        <ReleaseColour>
+          <Red>[1,1]</Red>
+          <Green>[0.878,0.878]</Green>
+          <Blue>[0.752,0.752]</Blue>
+        </ReleaseColour>
+        <ReleaseOpacity>[1,1]</ReleaseOpacity>
+        <ReleaseScale>[3,7]</ReleaseScale>
+        <ReleaseRotation>
+          <Pitch>[0,0]</Pitch>
+          <Yaw>[0,0]</Yaw>
+          <Roll>[0,0]</Roll>
+        </ReleaseRotation>
+        <ParticleTextureAssetPath>Particle005</ParticleTextureAssetPath>
+        <BlendMode>Add</BlendMode>
+        <Modifiers>
+          <Modifier Type="ProjectMercury.Modifiers.OpacityInterpolator2">
+            <InitialOpacity>1</InitialOpacity>
+            <FinalOpacity>0</FinalOpacity>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.DampingModifier">
+            <DampingCoefficient>2</DampingCoefficient>
+          </Modifier>
+        </Modifiers>
+        <Controllers>
+          <Controller Type="ProjectMercury.Controllers.CooldownController">
+            <CooldownPeriod>0.25</CooldownPeriod>
+          </Controller>
+        </Controllers>
+      </Item>
+      <Item Type="ProjectMercury.Emitters.PointEmitter">
+        <Name>Flash</Name>
+        <Budget>32</Budget>
+        <Term>0.1</Term>
+        <ReleaseQuantity>1</ReleaseQuantity>
+        <Enabled>true</Enabled>
+        <ReleaseSpeed>[50,50]</ReleaseSpeed>
+        <ReleaseColour>
+          <Red>[1,1]</Red>
+          <Green>[1,1]</Green>
+          <Blue>[1,1]</Blue>
+        </ReleaseColour>
+        <ReleaseOpacity>[0.5,0.5]</ReleaseOpacity>
+        <ReleaseScale>[192,192]</ReleaseScale>
+        <ReleaseRotation>
+          <Pitch>[0,0]</Pitch>
+          <Yaw>[0,0]</Yaw>
+          <Roll>[0,0]</Roll>
+        </ReleaseRotation>
+        <ParticleTextureAssetPath>Particle005</ParticleTextureAssetPath>
+        <BlendMode>Add</BlendMode>
+        <Modifiers>
+          <Modifier Type="ProjectMercury.Modifiers.OpacityInterpolator2">
+            <InitialOpacity>1</InitialOpacity>
+            <FinalOpacity>0</FinalOpacity>
+          </Modifier>
+        </Modifiers>
+        <Controllers>
+          <Controller Type="ProjectMercury.Controllers.CooldownController">
+            <CooldownPeriod>0.25</CooldownPeriod>
+          </Controller>
+        </Controllers>
+      </Item>
+    </Emitters>
+  </Asset>
+</XnaContent>

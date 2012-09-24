@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{E8A0DB56-040B-4AE4-A408-76EADF578D36}</ProjectGuid>
+    <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">Windows Phone</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Indiefreaks.Xna</RootNamespace>
+    <AssemblyName>Indiefreaks.Game.Mercury</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
+    <XnaPlatform>Windows Phone</XnaPlatform>
+    <XnaProfile>Reach</XnaProfile>
+    <XnaCrossPlatformGroupID>c62ef6b6-4212-473b-9884-758150eecf91</XnaCrossPlatformGroupID>
+    <XnaOutputType>Library</XnaOutputType>
+    <XnaRefreshLevel>1</XnaRefreshLevel>
+    <XapFilename Condition="$(XnaOutputType)=='Game'">$(AssemblyName).xap</XapFilename>
+    <SilverlightManifestTemplate Condition="$(XnaOutputType)=='Game'">Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <XnaWindowsPhoneManifestTemplate Condition="$(XnaOutputType)=='Game'">Properties\WMAppManifest.xml</XnaWindowsPhoneManifestTemplate>
+    <TileImage Condition="$(XnaOutputType)=='Game'">Background.png</TileImage>
+    <TileTitle Condition="$(XnaOutputType)=='Game'">$(AssemblyName)</TileTitle>
+    <Thumbnail Condition="$(XnaOutputType)=='Game'">PhoneGameThumb.png</Thumbnail>
+    <SupportedCultures />
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Windows Phone' ">
+    <OutputPath>bin\Windows Phone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE;WINDOWS_PHONE</DefineConstants>
+    <XnaCompressContent>false</XnaCompressContent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Windows Phone' ">
+    <OutputPath>bin\Windows Phone\Debug</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE;WINDOWS_PHONE</DefineConstants>
+    <XnaCompressContent>false</XnaCompressContent>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Distribution|Windows Phone'">
+    <OutputPath>..\..\Binaries\Pro\WP7\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS_PHONE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Windows Phone\Release\Indiefreaks.Game.Mercury.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <LangVersion>3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Mercury\AsyncUpdateManager.cs" />
+    <Compile Include="Mercury\BillboardStyle.cs" />
+    <Compile Include="Mercury\Calculator.cs" />
+    <Compile Include="Mercury\Check.cs" />
+    <Compile Include="Mercury\ColourRange.cs" />
+    <Compile Include="Mercury\Controllers\AbstractController.cs" />
+    <Compile Include="Mercury\Controllers\ControllerPipeline.cs" />
+    <Compile Include="Mercury\Controllers\CooldownController.cs" />
+    <Compile Include="Mercury\Controllers\FrustrumCullController.cs" />
+    <Compile Include="Mercury\Controllers\NamespaceDoc.cs" />
+    <Compile Include="Mercury\Controllers\TimedReleaseQuantityController.cs" />
+    <Compile Include="Mercury\Controllers\TriggerContext.cs" />
+    <Compile Include="Mercury\Controllers\TriggerOffsetController.cs" />
+    <Compile Include="Mercury\Controllers\TriggerRandomOffsetController.cs" />
+    <Compile Include="Mercury\Controllers\TriggerRotationController.cs" />
+    <Compile Include="Mercury\Counters.cs" />
+    <Compile Include="Mercury\Emitters\AbstractEmitter.cs" />
+    <Compile Include="Mercury\Emitters\BoxEmitter.cs" />
+    <Compile Include="Mercury\Emitters\CircleEmitter.cs" />
+    <Compile Include="Mercury\Emitters\CylinderEmitter.cs" />
+    <Compile Include="Mercury\Emitters\EmitterBlendMode.cs" />
+    <Compile Include="Mercury\Emitters\EmitterCollection.cs" />
+    <Compile Include="Mercury\Emitters\LineEmitter.cs" />
+    <Compile Include="Mercury\Emitters\NamespaceDoc.cs" />
+    <Compile Include="Mercury\Emitters\PlaneEmitter.cs" />
+    <Compile Include="Mercury\Emitters\PointEmitter.cs" />
+    <Compile Include="Mercury\Emitters\SphereEmitter.cs" />
+    <Compile Include="Mercury\ISupportDeepCopy.cs" />
+    <Compile Include="Mercury\Mocks\DesignerAttribute.cs" />
+    <Compile Include="Mercury\Mocks\ImmutableObjectAttribute.cs" />
+    <Compile Include="Mercury\Mocks\InvalidEnumArgumentException.cs" />
+    <Compile Include="Mercury\Mocks\SerializableAttribute.cs" />
+    <Compile Include="Mercury\Mocks\TypeDescriptionProviderAttribute.cs" />
+    <Compile Include="Mercury\Modifiers\AbstractModifier.cs" />
+    <Compile Include="Mercury\Modifiers\BoxForceModifier.cs" />
+    <Compile Include="Mercury\Modifiers\ColourInterpolator2.cs" />
+    <Compile Include="Mercury\Modifiers\ColourInterpolator3.cs" />
+    <Compile Include="Mercury\Modifiers\DampingModifier.cs" />
+    <Compile Include="Mercury\Modifiers\ForceInterpolator2.cs" />
+    <Compile Include="Mercury\Modifiers\HueShiftModifier.cs" />
+    <Compile Include="Mercury\Modifiers\LinearGravityModifier.cs" />
+    <Compile Include="Mercury\Modifiers\ModifierCollection.cs" />
+    <Compile Include="Mercury\Modifiers\NamespaceDoc.cs" />
+    <Compile Include="Mercury\Modifiers\OpacityFastFadeModifier.cs" />
+    <Compile Include="Mercury\Modifiers\OpacityInterpolator2.cs" />
+    <Compile Include="Mercury\Modifiers\OpacityInterpolator3.cs" />
+    <Compile Include="Mercury\Modifiers\RotationModifier.cs" />
+    <Compile Include="Mercury\Modifiers\ScaleInterpolator2.cs" />
+    <Compile Include="Mercury\Modifiers\ScaleInterpolator3.cs" />
+    <Compile Include="Mercury\Modifiers\SphereForceModifier.cs" />
+    <Compile Include="Mercury\Modifiers\VelocityClampModifier.cs" />
+    <Compile Include="Mercury\NamespaceDoc.cs" />
+    <Compile Include="Mercury\Particle.cs" />
+    <Compile Include="Mercury\ParticleEffect.cs" />
+    <Compile Include="Mercury\ParticleIterator.cs" />
+    <Compile Include="Mercury\Proxies\ParticleEffectExtensions.cs" />
+    <Compile Include="Mercury\Proxies\ParticleEffectProxy.cs" />
+    <Compile Include="Mercury\Proxies\PointToPointProxy.cs" />
+    <Compile Include="Mercury\RandomUtil.cs" />
+    <Compile Include="Mercury\Range.cs" />
+    <Compile Include="Mercury\Renderers\AbstractRenderer.cs" />
+    <Compile Include="Mercury\Renderers\BlendStateFactory.cs" />
+    <Compile Include="Mercury\Renderers\NamespaceDoc.cs" />
+    <Compile Include="Mercury\Renderers\QuadRenderer.cs" />
+    <Compile Include="Mercury\Renderers\RenderContext.cs" />
+    <Compile Include="Mercury\Renderers\SpriteBatchRenderer.cs" />
+    <Compile Include="Mercury\RotationRange.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework" />
+    <Reference Include="Microsoft.Xna.Framework.Game" />
+    <Reference Include="Microsoft.Xna.Framework.GamerServices" />
+    <Reference Include="Microsoft.Xna.Framework.Graphics" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
+  <!--
+      To modify your build process, add your task inside one of the targets below and uncomment it. 
+      Other similar extension points exist, see Microsoft.Common.targets.
+      <Target Name="BeforeBuild">
+      </Target>
+      <Target Name="AfterBuild">
+      </Target>
+    -->
+</Project>

@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Modifiers="ProjectMercury.Modifiers">
+  <Asset Type="ProjectMercury.ParticleEffect">
+    <Item>
+      <Name>Blurs</Name>
+      <Budget>20</Budget>
+      <Term>1</Term>
+      <ReleaseQuantity>1</ReleaseQuantity>
+      <Enabled>true</Enabled>
+      <ReleaseSpeed>
+        <Value>0</Value>
+        <Variation>0</Variation>
+      </ReleaseSpeed>
+      <ReleaseColour>
+        <Value>1 0.5019608 0.5019608</Value>
+        <Variation>0.25 0.25 0.25</Variation>
+      </ReleaseColour>
+      <ReleaseOpacity>
+        <Value>1</Value>
+        <Variation>0</Variation>
+      </ReleaseOpacity>
+      <ReleaseScale>
+        <Value>192</Value>
+        <Variation>0</Variation>
+      </ReleaseScale>
+      <ReleaseRotation>
+        <Value>0</Value>
+        <Variation>3.14</Variation>
+      </ReleaseRotation>
+      <ReleaseImpulse>0 0</ReleaseImpulse>
+      <ParticleTextureAssetName>LensFlare</ParticleTextureAssetName>
+      <Modifiers>
+        <Modifier Type="Modifiers:OpacityInterpolatorModifier">
+          <InitialOpacity>0</InitialOpacity>
+          <MiddleOpacity>1</MiddleOpacity>
+          <MiddlePosition>0.5</MiddlePosition>
+          <FinalOpacity>0</FinalOpacity>
+        </Modifier>
+        <Modifier Type="Modifiers:RotationRateModifier">
+          <InitialRate>1.57079637</InitialRate>
+          <FinalRate>0</FinalRate>
+        </Modifier>
+      </Modifiers>
+      <BlendMode>Alpha</BlendMode>
+      <TriggerOffset>0 0</TriggerOffset>
+      <MinimumTriggerPeriod>0.25</MinimumTriggerPeriod>
+    </Item>
+    <Item>
+      <Name>Stars</Name>
+      <Budget>5000</Budget>
+      <Term>1.5</Term>
+      <ReleaseQuantity>1</ReleaseQuantity>
+      <Enabled>true</Enabled>
+      <ReleaseSpeed>
+        <Value>0</Value>
+        <Variation>10</Variation>
+      </ReleaseSpeed>
+      <ReleaseColour>
+        <Value>1 0.5019608 0.5019608</Value>
+        <Variation>0.25 0.25 0.25</Variation>
+      </ReleaseColour>
+      <ReleaseOpacity>
+        <Value>1</Value>
+        <Variation>0</Variation>
+      </ReleaseOpacity>
+      <ReleaseScale>
+        <Value>48</Value>
+        <Variation>32</Variation>
+      </ReleaseScale>
+      <ReleaseRotation>
+        <Value>0</Value>
+        <Variation>3.14</Variation>
+      </ReleaseRotation>
+      <ReleaseImpulse>0 0</ReleaseImpulse>
+      <ParticleTextureAssetName>LensFlare</ParticleTextureAssetName>
+      <Modifiers>
+        <Modifier Type="Modifiers:DampingModifier">
+          <DampingCoefficient>-8</DampingCoefficient>
+        </Modifier>
+        <Modifier Type="Modifiers:VelocityClampModifier">
+          <MaximumVelocity>1.5</MaximumVelocity>
+        </Modifier>
+        <Modifier Type="Modifiers:ScaleInterpolatorModifier">
+          <InitialScale>0</InitialScale>
+          <MiddleScale>64</MiddleScale>
+          <MiddlePosition>0.5</MiddlePosition>
+          <FinalScale>0</FinalScale>
+        </Modifier>
+      </Modifiers>
+      <BlendMode>Add</BlendMode>
+      <TriggerOffset>0 0</TriggerOffset>
+      <MinimumTriggerPeriod>0</MinimumTriggerPeriod>
+    </Item>
+    <Name>Star Trail</Name>
+    <Author>Matt Davey</Author>
+    <Description />
+  </Asset>
+</XnaContent>

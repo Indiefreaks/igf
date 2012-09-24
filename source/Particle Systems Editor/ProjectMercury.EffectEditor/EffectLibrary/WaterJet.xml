@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent>
+  <Asset Type="ProjectMercury.ParticleEffect">
+    <Item Type="ProjectMercury.Emitters.ConeEmitter">
+      <Name>Mist1</Name>
+      <Budget>1100</Budget>
+      <Term>3</Term>
+      <ReleaseQuantity>1</ReleaseQuantity>
+      <Enabled>True</Enabled>
+      <ReleaseSpeed>
+        <Value>160</Value>
+        <Variation>32</Variation>
+      </ReleaseSpeed>
+      <ReleaseColour>
+        <Value>0.8666667 0.945098042 1</Value>
+        <Variation>0 0 0</Variation>
+      </ReleaseColour>
+      <ReleaseOpacity>
+        <Value>1</Value>
+        <Variation>0</Variation>
+      </ReleaseOpacity>
+      <ReleaseScale>
+        <Value>32</Value>
+        <Variation>16</Variation>
+      </ReleaseScale>
+      <ReleaseRotation>
+        <Value>0</Value>
+        <Variation>3.14</Variation>
+      </ReleaseRotation>
+      <ReleaseImpulse>0 0</ReleaseImpulse>
+      <ParticleTextureAssetName>Water001</ParticleTextureAssetName>
+      <Modifiers>
+        <Modifier Type="ProjectMercury.Modifiers.LinearGravityModifier">
+          <Gravity>0 100</Gravity>
+        </Modifier>
+        <Modifier Type="ProjectMercury.Modifiers.OpacityInterpolatorModifier">
+          <InitialOpacity>0</InitialOpacity>
+          <MiddleOpacity>0.2</MiddleOpacity>
+          <MiddlePosition>0.8</MiddlePosition>
+          <FinalOpacity>0</FinalOpacity>
+        </Modifier>
+        <Modifier Type="ProjectMercury.Modifiers.RotationModifier">
+          <RotationRate>1.57079637</RotationRate>
+        </Modifier>
+        <Modifier Type="ProjectMercury.Modifiers.ColourModifier">
+          <InitialColour>0.8745098 1 0.996078432</InitialColour>
+          <UltimateColour>0.819607854 0.8509804 0.8784314</UltimateColour>
+        </Modifier>
+        <Modifier Type="ProjectMercury.Modifiers.ScaleInterpolatorModifier">
+          <InitialScale>0</InitialScale>
+          <MiddleScale>64</MiddleScale>
+          <MiddlePosition>0.5</MiddlePosition>
+          <FinalScale>320</FinalScale>
+        </Modifier>
+      </Modifiers>
+      <BlendMode>Alpha</BlendMode>
+      <TriggerOffset>0 0</TriggerOffset>
+      <MinimumTriggerPeriod>0</MinimumTriggerPeriod>
+      <Direction>3.514758</Direction>
+      <ConeAngle>0.137341261</ConeAngle>
+    </Item>
+    <Item Type="ProjectMercury.Emitters.ConeEmitter">
+      <Name>Spray</Name>
+      <Budget>1100</Budget>
+      <Term>3</Term>
+      <ReleaseQuantity>3</ReleaseQuantity>
+      <Enabled>True</Enabled>
+      <ReleaseSpeed>
+        <Value>160</Value>
+        <Variation>32</Variation>
+      </ReleaseSpeed>
+      <ReleaseColour>
+        <Value>0.8666667 0.945098042 1</Value>
+        <Variation>0 0 0</Variation>
+      </ReleaseColour>
+      <ReleaseOpacity>
+        <Value>1</Value>
+        <Variation>0</Variation>
+      </ReleaseOpacity>
+      <ReleaseScale>
+        <Value>16</Value>
+        <Variation>0</Variation>
+      </ReleaseScale>
+      <ReleaseRotation>
+        <Value>0</Value>
+        <Variation>0</Variation>
+      </ReleaseRotation>
+      <ReleaseImpulse>0 0</ReleaseImpulse>
+      <ParticleTextureAssetName>Spray001</ParticleTextureAssetName>
+      <Modifiers>
+        <Modifier Type="ProjectMercury.Modifiers.LinearGravityModifier">
+          <Gravity>0 100</Gravity>
+        </Modifier>
+        <Modifier Type="ProjectMercury.Modifiers.TrajectoryRotationModifier">
+          <RotationOffset>3.14</RotationOffset>
+        </Modifier>
+        <Modifier Type="ProjectMercury.Modifiers.ScaleModifier">
+          <InitialScale>32</InitialScale>
+          <UltimateScale>160</UltimateScale>
+        </Modifier>
+        <Modifier Type="ProjectMercury.Modifiers.OpacityInterpolatorModifier">
+          <InitialOpacity>0.5</InitialOpacity>
+          <MiddleOpacity>0.5</MiddleOpacity>
+          <MiddlePosition>0.5</MiddlePosition>
+          <FinalOpacity>0</FinalOpacity>
+        </Modifier>
+      </Modifiers>
+      <BlendMode>Alpha</BlendMode>
+      <TriggerOffset>0 0</TriggerOffset>
+      <MinimumTriggerPeriod>0</MinimumTriggerPeriod>
+      <Direction>3.500859</Direction>
+      <ConeAngle>0.225750238</ConeAngle>
+    </Item>
+    <Item Type="ProjectMercury.Emitters.ConeEmitter">
+      <Name>Mist2</Name>
+      <Budget>1100</Budget>
+      <Term>3</Term>
+      <ReleaseQuantity>1</ReleaseQuantity>
+      <Enabled>True</Enabled>
+      <ReleaseSpeed>
+        <Value>160</Value>
+        <Variation>32</Variation>
+      </ReleaseSpeed>
+      <ReleaseColour>
+        <Value>0.8666667 0.945098042 1</Value>
+        <Variation>0 0 0</Variation>
+      </ReleaseColour>
+      <ReleaseOpacity>
+        <Value>1</Value>
+        <Variation>0</Variation>
+      </ReleaseOpacity>
+      <ReleaseScale>
+        <Value>32</Value>
+        <Variation>16</Variation>
+      </ReleaseScale>
+      <ReleaseRotation>
+        <Value>0</Value>
+        <Variation>3.14</Variation>
+      </ReleaseRotation>
+      <ReleaseImpulse>0 0</ReleaseImpulse>
+      <ParticleTextureAssetName>Water001</ParticleTextureAssetName>
+      <Modifiers>
+        <Modifier Type="ProjectMercury.Modifiers.LinearGravityModifier">
+          <Gravity>0 100</Gravity>
+        </Modifier>
+        <Modifier Type="ProjectMercury.Modifiers.OpacityInterpolatorModifier">
+          <InitialOpacity>0</InitialOpacity>
+          <MiddleOpacity>0.1</MiddleOpacity>
+          <MiddlePosition>0.8</MiddlePosition>
+          <FinalOpacity>0</FinalOpacity>
+        </Modifier>
+        <Modifier Type="ProjectMercury.Modifiers.RotationModifier">
+          <RotationRate>-1.57079637</RotationRate>
+        </Modifier>
+        <Modifier Type="ProjectMercury.Modifiers.ColourModifier">
+          <InitialColour>0.8745098 1 0.996078432</InitialColour>
+          <UltimateColour>0.819607854 0.8509804 0.8784314</UltimateColour>
+        </Modifier>
+        <Modifier Type="ProjectMercury.Modifiers.ScaleInterpolatorModifier">
+          <InitialScale>0</InitialScale>
+          <MiddleScale>64</MiddleScale>
+          <MiddlePosition>0.5</MiddlePosition>
+          <FinalScale>320</FinalScale>
+        </Modifier>
+      </Modifiers>
+      <BlendMode>Alpha</BlendMode>
+      <TriggerOffset>0 0</TriggerOffset>
+      <MinimumTriggerPeriod>0</MinimumTriggerPeriod>
+      <Direction>3.514758</Direction>
+      <ConeAngle>0.137341261</ConeAngle>
+    </Item>
+    <Name>Particle Effect</Name>
+    <Author />
+    <Description />
+  </Asset>
+</XnaContent>

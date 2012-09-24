@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{19DEAF0C-801A-42D3-8956-D1D4689C4B90}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ProjectMercury.Design</RootNamespace>
+    <AssemblyName>ProjectMercury.Design</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Binaries\Indie\Tools\Particle Systems Editor\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|AnyCPU' ">
+    <OutputPath>bin\Release\Indie\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\ProjectMercury.Design.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractTypeDescriptor.cs" />
+    <Compile Include="ColourRangeTypeConverter.cs" />
+    <Compile Include="Controllers\CooldownControllerTypeDescriptor.cs" />
+    <Compile Include="Controllers\TimedReleaseQuantityControllerTypeDescriptor.cs" />
+    <Compile Include="Controllers\TriggerOffsetControllerTypeDescriptor.cs" />
+    <Compile Include="Controllers\TypeDescriptorFactory.cs" />
+    <Compile Include="Emitters\AbstractEmitterTypeDescriptor.cs" />
+    <Compile Include="Emitters\BoxEmitterTypeDescriptor.cs" />
+    <Compile Include="Emitters\CircleEmitterTypeDescriptor.cs" />
+    <Compile Include="Emitters\CylinderEmitterTypeDescriptor.cs" />
+    <Compile Include="Emitters\LineEmitterTypeDescriptor.cs" />
+    <Compile Include="Emitters\PlaneEmitterTypeDescriptor.cs" />
+    <Compile Include="Emitters\PointEmitterTypeDescriptor.cs" />
+    <Compile Include="Emitters\SphereEmitterTypeDescriptor.cs" />
+    <Compile Include="Emitters\TypeDescriptorFactory.cs" />
+    <Compile Include="Modifiers\BoxForceModifierTypeDescriptor.cs" />
+    <Compile Include="Modifiers\ColourInterpolator2TypeDescriptor.cs" />
+    <Compile Include="Modifiers\ColourInterpolator3TypeDescriptor.cs" />
+    <Compile Include="Modifiers\DampingModifierTypeDescriptor.cs" />
+    <Compile Include="Modifiers\ForceInterpolator2TypeDescriptor.cs" />
+    <Compile Include="Modifiers\HueShiftModifierTypeDescriptor.cs" />
+    <Compile Include="Modifiers\LinearGravityModifierTypeDescriptor.cs" />
+    <Compile Include="Modifiers\OpacityFastFadeModifierTypeDescriptor.cs" />
+    <Compile Include="Modifiers\OpacityInterpolator2TypeDescriptor.cs" />
+    <Compile Include="Modifiers\OpacityInterpolator3TypeDescriptor.cs" />
+    <Compile Include="Modifiers\RotationModifierTypeDescriptor.cs" />
+    <Compile Include="Modifiers\ScaleInterpolator2TypeDescriptor.cs" />
+    <Compile Include="Modifiers\ScaleInterpolator3TypeDescriptor.cs" />
+    <Compile Include="Modifiers\SphereForceModifierTypeDescriptor.cs" />
+    <Compile Include="Modifiers\TypeDescriptorFactory.cs" />
+    <Compile Include="Modifiers\VelocityClampModifierTypeDescriptor.cs" />
+    <Compile Include="Renderers\TypeDescriptorFactory.cs" />
+    <Compile Include="TypeDescriptorFactory.cs" />
+    <Compile Include="FieldPropertyDescriptor.cs" />
+    <Compile Include="MemberPropertyDescriptor.cs" />
+    <Compile Include="ParticleEffectTypeDescriptor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyDescriptorFactory.cs" />
+    <Compile Include="PropertyPropertyDescriptor.cs" />
+    <Compile Include="RangeTypeConverter.cs" />
+    <Compile Include="RotationRangeTypeConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Indiefreaks.Game.Mercury\Indiefreaks.Game.Mercury Windows %28SunBurn Indie%29.csproj">
+      <Project>{D70E9AA3-9B8D-49BD-9706-85C06D2936CC}</Project>
+      <Name>Indiefreaks.Game.Mercury Windows %28SunBurn Indie%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

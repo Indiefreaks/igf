@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B4F03FE1-16F5-4C7A-B5AF-E8864E0AFC8D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ProjectMercury.ContentPipeline</RootNamespace>
+    <AssemblyName>ProjectMercury.ContentPipeline</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Binaries\Indie\Tools\Particle Systems Editor\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Distribution|AnyCPU'">
+    <OutputPath>bin\Release\Indie\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\ProjectMercury.ContentPipeline.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ColourRangeSerializer.cs" />
+    <Compile Include="Controllers\CooldownControllerSerializer.cs" />
+    <Compile Include="Controllers\TimedReleaseQuantityControllerSerializer.cs" />
+    <Compile Include="Controllers\TriggerOffsetControllerSerializer.cs" />
+    <Compile Include="Controllers\TriggerRandomOffsetControllerSerializer.cs" />
+    <Compile Include="Controllers\TriggerRotationControllerSerializer.cs" />
+    <Compile Include="Emitters\AbstractEmitterSerializer.cs" />
+    <Compile Include="Emitters\BoxEmitterSerializer.cs" />
+    <Compile Include="Emitters\PointEmitterSerializer.cs" />
+    <Compile Include="Emitters\SphereEmitterSerializer.cs" />
+    <Compile Include="IntermediateReaderExtensions.cs" />
+    <Compile Include="IntermediateWriterExtensions.cs" />
+    <Compile Include="Modifiers\BoxForceModifierSerializer.cs" />
+    <Compile Include="Modifiers\ColourInterpolator2Serializer.cs" />
+    <Compile Include="Modifiers\ColourInterpolator3Serializer.cs" />
+    <Compile Include="Modifiers\DampingModifierSerializer.cs" />
+    <Compile Include="Modifiers\ForceInterpolator2Serializer.cs" />
+    <Compile Include="Modifiers\HueShiftModifierSerializer.cs" />
+    <Compile Include="Modifiers\LinearGravityModifierSerializer.cs" />
+    <Compile Include="Modifiers\OpacityFastFadeModifierSerializer.cs" />
+    <Compile Include="Modifiers\OpacityInterpolator2Serializer.cs" />
+    <Compile Include="Modifiers\OpacityInterpolator3Serializer.cs" />
+    <Compile Include="Modifiers\RotationModifierSerializer.cs" />
+    <Compile Include="Modifiers\ScaleInterpolator2Serializer.cs" />
+    <Compile Include="Modifiers\ScaleInterpolator3Serializer.cs" />
+    <Compile Include="Modifiers\SphereForceModifierSerializer.cs" />
+    <Compile Include="Modifiers\VelocityClampModifierSerializer.cs" />
+    <Compile Include="ParticleEffectSerializer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RangeSerializer.cs" />
+    <Compile Include="RotationRangeSerializer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Indiefreaks.Game.Mercury\Indiefreaks.Game.Mercury Windows %28SunBurn Indie%29.csproj">
+      <Project>{D70E9AA3-9B8D-49BD-9706-85C06D2936CC}</Project>
+      <Name>Indiefreaks.Game.Mercury Windows %28SunBurn Indie%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

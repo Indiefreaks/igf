@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent>
+  <Asset Type="ProjectMercury.ParticleEffect">
+    <Name>Basic Fireball</Name>
+    <Author>Matt Davey</Author>
+    <Description>A simple fireball effect. Looks best in motion.</Description>
+    <Emitters>
+      <Item Type="ProjectMercury.Emitters.SphereEmitter">
+        <Name>Smoke Trail</Name>
+        <Budget>500</Budget>
+        <Term>2</Term>
+        <ReleaseQuantity>2</ReleaseQuantity>
+        <Enabled>true</Enabled>
+        <ReleaseSpeed>[50,50]</ReleaseSpeed>
+        <ReleaseColour>
+          <Red>[0.5019608,0.5019608]</Red>
+          <Green>[0.5019608,0.5019608]</Green>
+          <Blue>[0.5019608,0.5019608]</Blue>
+        </ReleaseColour>
+        <ReleaseOpacity>[1,1]</ReleaseOpacity>
+        <ReleaseScale>[16,16]</ReleaseScale>
+        <ReleaseRotation>
+          <Pitch>[0,0]</Pitch>
+          <Yaw>[0,0]</Yaw>
+          <Roll>[0,0]</Roll>
+        </ReleaseRotation>
+        <ParticleTextureAssetPath>Cloud001</ParticleTextureAssetPath>
+        <BlendMode>Alpha</BlendMode>
+        <Radius>50</Radius>
+        <Shell>true</Shell>
+        <Radiate>true</Radiate>
+        <Modifiers>
+          <Modifier Type="ProjectMercury.Modifiers.OpacityInterpolator2">
+            <InitialOpacity>0.2</InitialOpacity>
+            <FinalOpacity>0</FinalOpacity>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.ScaleInterpolator2">
+            <InitialScale>48</InitialScale>
+            <FinalScale>255</FinalScale>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.DampingModifier">
+            <DampingCoefficient>0.8</DampingCoefficient>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.RotationModifier">
+            <RotationRate>0 0 1</RotationRate>
+          </Modifier>
+        </Modifiers>
+        <Controllers>
+          <Controller Type="ProjectMercury.Controllers.CooldownController">
+            <CooldownPeriod>0.025</CooldownPeriod>
+          </Controller>
+        </Controllers>
+      </Item>
+      <Item Type="ProjectMercury.Emitters.SphereEmitter">
+        <Name>Flames</Name>
+        <Budget>1000</Budget>
+        <Term>0.75</Term>
+        <ReleaseQuantity>8</ReleaseQuantity>
+        <Enabled>true</Enabled>
+        <ReleaseSpeed>[25,75]</ReleaseSpeed>
+        <ReleaseColour>
+          <Red>[0.9,1]</Red>
+          <Green>[0.5019608,0.5019608]</Green>
+          <Blue>[0,0]</Blue>
+        </ReleaseColour>
+        <ReleaseOpacity>[1,1]</ReleaseOpacity>
+        <ReleaseScale>[32,64]</ReleaseScale>
+        <ReleaseRotation>
+          <Pitch>[0,0]</Pitch>
+          <Yaw>[0,0]</Yaw>
+          <Roll>[-3.14,3.14]</Roll>
+        </ReleaseRotation>
+        <ParticleTextureAssetPath>Flame</ParticleTextureAssetPath>
+        <BlendMode>Add</BlendMode>
+        <Radius>50</Radius>
+        <Shell>true</Shell>
+        <Radiate>true</Radiate>
+        <Modifiers>
+          <Modifier Type="ProjectMercury.Modifiers.OpacityInterpolator2">
+            <InitialOpacity>0.5</InitialOpacity>
+            <FinalOpacity>0</FinalOpacity>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.RotationModifier">
+            <RotationRate>0 0 1</RotationRate>
+          </Modifier>
+        </Modifiers>
+        <Controllers>
+          <Controller Type="ProjectMercury.Controllers.CooldownController">
+            <CooldownPeriod>0.02</CooldownPeriod>
+          </Controller>
+        </Controllers>
+      </Item>
+      <Item Type="ProjectMercury.Emitters.SphereEmitter">
+        <Name>Dying Flames</Name>
+        <Budget>1000</Budget>
+        <Term>1</Term>
+        <ReleaseQuantity>4</ReleaseQuantity>
+        <Enabled>true</Enabled>
+        <ReleaseSpeed>[40,60]</ReleaseSpeed>
+        <ReleaseColour>
+          <Red>[0.8,1]</Red>
+          <Green>[0.5019608,0.5019608]</Green>
+          <Blue>[0,0]</Blue>
+        </ReleaseColour>
+        <ReleaseOpacity>[1,1]</ReleaseOpacity>
+        <ReleaseScale>[32,64]</ReleaseScale>
+        <ReleaseRotation>
+          <Pitch>[0,0]</Pitch>
+          <Yaw>[0,0]</Yaw>
+          <Roll>[-3.14,3.14]</Roll>
+        </ReleaseRotation>
+        <ParticleTextureAssetPath>Cloud004</ParticleTextureAssetPath>
+        <BlendMode>Add</BlendMode>
+        <Radius>50</Radius>
+        <Shell>true</Shell>
+        <Radiate>true</Radiate>
+        <Modifiers>
+          <Modifier Type="ProjectMercury.Modifiers.OpacityInterpolator3">
+            <InitialOpacity>0</InitialOpacity>
+            <Median>0.7</Median>
+            <MedianOpacity>0.15</MedianOpacity>
+            <FinalOpacity>0</FinalOpacity>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.RotationModifier">
+            <RotationRate>0 0 1</RotationRate>
+          </Modifier>
+        </Modifiers>
+        <Controllers />
+      </Item>
+    </Emitters>
+  </Asset>
+</XnaContent>

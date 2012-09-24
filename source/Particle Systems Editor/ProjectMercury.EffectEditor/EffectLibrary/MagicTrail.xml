@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent>
+  <Asset Type="ProjectMercury.ParticleEffect">
+    <Name>Magic Trail</Name>
+    <Author></Author>
+    <Description></Description>
+    <Emitters>
+      <Item Type="ProjectMercury.Emitters.PointEmitter">
+        <Name>Big Stars</Name>
+        <Budget>150</Budget>
+        <Term>0.75</Term>
+        <ReleaseQuantity>1</ReleaseQuantity>
+        <Enabled>true</Enabled>
+        <ReleaseSpeed>[64,128]</ReleaseSpeed>
+        <ReleaseColour>
+          <Red>[1,1]</Red>
+          <Green>[0.8784314,0.8784314]</Green>
+          <Blue>[0.7529412,0.7529412]</Blue>
+        </ReleaseColour>
+        <ReleaseOpacity>[1,1]</ReleaseOpacity>
+        <ReleaseScale>[32,64]</ReleaseScale>
+        <ReleaseRotation>
+          <Pitch>[0,0]</Pitch>
+          <Yaw>[0,0]</Yaw>
+          <Roll>[-1.47,1.47]</Roll>
+        </ReleaseRotation>
+        <ParticleTextureAssetPath>Star</ParticleTextureAssetPath>
+        <BlendMode>Alpha</BlendMode>
+        <Modifiers>
+          <Modifier Type="ProjectMercury.Modifiers.OpacityInterpolator2">
+            <InitialOpacity>0.6</InitialOpacity>
+            <FinalOpacity>0</FinalOpacity>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.ColourInterpolator2">
+            <InitialColour>1 0.5019608 1</InitialColour>
+            <FinalColour>1 0.5019608 0</FinalColour>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.ScaleInterpolator3">
+            <InitialScale>50</InitialScale>
+            <Median>0.4</Median>
+            <MedianScale>75</MedianScale>
+            <FinalScale>32</FinalScale>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.DampingModifier">
+            <DampingCoefficient>5</DampingCoefficient>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.RotationModifier">
+            <RotationRate>0 0 2</RotationRate>
+          </Modifier>
+        </Modifiers>
+        <Controllers>
+          <Controller Type="ProjectMercury.Controllers.CooldownController">
+            <CooldownPeriod>0.1</CooldownPeriod>
+          </Controller>
+        </Controllers>
+      </Item>
+      <Item Type="ProjectMercury.Emitters.PointEmitter">
+        <Name>Small Stars</Name>
+        <Budget>400</Budget>
+        <Term>1</Term>
+        <ReleaseQuantity>1</ReleaseQuantity>
+        <Enabled>true</Enabled>
+        <ReleaseSpeed>[64,128]</ReleaseSpeed>
+        <ReleaseColour>
+          <Red>[1,1]</Red>
+          <Green>[1,1]</Green>
+          <Blue>[1,1]</Blue>
+        </ReleaseColour>
+        <ReleaseOpacity>[1,1]</ReleaseOpacity>
+        <ReleaseScale>[16,24]</ReleaseScale>
+        <ReleaseRotation>
+          <Pitch>[0,0]</Pitch>
+          <Yaw>[0,0]</Yaw>
+          <Roll>[-3.14,3.14]</Roll>
+        </ReleaseRotation>
+        <ParticleTextureAssetPath>Star</ParticleTextureAssetPath>
+        <BlendMode>Add</BlendMode>
+        <Modifiers>
+          <Modifier Type="ProjectMercury.Modifiers.OpacityInterpolator3">
+            <InitialOpacity>0</InitialOpacity>
+            <Median>0.75</Median>
+            <MedianOpacity>1</MedianOpacity>
+            <FinalOpacity>0</FinalOpacity>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.DampingModifier">
+            <DampingCoefficient>3</DampingCoefficient>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.ColourInterpolator2">
+            <InitialColour>1 1 1</InitialColour>
+            <FinalColour>0.7529412 0.7529412 1</FinalColour>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.LinearGravityModifier">
+            <GravityVector>0 -1 0</GravityVector>
+            <Strength>200</Strength>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.RotationModifier">
+            <RotationRate>0 0 -2</RotationRate>
+          </Modifier>
+        </Modifiers>
+        <Controllers />
+      </Item>
+      <Item Type="ProjectMercury.Emitters.PointEmitter">
+        <Name>Sparkles</Name>
+        <Budget>700</Budget>
+        <Term>1</Term>
+        <ReleaseQuantity>5</ReleaseQuantity>
+        <Enabled>true</Enabled>
+        <ReleaseSpeed>[48,48]</ReleaseSpeed>
+        <ReleaseColour>
+          <Red>[1,1]</Red>
+          <Green>[1,1]</Green>
+          <Blue>[1,1]</Blue>
+        </ReleaseColour>
+        <ReleaseOpacity>[1,1]</ReleaseOpacity>
+        <ReleaseScale>[16,16]</ReleaseScale>
+        <ReleaseRotation>
+          <Pitch>[0,0]</Pitch>
+          <Yaw>[0,0]</Yaw>
+          <Roll>[-1.47,1.47]</Roll>
+        </ReleaseRotation>
+        <ParticleTextureAssetPath>Star</ParticleTextureAssetPath>
+        <BlendMode>Add</BlendMode>
+        <Modifiers>
+          <Modifier Type="ProjectMercury.Modifiers.ColourInterpolator2">
+            <InitialColour>1 0.5019608 1</InitialColour>
+            <FinalColour>0.7529412 0.2509804 0</FinalColour>
+          </Modifier>
+          <Modifier Type="ProjectMercury.Modifiers.OpacityInterpolator2">
+            <InitialOpacity>1</InitialOpacity>
+            <FinalOpacity>0</FinalOpacity>
+          </Modifier>
+        </Modifiers>
+        <Controllers />
+      </Item>
+    </Emitters>
+  </Asset>
+</XnaContent>

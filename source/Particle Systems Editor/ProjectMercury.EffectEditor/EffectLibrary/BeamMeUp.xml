@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Emitters="ProjectMercury.Emitters" xmlns:Modifiers="ProjectMercury.Modifiers" xmlns:Controllers="ProjectMercury.Controllers">
+  <Asset Type="ProjectMercury.ParticleEffect">
+    <Name>Beam Me Up</Name>
+    <Author>Matt Davey</Author>
+    <Description />
+    <Emitters>
+      <Item Type="Emitters:BoxEmitter">
+        <Name>Particles</Name>
+        <Budget>500</Budget>
+        <Term>1</Term>
+        <ReleaseQuantity>1</ReleaseQuantity>
+        <Enabled>true</Enabled>
+        <ReleaseSpeed>[-12.5,12.5]</ReleaseSpeed>
+        <ReleaseColour>
+          <Red>[0,0]</Red>
+          <Green>[0.752,0.752]</Green>
+          <Blue>[0.752,0.752]</Blue>
+        </ReleaseColour>
+        <ReleaseOpacity>[1,1]</ReleaseOpacity>
+        <ReleaseScale>[16,16]</ReleaseScale>
+        <ReleaseRotation>
+          <Pitch>[0,0]</Pitch>
+          <Yaw>[0,0]</Yaw>
+          <Roll>[0,0]</Roll>
+        </ReleaseRotation>
+        <ParticleTextureAssetPath>LensFlare</ParticleTextureAssetPath>
+        <BlendMode>Add</BlendMode>
+        <Width>100</Width>
+        <Height>250</Height>
+        <Depth>100</Depth>
+        <Rotation>0 0 0</Rotation>
+        <Modifiers>
+          <Modifier Type="Modifiers:LinearGravityModifier">
+            <GravityVector>0 1 0</GravityVector>
+            <Strength>150</Strength>
+          </Modifier>
+          <Modifier Type="Modifiers:OpacityInterpolator3">
+            <InitialOpacity>0</InitialOpacity>
+            <Median>0.5</Median>
+            <MedianOpacity>1</MedianOpacity>
+            <FinalOpacity>0</FinalOpacity>
+          </Modifier>
+          <Modifier Type="Modifiers:ScaleInterpolator3">
+            <InitialScale>16</InitialScale>
+            <Median>0.5</Median>
+            <MedianScale>32</MedianScale>
+            <FinalScale>16</FinalScale>
+          </Modifier>
+        </Modifiers>
+        <Controllers />
+      </Item>
+      <Item Type="Emitters:BoxEmitter">
+        <Name>Fast Beams</Name>
+        <Budget>500</Budget>
+        <Term>0.5</Term>
+        <ReleaseQuantity>3</ReleaseQuantity>
+        <Enabled>true</Enabled>
+        <ReleaseSpeed>[0,0]</ReleaseSpeed>
+        <ReleaseColour>
+          <Red>[0,0]</Red>
+          <Green>[1,1]</Green>
+          <Blue>[1,1]</Blue>
+        </ReleaseColour>
+        <ReleaseOpacity>[1,1]</ReleaseOpacity>
+        <ReleaseScale>[256,256]</ReleaseScale>
+        <ReleaseRotation>
+          <Pitch>[0,0]</Pitch>
+          <Yaw>[0,0]</Yaw>
+          <Roll>[0,0]</Roll>
+        </ReleaseRotation>
+        <!--<ReleaseImpulse>0 -50</ReleaseImpulse>-->
+        <ParticleTextureAssetPath>Beam</ParticleTextureAssetPath>
+        <BlendMode>Add</BlendMode>
+        <Width>100</Width>
+        <Height>100</Height>
+        <Depth>100</Depth>
+        <Rotation>0 0 0</Rotation>
+        <Modifiers>
+          <Modifier Type="Modifiers:OpacityInterpolator3">
+            <InitialOpacity>0</InitialOpacity>
+            <Median>0.5</Median>
+            <MedianOpacity>0.1</MedianOpacity>
+            <FinalOpacity>0</FinalOpacity>
+          </Modifier>
+        </Modifiers>
+        <Controllers>
+          <Controller Type="Controllers:CooldownController">
+            <CooldownPeriod>0.05</CooldownPeriod>
+          </Controller>
+        </Controllers>
+      </Item>
+      <Item Type="Emitters:BoxEmitter">
+        <Name>Slow Beams</Name>
+        <Budget>100</Budget>
+        <Term>1.5</Term>
+        <ReleaseQuantity>3</ReleaseQuantity>
+        <Enabled>true</Enabled>
+        <ReleaseSpeed>[0,0]</ReleaseSpeed>
+        <ReleaseColour>
+          <Red>[0,0]</Red>
+          <Green>[0.5, 0.5]</Green>
+          <Blue>[0.45, 0.55]</Blue>
+        </ReleaseColour>
+        <ReleaseOpacity>[1,1]</ReleaseOpacity>
+        <ReleaseScale>[450,450]</ReleaseScale>
+        <ReleaseRotation>
+          <Pitch>[0,0]</Pitch>
+          <Yaw>[0,0]</Yaw>
+          <Roll>[0,0]</Roll>
+        </ReleaseRotation>
+        <!--<ReleaseImpulse>0 -50</ReleaseImpulse>-->
+        <ParticleTextureAssetPath>BeamBlurred</ParticleTextureAssetPath>
+        <BlendMode>Alpha</BlendMode>
+        <Width>120</Width>
+        <Height>100</Height>
+        <Depth>120</Depth>
+        <Rotation>0 0 0</Rotation>
+        <Modifiers>
+          <Modifier Type="Modifiers:OpacityInterpolator3">
+            <InitialOpacity>0</InitialOpacity>
+            <Median>0.5</Median>
+            <MedianOpacity>0.3</MedianOpacity>
+            <FinalOpacity>0</FinalOpacity>
+          </Modifier>
+        </Modifiers>
+        <Controllers>
+          <Controller Type="Controllers:CooldownController">
+            <CooldownPeriod>0.25</CooldownPeriod>
+          </Controller>
+        </Controllers>
+      </Item>
+    </Emitters>
+  </Asset>
+</XnaContent>

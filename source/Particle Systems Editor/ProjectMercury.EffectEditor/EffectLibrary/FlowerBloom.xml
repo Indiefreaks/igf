@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Emitters="ProjectMercury.Emitters" xmlns:Modifiers="ProjectMercury.Modifiers">
+  <Asset Type="ProjectMercury.ParticleEffect">
+    <Name>Flower Bloom</Name>
+    <Author>Matt Davey</Author>
+    <Description>Bloomin' flowers!</Description>
+    <Emitters>
+      <Item Type="Emitters:PointEmitter">
+        <Name>Flower Petals</Name>
+        <Budget>500</Budget>
+        <Term>2</Term>
+        <ReleaseQuantity>3</ReleaseQuantity>
+        <Enabled>true</Enabled>
+        <ReleaseSpeed>[32,64]</ReleaseSpeed>
+        <ReleaseColour>
+          <Red>[1,1]</Red>
+          <Green>[1,1]</Green>
+          <Blue>[1,1]</Blue>
+        </ReleaseColour>
+        <ReleaseOpacity>[1,1]</ReleaseOpacity>
+        <ReleaseScale>[64,64]</ReleaseScale>
+        <ReleaseRotation>
+          <Pitch>[0,0]</Pitch>
+          <Yaw>[0,0]</Yaw>
+          <Roll>[0,0]</Roll>
+        </ReleaseRotation>
+        <BlendMode>Alpha</BlendMode>
+        <Modifiers>
+          <Modifier Type="Modifiers:ScaleInterpolator2">
+            <InitialScale>16</InitialScale>
+            <FinalScale>128</FinalScale>
+          </Modifier>
+          <Modifier Type="Modifiers:OpacityInterpolator3">
+            <InitialOpacity>1</InitialOpacity>
+            <Median>0.8</Median>
+            <MedianOpacity>1</MedianOpacity>
+            <FinalOpacity>0</FinalOpacity>
+          </Modifier>
+          <Modifier Type="Modifiers:ColourInterpolator3">
+            <InitialColour>0 0.5019608 0</InitialColour>
+            <Median>0.5</Median>
+            <MedianColour>1 1 1</MedianColour>
+            <FinalColour>1 0 1</FinalColour>
+          </Modifier>
+        </Modifiers>
+      </Item>
+    </Emitters>
+  </Asset>
+</XnaContent>

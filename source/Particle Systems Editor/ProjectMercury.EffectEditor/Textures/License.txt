@@ -1,0 +1,37 @@
+The following files were created by Project Mercury team members and fall
+under the same MS-PL license as the source code:
+
+Beam.png
+BeamBlurred.png
+Flame.png
+FlowerBurst.png
+LensFlare.png
+Particle001.png
+Particle002.png
+Particle003.png
+Particle004.png
+Particle005.png
+Particle006.png
+Particle007.png
+
+The remaining files have been sourced from various different places (ie google images)
+and may not be in the public domain. Use them at your own risk!
+
+Cloud001.png
+Cloud002.png
+Cloud003.png
+Cloud004.png
+Laser.png
+MultiDot.png
+Ring001.png
+Ring002.png
+SoftClumpy.png
+SoftSnokey.png
+Spikey001.png
+Spikey002.png
+Splash.png
+Spray001.png
+Star.png
+Water001.png
+Water002.png
+Weeds.png
