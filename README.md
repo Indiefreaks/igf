@@ -1,8 +1,6 @@
 # Overview
 The Indiefreaks Game Framework or IGF is a set of .Net libraries compiling a few years of experimenting and prototyping design patterns developing games for Microsoft Xna Framework using the SynapseGaming SunBurn graphics engine.
 
-The goal here is to share with the community what I consider as best practices so they can avoid going through the same steps as I did. The Indiefreaks Game Framework is totally free (like in free beer) to use but it still requires you to acquire a SunBurn engine license (learn more here).
-
 The goal here is to share with the community what I consider as best practices so they can avoid going through the same steps as I did. The Indiefreaks Game Framework is totally free (like in free beer) to use but it still requires you to acquire a SunBurn engine license ([learn more here](http://http://www.synapsegaming.com/products/sunburn/engine/)).
 
 # Core Features
