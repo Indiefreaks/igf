@@ -143,11 +143,16 @@ namespace Indiefreaks.Xna.Rendering.Camera
         /// </summary>
         private void UpdateWorldPositions()
         {
+
             if (TargetEntity != null)
             {
+                Vector3 translation;
+                Quaternion rotation;
+                Vector3 scale;
+                TargetEntity.World.Decompose(out scale, out rotation, out translation);
                 // Calculate desired camera properties in world space
-                Vector3 chaseDesiredPosition = Vector3.Transform(DesiredPositionOffset, TargetEntity.World);
-                Vector3 chaseTargetPosition = Vector3.Transform(TargetPositionOffset, TargetEntity.World);
+                Vector3 chaseDesiredPosition = TargetEntity.World.Translation + Vector3.Transform(DesiredPositionOffset, rotation);  //new Vector3((chaseCoords.X > 0 ? TargetEntity.World.Translation.X : desiredPosition.X), (chaseCoords.Y > 0 ? TargetEntity.World.Translation.Y : desiredPosition.Y), (chaseCoords.Z > 0 ? TargetEntity.World.Translation.Z : desiredPosition.Z));
+                Vector3 chaseTargetPosition = TargetEntity.World.Translation + TargetPositionOffset;  //new Vector3((chaseCoords.X > 0 ? TargetEntity.World.Translation.X : TargetPosition.X), (chaseCoords.Y > 0 ? TargetEntity.World.Translation.Y : TargetPosition.Y), (chaseCoords.Z > 0 ? TargetEntity.World.Translation.Z : TargetPosition.Z));
 
                 if (chaseCoords.X == 0)
                 {
@@ -211,6 +216,7 @@ namespace Indiefreaks.Xna.Rendering.Camera
         {
         }
 
+        private float _tick;
         /// <summary>
         /// Animates the camera from its current position towards the desired offset
         /// behind the chased object. The camera's animation is controlled by a simple
@@ -218,12 +224,22 @@ namespace Indiefreaks.Xna.Rendering.Camera
         /// </summary>
         protected override Matrix UpdateViewMatrix(GameTime gameTime)
         {
+
             if (gameTime == null)
                 throw new ArgumentNullException("gameTime");
 
-            UpdateWorldPositions();
 
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+
+            //_tick += elapsed;
+            //if (_tick < 1f / 30f)
+            //    return UpdateMatrices();
+            //_tick = 0f;
+
+            UpdateWorldPositions();
+
+
 
             // Calculate spring force
             Vector3 stretch = Position - desiredPosition;
