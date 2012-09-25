@@ -1,4 +1,5 @@
 ﻿using System;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.BroadPhaseSystems;
 using BEPUphysics.Collidables;
 using BEPUphysics.Collidables.MobileCollidables;
@@ -26,19 +27,19 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         SphereContactManifold contactManifold = new SphereContactManifold();
         NonConvexContactManifoldConstraint contactConstraint = new NonConvexContactManifoldConstraint();
 
-        protected override Collidable CollidableA
+        public override Collidable CollidableA
         {
             get { return sphereA; }
         }
-        protected override Collidable CollidableB
+        public override Collidable CollidableB
         {
             get { return sphereB; }
         }
-        protected override Entities.Entity EntityA
+        public override Entities.Entity EntityA
         {
             get { return sphereA.entity; }
         }
-        protected override Entities.Entity EntityB
+        public override Entities.Entity EntityB
         {
             get { return sphereB.entity; }
         }
@@ -101,14 +102,14 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         {
             info.Contact = ContactManifold.contacts.Elements[index];
             //Find the contact's force.
-            info.FrictionForce = 0;
-            info.NormalForce = 0;
+            info.FrictionImpulse = 0;
+            info.NormalImpulse = 0;
             for (int i = 0; i < contactConstraint.frictionConstraints.count; i++)
             {
                 if (contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.contact == info.Contact)
                 {
-                    info.FrictionForce = contactConstraint.frictionConstraints.Elements[i].accumulatedImpulse;
-                    info.NormalForce = contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.accumulatedImpulse;
+                    info.FrictionImpulse = contactConstraint.frictionConstraints.Elements[i].accumulatedImpulse;
+                    info.NormalImpulse = contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.accumulatedImpulse;
                     break;
                 }
             }

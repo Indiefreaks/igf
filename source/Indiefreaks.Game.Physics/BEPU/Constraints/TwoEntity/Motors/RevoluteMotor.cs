@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using BEPUphysics.Entities;
 using Microsoft.Xna.Framework;
 using BEPUphysics.MathExtensions;
+using Microsoft.Xna.Framework.Input;
 
 namespace BEPUphysics.Constraints.TwoEntity.Motors
 {
@@ -10,7 +12,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
     /// </summary>
     public class RevoluteMotor : Motor, I1DImpulseConstraintWithError, I1DJacobianConstraint
     {
-        private readonly JointBasis3D basis = new JointBasis3D();
+        private readonly JointBasis2D basis = new JointBasis2D();
         private readonly MotorSettings1D settings;
         private float accumulatedImpulse;
         protected float biasVelocity;
@@ -40,22 +42,22 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         /// <param name="connectionA">First connection of the pair.</param>
         /// <param name="connectionB">Second connection of the pair.</param>
-        /// <param name="freeAxis">Allowed rotation axis of the hinge in world space.</param>
-        public RevoluteMotor(Entity connectionA, Entity connectionB, Vector3 freeAxis)
+        /// <param name="motorizedAxis">Rotation axis to control in world space.</param>
+        public RevoluteMotor(Entity connectionA, Entity connectionB, Vector3 motorizedAxis)
         {
             ConnectionA = connectionA;
             ConnectionB = connectionB;
-            SetupJointTransforms(freeAxis);
+            SetupJointTransforms(motorizedAxis);
 
             settings = new MotorSettings1D(this);
         }
 
         /// <summary>
         /// Gets the basis attached to entity A.
-        /// The primary axis represents the motorized axis.
-        /// The x axis and y axis represent a plane against which entity B's attached test axis is project to determine the hinge angle.
+        /// The primary axis represents the limited axis of rotation.  The 'measurement plane' which the test axis is tested against is based on this primary axis.
+        /// The x axis defines the 'base' direction on the measurement plane corresponding to 0 degrees of relative rotation.
         /// </summary>
-        public JointBasis3D Basis
+        public JointBasis2D Basis
         {
             get { return basis; }
         }
@@ -84,7 +86,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
 
         /// <summary>
         /// Gets or sets the axis attached to entity B in world space.
-        /// This axis is projected onto the x and y axes of transformA to determine the hinge angle.
+        /// This axis is projected onto the x and y axes of the Basis attached to entity A to determine the hinge angle.
         /// </summary>
         public Vector3 TestAxis
         {
@@ -183,67 +185,31 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
         /// <summary>
         /// Sets up the joint transforms by automatically creating perpendicular vectors to complete the bases.
         /// </summary>
-        /// <param name="freeAxis">Axis around which rotation is allowed.</param>
-        public void SetupJointTransforms(Vector3 freeAxis)
+        /// <param name="motorizedAxis">Axis around which the motor acts.</param>
+        public void SetupJointTransforms(Vector3 motorizedAxis)
         {
             //Compute a vector which is perpendicular to the axis.  It'll be added in local space to both connections.
             Vector3 xAxis;
-            Vector3.Cross(ref freeAxis, ref Toolbox.UpVector, out xAxis);
+            Vector3.Cross(ref motorizedAxis, ref Toolbox.UpVector, out xAxis);
             float length = xAxis.LengthSquared();
             if (length < Toolbox.Epsilon)
             {
-                Vector3.Cross(ref freeAxis, ref Toolbox.RightVector, out xAxis);
+                Vector3.Cross(ref motorizedAxis, ref Toolbox.RightVector, out xAxis);
             }
-
-            Vector3 yAxis;
-            Vector3.Cross(ref freeAxis, ref xAxis, out yAxis);
 
             //Put the axes into the joint transform of A.
             basis.rotationMatrix = connectionA.orientationMatrix;
-            basis.SetWorldAxes(freeAxis, xAxis, yAxis);
+            basis.SetWorldAxes(motorizedAxis, xAxis);
 
 
             //Put the axes into the 'joint transform' of B too.
             TestAxis = basis.xAxis;
         }
 
-        /// <summary>
-        /// Computes one iteration of the constraint to meet the solver updateable's goal.
-        /// </summary>
-        /// <returns>The rough applied impulse magnitude.</returns>
-        public override float SolveIteration()
-        {
-            float velocityA, velocityB;
-            //Find the velocity contribution from each connection
-            Vector3.Dot(ref connectionA.angularVelocity, ref jacobianA, out velocityA);
-            Vector3.Dot(ref connectionB.angularVelocity, ref jacobianB, out velocityB);
-            //Add in the constraint space bias velocity
-            float lambda = -(velocityA + velocityB) - biasVelocity - usedSoftness * accumulatedImpulse;
-
-            //Transform to an impulse
-            lambda *= velocityToImpulse;
-
-            //Accumulate the impulse
-            float previousAccumulatedImpulse = accumulatedImpulse;
-            accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse + lambda, -maxForceDt, maxForceDt);
-            lambda = accumulatedImpulse - previousAccumulatedImpulse;
-
-            //Apply the impulse
-            Vector3 impulse;
-            if (connectionA.isDynamic)
-            {
-                Vector3.Multiply(ref jacobianA, lambda, out impulse);
-                connectionA.ApplyAngularImpulse(ref impulse);
-            }
-            if (connectionB.isDynamic)
-            {
-                Vector3.Multiply(ref jacobianB, lambda, out impulse);
-                connectionB.ApplyAngularImpulse(ref impulse);
-            }
-
-            return Math.Abs(lambda);
-        }
-
+        ///<summary>
+        /// Performs the frame's configuration step.
+        ///</summary>
+        ///<param name="dt">Timestep duration.</param>
         public override void Update(float dt)
         {
             //Transform the axes into world space.
@@ -251,12 +217,15 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
             basis.ComputeWorldSpaceAxes();
             Matrix3X3.Transform(ref localTestAxis, ref connectionB.orientationMatrix, out worldTestAxis);
 
+
             if (settings.mode == MotorMode.Servomechanism)
             {
                 float y, x;
-                Vector3.Dot(ref worldTestAxis, ref basis.yAxis, out y);
+                Vector3 yAxis;
+                Vector3.Cross(ref basis.primaryAxis, ref basis.xAxis, out yAxis);
+                Vector3.Dot(ref worldTestAxis, ref yAxis, out y);
                 Vector3.Dot(ref worldTestAxis, ref basis.xAxis, out x);
-                var angle = (float) Math.Atan2(y, x);
+                var angle = (float)Math.Atan2(y, x);
 
                 //****** VELOCITY BIAS ******//
                 //Compute the correction velocity.
@@ -315,7 +284,7 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
             ComputeMaxForces(settings.maximumForce, dt);
 
 
-           
+
         }
 
         /// <summary>
@@ -340,8 +309,48 @@ namespace BEPUphysics.Constraints.TwoEntity.Motors
             }
         }
 
+        /// <summary>
+        /// Computes one iteration of the constraint to meet the solver updateable's goal.
+        /// </summary>
+        /// <returns>The rough applied impulse magnitude.</returns>
+        public override float SolveIteration()
+        {
+            float velocityA, velocityB;
+            //Find the velocity contribution from each connection
+            Vector3.Dot(ref connectionA.angularVelocity, ref jacobianA, out velocityA);
+            Vector3.Dot(ref connectionB.angularVelocity, ref jacobianB, out velocityB);
+            //Add in the constraint space bias velocity
+            float lambda = -(velocityA + velocityB) - biasVelocity - usedSoftness * accumulatedImpulse;
+
+            //Transform to an impulse
+            lambda *= velocityToImpulse;
+
+            //Accumulate the impulse
+            float previousAccumulatedImpulse = accumulatedImpulse;
+            accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse + lambda, -maxForceDt, maxForceDt);
+            lambda = accumulatedImpulse - previousAccumulatedImpulse;
+
+            //Apply the impulse
+            Vector3 impulse;
+            if (connectionA.isDynamic)
+            {
+                Vector3.Multiply(ref jacobianA, lambda, out impulse);
+                connectionA.ApplyAngularImpulse(ref impulse);
+            }
+            if (connectionB.isDynamic)
+            {
+                Vector3.Multiply(ref jacobianB, lambda, out impulse);
+                connectionB.ApplyAngularImpulse(ref impulse);
+            }
+
+            return Math.Abs(lambda);
+        }
+
+
+
         private float GetDistanceFromGoal(float angle)
         {
+
             float forwardDistance;
             float goalAngle = MathHelper.WrapAngle(settings.servo.goal);
             if (goalAngle > 0)

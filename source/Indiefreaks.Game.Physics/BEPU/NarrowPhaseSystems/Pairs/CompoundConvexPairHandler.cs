@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.BroadPhaseSystems;
 using BEPUphysics.Collidables;
 using BEPUphysics.Collidables.MobileCollidables;
@@ -21,12 +22,12 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         ConvexCollidable convexInfo;
 
 
-        protected override Collidable CollidableB
+        public override Collidable CollidableB
         {
             get { return convexInfo; }
         }
 
-        protected override Entities.Entity EntityB
+        public override Entities.Entity EntityB
         {
             get { return convexInfo.entity; }
         }

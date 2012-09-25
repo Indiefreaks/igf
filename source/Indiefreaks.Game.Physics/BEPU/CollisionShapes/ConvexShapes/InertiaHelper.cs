@@ -14,7 +14,6 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         /// <summary>
         /// Value to scale any created entities' inertia tensors by.
         /// Larger tensors (above 1) improve stiffness of constraints and contacts, while smaller values (towards 1) are closer to 'realistic' behavior.
-        /// If MotionUpdateSettings.padInertiaTensors is enabled, this value can be reduced significantly or all the way to 1 while maintaining fairly good behavior.
         /// Defaults to 2.5.
         /// </summary>
         public static float InertiaTensorScale = 2.5f;
@@ -57,7 +56,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         ///<returns>Averaged point.</returns>
         public static Vector3 AveragePoints(RawList<Vector3> pointContributions)
         {
-            Vector3 center = new Vector3();
+            var center = new Vector3();
             for (int i = 0; i < pointContributions.Count; i++)
             {
                 center += pointContributions[i]; //Every point has equal weight.
@@ -106,7 +105,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         ///<returns>Volume distribution of the point contributions.</returns>
         public static Matrix3X3 ComputeVolumeDistribution(RawList<Vector3> pointContributions, ref Vector3 center)
         {
-            Matrix3X3 volumeDistribution = new Matrix3X3();
+            var volumeDistribution = new Matrix3X3();
             float pointWeight = 1f / pointContributions.Count;
             for (int i = 0; i < pointContributions.Count; i++)
             {

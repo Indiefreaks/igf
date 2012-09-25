@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.BroadPhaseSystems;
 using BEPUphysics.Collidables;
 using BEPUphysics.Collidables.MobileCollidables;
@@ -84,7 +85,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         ///<summary>
         /// Constructs a new compound-convex pair handler.
         ///</summary>
-        public MeshGroupPairHandler()
+        protected MeshGroupPairHandler()
         {
             manifoldConstraintGroup = new ContactManifoldConstraintGroup();
         }
@@ -158,7 +159,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
 
         protected void TryToAdd(int index)
         {
-            var entry = new TriangleEntry() { Index = index };
+            var entry = new TriangleEntry { Index = index };
             if (!subPairs.ContainsKey(entry))
             {
                 var collidablePair = new CollidablePair(CollidableA, entry.Collidable = GetOpposingCollidable(index));
@@ -294,7 +295,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         public override void UpdateTimeOfImpact(Collidable requester, float dt)
         {
             timeOfImpact = 1;
-            foreach (CollidablePairHandler pair in subPairs.Values)
+            foreach (var pair in subPairs.Values)
             {
                 //The system uses the identity of the requester to determine if it needs to do handle the TOI calculation.
                 //Use the child pair's own entries as a proxy.

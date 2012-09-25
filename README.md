@@ -21,7 +21,7 @@ The goal here is to share with the community what I consider as best practices s
 * *Post Processing Effects*: Add Depth Of Field, God Rays (under development), SSAO (under development), Motion Blur (under development) post processing effects to your games simply adding them to your SunBurn PostProcessorManager instance and setting a few properties that can be tweaked at runtime. (requires SunBurn Pro).
 
 # Physics & Collisions
-* *BEPUPhysics v1.1.0.0 integration*: IGF allows you to replace SunBurn's default CollisionManager with the impressive BEPUPhysics system. It supports:
+* *BEPUPhysics v1.2.0.0 integration*: IGF allows you to replace SunBurn's default CollisionManager with the impressive BEPUPhysics system. It supports:
 	* *Dynamic & Static Box Colliders*
 	* *Dynamic & Static Sphere Colliders*
 	* *Dynamic & Static ConvexHull Colliders*

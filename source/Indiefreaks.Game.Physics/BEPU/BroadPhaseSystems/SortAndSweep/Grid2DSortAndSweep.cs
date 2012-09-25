@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.ResourceManagement;
 using BEPUphysics.DataStructures;
 using Microsoft.Xna.Framework;
@@ -46,7 +47,6 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
 
         
 
-        UnsafeResourcePool<GridCell2D> cellPool = new UnsafeResourcePool<GridCell2D>();
 
 
         internal SortedGrid2DSet cellSet = new SortedGrid2DSet();
@@ -83,6 +83,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
         /// <param name="entry">Entry to add.</param>
         public override void Add(BroadPhaseEntry entry)
         {
+            base.Add(entry);
             //Entities do not set up their own bounding box before getting stuck in here.  If they're all zeroed out, the tree will be horrible.
             Vector3 offset;
             Vector3.Subtract(ref entry.boundingBox.Max, ref entry.boundingBox.Min, out offset);
@@ -96,9 +97,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
             {
                 for (int j = newEntry.previousMin.Z; j <= newEntry.previousMax.Z; j++)
                 {
-                    var index = new Int2();
-                    index.Y = i;
-                    index.Z = j;
+                    var index = new Int2 {Y = i, Z = j};
                     cellSet.Add(ref index, newEntry);
                 }
             }
@@ -110,6 +109,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
         /// <param name="entry">Entry to remove.</param>
         public override void Remove(BroadPhaseEntry entry)
         {
+            base.Remove(entry);
             for (int i = 0; i < entries.count; i++)
             {
                 if (entries.Elements[i].item == entry)
@@ -121,9 +121,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
                     {
                         for (int k = gridEntry.previousMin.Z; k <= gridEntry.previousMax.Z; k++)
                         {
-                            var index = new Int2();
-                            index.Y = j;
-                            index.Z = k;
+                            var index = new Int2 {Y = j, Z = k};
                             cellSet.Remove(ref index, gridEntry);
                         }
                     }
@@ -167,9 +165,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
                         {
                             if (j >= min.Y && j <= max.Y && k >= min.Z && k <= max.Z)
                                 continue; //This cell is currently occupied, do not remove.
-                            var index = new Int2();
-                            index.Y = j;
-                            index.Z = k;
+                            var index = new Int2 {Y = j, Z = k};
                             cellSet.Remove(ref index, entry);
                         }
                     }
@@ -181,9 +177,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
                         {
                             if (j >= entry.previousMin.Y && j <= entry.previousMax.Y && k >= entry.previousMin.Z && k <= entry.previousMax.Z)
                                 continue; //This cell is already occupied, do not add.
-                            var index = new Int2();
-                            index.Y = j;
-                            index.Z = k;
+                            var index = new Int2 {Y = j, Z = k};
                             cellSet.Add(ref index, entry);
                         }
                     }
@@ -221,9 +215,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
                 {
                     if (j >= min.Y && j <= max.Y && k >= min.Z && k <= max.Z)
                         continue; //This cell is currently occupied, do not remove.
-                    var index = new Int2();
-                    index.Y = j;
-                    index.Z = k;
+                    var index = new Int2 {Y = j, Z = k};
                     cellSetLocker.Enter();
                     cellSet.Remove(ref index, entry);
                     cellSetLocker.Exit();
@@ -237,9 +229,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
                 {
                     if (j >= entry.previousMin.Y && j <= entry.previousMax.Y && k >= entry.previousMin.Z && k <= entry.previousMax.Z)
                         continue; //This cell is already occupied, do not add.
-                    var index = new Int2();
-                    index.Y = j;
-                    index.Z = k;
+                    var index = new Int2 {Y = j, Z = k};
                     cellSetLocker.Enter();
                     cellSet.Add(ref index, entry);
                     cellSetLocker.Exit();

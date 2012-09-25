@@ -119,11 +119,83 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="BEPU\BroadPhaseSystems\BroadPhase.cs">
+   <ItemGroup>
+    <Compile Include="BEPU\BroadPhaseEntries\BroadPhaseEntry.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BEPU\BroadPhaseSystems\BroadPhaseEntry.cs">
+    <Compile Include="BEPU\BroadPhaseEntries\Collidable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\CollidableCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\CollidablePair.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\DetectorVolume.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\EntityCollidableCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\Events\CollisionEventTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\Events\CompoundEventManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\Events\ContactEventManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\Events\EntryEventManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\Events\IContactEventTriggerer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\Events\IEntryEventTriggerer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\InstancedMesh.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\CompoundCollidable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\CompoundHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\CompoundHierarchy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\ConvexCollidable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\EntityCollidable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\MobileCollidable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\MobileMeshCollidable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\TriangleCollidable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\StaticCollidable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\StaticGroup.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\StaticMesh.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseEntries\Terrain.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\BroadPhaseSystems\BroadPhase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BEPU\BroadPhaseSystems\BroadPhaseOverlap.cs">
@@ -169,66 +241,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BEPU\BroadPhaseSystems\SortAndSweep\Testing\SortAndSweep3D.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\Collidable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\CollidableCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\CollidablePair.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\EntityCollidableCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\Events\CollisionEventTypes.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\Events\ContactEventManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\Events\EntryEventManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\Events\IContactEventTriggerer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\Events\IEntryEventTriggerer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\InstancedMesh.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\MobileCollidables\CompoundCollidable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\MobileCollidables\CompoundHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\MobileCollidables\CompoundHierarchy.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\MobileCollidables\ConvexCollidable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\MobileCollidables\EntityCollidable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\MobileCollidables\MobileCollidable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\MobileCollidables\MobileMeshCollidable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\MobileCollidables\TriangleCollidable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\StaticMesh.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\Collidables\Terrain.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BEPU\CollisionRuleManagement\CollisionGroup.cs">
@@ -300,6 +312,7 @@
     <Compile Include="BEPU\CollisionShapes\ShapeDistributionInformation.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BEPU\CollisionShapes\StaticGroupShape.cs" />
     <Compile Include="BEPU\CollisionShapes\StaticMeshShape.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -585,6 +598,12 @@
     <Compile Include="BEPU\Constraints\TwoEntity\TwoEntityConstraint.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BEPU\ConvexHullHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\ConvexHullHelper.Pruning.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BEPU\DataStructures\BoundingBoxTree.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -657,54 +676,153 @@
     <Compile Include="BEPU\DeactivationManagement\SimulationIslandMember.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BEPU\Drawer\Lines\BoundingBoxDrawer.cs" />
-    <Compile Include="BEPU\Drawer\Lines\ContactDrawer.cs" />
-    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayBallSocketJoint.cs" />
-    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayDistanceJoint.cs" />
-    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayDistanceLimit.cs" />
-    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayEllipseSwingLimit.cs" />
-    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayLinearAxisLimit.cs" />
-    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayPointOnLineJoint.cs" />
-    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayPointOnPlaneJoint.cs" />
-    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayRevoluteLimit.cs" />
-    <Compile Include="BEPU\Drawer\Lines\Display types\DisplaySingleEntityLinearMotor.cs" />
-    <Compile Include="BEPU\Drawer\Lines\Display types\DisplaySwivelHingeAngularJoint.cs" />
-    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayTwistJoint.cs" />
-    <Compile Include="BEPU\Drawer\Lines\Line.cs" />
-    <Compile Include="BEPU\Drawer\Lines\LineDisplayObject.cs" />
-    <Compile Include="BEPU\Drawer\Lines\LineDisplayObjectBase.cs" />
-    <Compile Include="BEPU\Drawer\Lines\LineDrawer.cs" />
-    <Compile Include="BEPU\Drawer\Lines\SimulationIslandDrawer.cs" />
-    <Compile Include="BEPU\Drawer\Lines\SolverDisplayObject.cs" />
-    <Compile Include="BEPU\Drawer\Models\BatchInformation.cs" />
-    <Compile Include="BEPU\Drawer\Models\BruteModelDrawer.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\BruteDisplayObjectEntry.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\DisplayEntityModel.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\DisplayFluid.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\DisplayInstancedMesh.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\DisplayModel.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\DisplayStaticMesh.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\DisplayTerrain.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\DisplayTriangleMesh.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayBox.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayCapsule.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayCompoundBody.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayCone.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayConvexHull.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayCylinder.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayEntity.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayMinkowskiSum.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayMobileMesh.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplaySphere.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayTransformable.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayTriangle.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayWrappedBody.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\ModelDisplayObject.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\ModelDisplayObjectBase.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\SelfDrawingModelDisplayObject.cs" />
-    <Compile Include="BEPU\Drawer\Models\InstancedModelDrawer.cs" />
-    <Compile Include="BEPU\Drawer\Models\ModelDisplayObjectBatch.cs" />
-    <Compile Include="BEPU\Drawer\Models\ModelDrawer.cs" />
+    <Compile Include="BEPU\DeactivationManagement\SimulationIslandMemberList.cs" />
+    <Compile Include="BEPU\Drawer\DrawerResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DrawerResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Font\TextDrawer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\BoundingBoxDrawer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\ContactDrawer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayBallSocketJoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayDistanceJoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayDistanceLimit.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayEllipseSwingLimit.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayLinearAxisLimit.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayPointOnLineJoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayPointOnPlaneJoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayRevoluteLimit.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\Display types\DisplaySingleEntityLinearMotor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\Display types\DisplaySwivelHingeAngularJoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\Display types\DisplayTwistJoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\Line.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\LineDisplayObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\LineDisplayObjectBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\LineDrawer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\SimulationIslandDrawer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Lines\SolverDisplayObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\BatchInformation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\DisplayEntityModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\DisplayFluid.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\DisplayInstancedMesh.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\DisplayModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\DisplayStaticMesh.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\DisplayTerrain.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\DisplayTriangleMesh.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayBox.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayCapsule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayCompoundBody.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayCone.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayConvexHull.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayCylinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayEntityCollidable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayMinkowskiSum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayMobileMesh.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplaySphere.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayTransformable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayTriangle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayWrappedBody.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\ModelDisplayObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\ModelDisplayObjectBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\Display types\SelfDrawingModelDisplayObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\InstancedModelDrawer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\ModelDisplayObjectBatch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Models\ModelDrawer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BEPU\Entities\Entity.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -801,12 +919,10 @@
     <Compile Include="BEPU\Materials\MaterialPair.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BEPU\Materials\PropertyCombiners.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="BEPU\MathExtensions\AffineTransform.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BEPU\MathExtensions\MathChecker.cs" />
     <Compile Include="BEPU\MathExtensions\Matrix2x2.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -876,10 +992,28 @@
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\ConvexPairHandler.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\DetectorVolumeCompoundPairHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\DetectorVolumeConvexPairHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\DetectorVolumeGroupPairHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\DetectorVolumeMobileMeshPairHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\DetectorVolumePairHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\GeneralConvexPairHandler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\GroupPairHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\IDetectorVolumePairHandlerParent.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\InstancedMeshConvexPairHandler.cs">
@@ -931,6 +1065,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\StandardPairHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\StaticGroupCompoundPairHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\StaticGroupConvexPairHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\StaticGroupMobileMeshPairHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\StaticGroupPairHandler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\StaticMeshConvexPairHandler.cs">
@@ -1073,7 +1219,10 @@
     </Compile>
     <Compile Include="BEPU\Resources\WindowsPhysicsResources.Designer.cs">
       <DependentUpon>WindowsPhysicsResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="BEPU\Resources\Xbox360PhysicsResources.Designer.cs" />
     <Compile Include="BEPU\Settings\CollisionDetectionSettings.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1129,9 +1278,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BEPU\UpdateableSystems\CombinedUpdateable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BEPU\UpdateableSystems\DetectorVolume.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BEPU\UpdateableSystems\FluidVolume.cs">
@@ -1197,6 +1343,7 @@
     <Compile Include="BEPU\Vehicle\WheelDrivingMotor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BEPU\Vehicle\WheelFrictionBlender.cs" />
     <Compile Include="BEPU\Vehicle\WheelShape.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1206,11 +1353,11 @@
     <Compile Include="BEPU\Vehicle\WheelSuspension.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Physics\BEPUPhysicsRenderer.cs" />
+    <Compile Include="Physics\Entities\BoxCollisionMove.cs" />
     <Compile Include="Physics\BEPUCollisionMove.cs" />
     <Compile Include="Physics\BEPUEntityCollisionMove.cs" />
     <Compile Include="Physics\BEPUPhysicsManager.cs" />
-    <Compile Include="Physics\BEPUPhysicsRenderer.cs" />
-    <Compile Include="Physics\Entities\BoxCollisionMove.cs" />
     <Compile Include="Physics\Entities\CompoundBodyCollisionMove.cs" />
     <Compile Include="Physics\Entities\ConvexHullCollisionMove.cs" />
     <Compile Include="Physics\Entities\SphereCollisionMove.cs" />

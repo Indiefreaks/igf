@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BEPU.Drawer.Models
+namespace BEPUphysics.Drawer.Models
 {
     /// <summary>
     /// Model which just sits in space.

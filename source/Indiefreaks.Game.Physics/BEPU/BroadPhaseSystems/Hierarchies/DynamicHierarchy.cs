@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Runtime.InteropServices;
@@ -43,7 +44,57 @@ namespace BEPUphysics.BroadPhaseSystems.Hierarchies
             QueryAccelerator = new DynamicHierarchyQueryAccelerator(this);
         }
 
+        /// <summary>
+        /// This is a few test-based values which help threaded scaling.
+        /// By going deeper into the trees, a better distribution of work is achieved.
+        /// Going above the tested core count theoretically benefits from a '0 if power of 2, 2 otherwise' rule of thumb.
+        /// </summary>
+        private int[] threadSplitOffsets = new[]
+#if !XBOX360
+ { 0, 0, 4, 1, 2, 2, 2, 0, 2, 2, 2, 2 };
+#else
+        { 2, 2, 2, 1};
+#endif
+
         #region Multithreading
+
+        private void MultithreadedRefitPhase(int splitDepth)
+        {
+            if (splitDepth > 0)
+            {
+                root.CollectMultithreadingNodes(splitDepth, 1, multithreadingSourceNodes);
+                //Go through every node and refit it.
+                ThreadManager.ForLoop(0, multithreadingSourceNodes.count, multithreadedRefit);
+                multithreadingSourceNodes.Clear();
+                //Now that the subtrees belonging to the source nodes are refit, refit the top nodes.
+                //Sometimes, this will go deeper than necessary because the refit process may require an extremely high level (nonmultithreaded) revalidation.
+                //The waste cost is a matter of nanoseconds due to the simplicity of the operations involved.
+                root.PostRefit(splitDepth, 1);
+            }
+            else
+            {
+                SingleThreadedRefitPhase();
+            }
+        }
+
+        private void MultithreadedOverlapPhase(int splitDepth)
+        {
+            if (splitDepth > 0)
+            {
+                //The trees are now fully refit (and revalidated, if the refit process found it to be necessary).
+                //The overlap traversal is conceptually similar to the multithreaded refit, but is a bit easier since there's no need to go back up the stack.
+                if (!root.IsLeaf) //If the root is a leaf, it's alone- nothing to collide against! This test is required by the assumptions of the leaf-leaf test.
+                {
+                    root.GetMultithreadedOverlaps(root, splitDepth, 1, this, multithreadingSourceOverlaps);
+                    ThreadManager.ForLoop(0, multithreadingSourceOverlaps.count, multithreadedOverlap);
+                    multithreadingSourceOverlaps.Clear();
+                }
+            }
+            else
+            {
+                SingleThreadedOverlapPhase();
+            }
+        }
 
         protected override void UpdateMultithreaded()
         {
@@ -54,25 +105,17 @@ namespace BEPUphysics.BroadPhaseSystems.Hierarchies
                 {
                     //To multithread the tree traversals, we have to do a little single threaded work.
                     //Dive down into the tree far enough that there are enough nodes to split amongst all the threads in the thread manager.
-                    int splitDepth = (int)Math.Ceiling(Math.Log(ThreadManager.ThreadCount, 2));
+                    //The depth to which we dive is offset by some precomputed values (when available) or a guess based on whether or not the 
+                    //thread count is a power of 2.  Thread counts which are a power of 2 match well to the binary tree, while other thread counts
+                    //require going deeper for better distributions.
+                    int offset = ThreadManager.ThreadCount <= threadSplitOffsets.Length
+                                     ? threadSplitOffsets[ThreadManager.ThreadCount - 1]
+                                     : (ThreadManager.ThreadCount & (ThreadManager.ThreadCount - 1)) == 0 ? 0 : 2;
+                    int splitDepth = offset + (int)Math.Ceiling(Math.Log(ThreadManager.ThreadCount, 2));
 
-                    root.CollectMultithreadingNodes(splitDepth, 1, multithreadingSourceNodes);
-                    //Go through every node and refit it.
-                    ThreadManager.ForLoop(0, multithreadingSourceNodes.count, multithreadedRefit);
-                    multithreadingSourceNodes.Clear();
-                    //Now that the subtrees belonging to the source nodes are refit, refit the top nodes.
-                    //Sometimes, this will go deeper than necessary because the refit process may require an extremely high level (nonmultithreaded) revalidation.
-                    //The waste cost is a matter of nanoseconds due to the simplicity of the operations involved.
-                    root.PostRefit(splitDepth, 1);
+                    MultithreadedRefitPhase(splitDepth);
 
-                    //The trees are now fully refit (and revalidated, if the refit process found it to be necessary).
-                    //The overlap traversal is conceptually similar to the multithreaded refit, but is a bit easier since there's no need to go back up the stack.
-                    if (!root.IsLeaf) //If the root is a leaf, it's alone- nothing to collide against! This test is required by the assumptions of the leaf-leaf test.
-                    {
-                        root.GetMultithreadedOverlaps(root, splitDepth, 1, this, multithreadingSourceOverlaps);
-                        ThreadManager.ForLoop(0, multithreadingSourceOverlaps.count, multithreadedOverlap);
-                        multithreadingSourceOverlaps.Clear();
-                    }
+                    MultithreadedOverlapPhase(splitDepth);
                 }
             }
 
@@ -102,6 +145,17 @@ namespace BEPUphysics.BroadPhaseSystems.Hierarchies
 
         #endregion
 
+        private void SingleThreadedRefitPhase()
+        {
+            root.Refit();
+        }
+
+        private void SingleThreadedOverlapPhase()
+        {
+            if (!root.IsLeaf) //If the root is a leaf, it's alone- nothing to collide against! This test is required by the assumptions of the leaf-leaf test.
+                root.GetOverlaps(root, this);
+        }
+
         protected override void UpdateSingleThreaded()
         {
             lock (Locker)
@@ -109,10 +163,8 @@ namespace BEPUphysics.BroadPhaseSystems.Hierarchies
                 Overlaps.Clear();
                 if (root != null)
                 {
-                    root.Refit();
-
-                    if (!root.IsLeaf) //If the root is a leaf, it's alone- nothing to collide against! This test is required by the assumptions of the leaf-leaf test.
-                        root.GetOverlaps(root, this);
+                    SingleThreadedRefitPhase();
+                    SingleThreadedOverlapPhase();
                 }
             }
         }
@@ -125,6 +177,7 @@ namespace BEPUphysics.BroadPhaseSystems.Hierarchies
         /// <param name="entry">Entry to remove.</param>
         public override void Add(BroadPhaseEntry entry)
         {
+            base.Add(entry);
             //Entities do not set up their own bounding box before getting stuck in here.  If they're all zeroed out, the tree will be horrible.
             Vector3 offset;
             Vector3.Subtract(ref entry.boundingBox.Max, ref entry.boundingBox.Min, out offset);
@@ -163,14 +216,44 @@ namespace BEPUphysics.BroadPhaseSystems.Hierarchies
         {
             if (root == null)
                 throw new InvalidOperationException("Entry not present in the hierarchy.");
+            //Attempt to search for the entry with a boundingbox lookup first.
+            if (!RemoveFast(entry))
+            {
+                //Oof, could not locate it with the fast method; it must have been force-moved or something.
+                //Fall back to a slow brute force approach.
+                if (!RemoveBrute(entry))
+                {
+                    throw new InvalidOperationException("Entry not present in the hierarchy.");
+                }
+            }
+        }
+
+        internal bool RemoveFast(BroadPhaseEntry entry)
+        {
             LeafNode leafNode;
+            //Update the root with the replacement just in case the removal triggers a root change.
+            if (root.RemoveFast(entry, out leafNode, out root))
+            {
+                leafNode.CleanUp();
+                leafNodes.GiveBack(leafNode);
+                base.Remove(entry);
+                return true;
+            }
+            return false;
+        }
+
+        internal bool RemoveBrute(BroadPhaseEntry entry)
+        {
+            LeafNode leafNode;
+            //Update the root with the replacement just in case the removal triggers a root change.
             if (root.Remove(entry, out leafNode, out root))
             {
                 leafNode.CleanUp();
                 leafNodes.GiveBack(leafNode);
+                base.Remove(entry);
+                return true;
             }
-            else
-                throw new InvalidOperationException("Entry not present in the hierarchy.");
+            return false;
         }
 
         #region Debug

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using BEPUphysics.CollisionShapes;
 using BEPUphysics.Collidables.MobileCollidables;
 
-namespace BEPU.Drawer.Models
+namespace BEPUphysics.Drawer.Models
 {
     /// <summary>
     /// Simple display object for triangles.

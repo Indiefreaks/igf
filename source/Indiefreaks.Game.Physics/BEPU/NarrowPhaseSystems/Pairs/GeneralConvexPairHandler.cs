@@ -1,4 +1,5 @@
 ﻿using System;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.BroadPhaseSystems;
 using BEPUphysics.Collidables;
 using BEPUphysics.Collidables.MobileCollidables;
@@ -23,11 +24,11 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         GeneralConvexContactManifold contactManifold = new GeneralConvexContactManifold();
 
 
-        protected override Collidable CollidableA
+        public override Collidable CollidableA
         {
             get { return convexA; }
         }
-        protected override Collidable CollidableB
+        public override Collidable CollidableB
         {
             get { return convexB; }
         }    
@@ -38,11 +39,11 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         {
             get { return contactManifold; }
         }
-        protected override Entities.Entity EntityA
+        public override Entities.Entity EntityA
         {
             get { return convexA.entity; }
         }
-        protected override Entities.Entity EntityB
+        public override Entities.Entity EntityB
         {
             get { return convexB.entity; }
         }

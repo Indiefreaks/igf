@@ -39,7 +39,7 @@ namespace Indiefreaks.Xna.Physics
         }
 
         /// <summary>
-        /// Returns the BEPUPhysics ISpaceObject instance.
+        /// Returns the BEPUphysics ISpaceObject instance.
         /// </summary>
         public ISpaceObject SpaceObject { get; protected set; }
 

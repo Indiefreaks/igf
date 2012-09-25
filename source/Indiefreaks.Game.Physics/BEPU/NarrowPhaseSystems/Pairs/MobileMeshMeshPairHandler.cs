@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using BEPUphysics.BroadPhaseSystems;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.Collidables;
 using BEPUphysics.Collidables.MobileCollidables;
-using BEPUphysics.Constraints;
-using BEPUphysics.Constraints.Collision;
-using BEPUphysics.DataStructures;
-using BEPUphysics.ResourceManagement;
-using BEPUphysics.CollisionRuleManagement;
-using BEPUphysics.CollisionTests;
 
 namespace BEPUphysics.NarrowPhaseSystems.Pairs
 {
@@ -17,13 +10,13 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public abstract class MobileMeshMeshPairHandler : MeshGroupPairHandler
     {
-        protected MobileMeshCollidable mobileMesh;
+        public MobileMeshCollidable mobileMesh;
 
-        protected override Collidable CollidableA
+        public override Collidable CollidableA
         {
             get { return mobileMesh; }
         }
-        protected override Entities.Entity EntityA
+        public override Entities.Entity EntityA
         {
             get { return mobileMesh.entity; }
         }

@@ -1,6 +1,6 @@
 ﻿using System;
-using BEPU.Drawer.Lines;
-using BEPU.Drawer.Models;
+using BEPUphysics.Drawer.Lines;
+using BEPUphysics.Drawer.Models;
 using Indiefreaks.Xna.Core;
 using Indiefreaks.Xna.Extensions;
 using Microsoft.Xna.Framework;
@@ -26,12 +26,7 @@ namespace Indiefreaks.Xna.Physics
             _sceneInterface = sceneInterface;
             ManagerProcessOrder = 100;
 
-
-            if (Application.Graphics.GraphicsDevice.GraphicsProfile == GraphicsProfile.HiDef)
-                ModelDrawer = new InstancedModelDrawer(Application.Instance);
-            else
-                ModelDrawer = new BruteModelDrawer(Application.Instance);
-
+            ModelDrawer = new InstancedModelDrawer(Application.Instance);
             ContactDrawer = new ContactDrawer(Application.Instance);
             BoundingBoxDrawer = new BoundingBoxDrawer(Application.Instance);
             SimulationIslandDrawer = new SimulationIslandDrawer(Application.Instance);

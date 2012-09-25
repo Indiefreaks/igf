@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.BroadPhaseSystems;
 using BEPUphysics.Collidables;
 using BEPUphysics.Collidables.MobileCollidables;
@@ -19,12 +20,12 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
 
         CompoundCollidable compoundInfoB;
 
-        protected override Collidable CollidableB
+        public override Collidable CollidableB
         {
             get { return compoundInfoB; }
         }
 
-        protected override Entities.Entity EntityB
+        public override Entities.Entity EntityB
         {
             get { return compoundInfoB.entity; }
         }
@@ -59,6 +60,8 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
 
         }
 
+        //Some danger of unintuitive-to-address allocations here.  If these lists get huge, the user will see some RawList<<>> goofiness in the profiler.
+        //They can still address it by clearing out the cached pair factories though.
         RawList<TreeOverlapPair<CompoundChild, CompoundChild>> overlappedElements = new RawList<TreeOverlapPair<CompoundChild, CompoundChild>>();
         protected override void UpdateContainedPairs()
         {

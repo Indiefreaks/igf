@@ -52,11 +52,11 @@ namespace BEPUphysics.Constraints.Collision
         }
 
         /// <summary>
-        /// Gets the total force applied by sliding friction.
+        /// Gets the total impulse applied by sliding friction in the last time step.
         /// The X component of this vector is the force applied along the frictionDirectionX,
         /// while the Y component is the force applied along the frictionDirectionY.
         /// </summary>
-        public Vector2 TotalForce
+        public Vector2 TotalImpulse
         {
             get { return accumulatedImpulse; }
         }
@@ -241,6 +241,8 @@ namespace BEPUphysics.Constraints.Collision
         public override void Update(float dt)
         {
 
+            entityADynamic = entityA != null && entityA.isDynamic;
+            entityBDynamic = entityB != null && entityB.isDynamic;
 
             contactCount = contactManifoldConstraint.penetrationConstraints.count;
             switch (contactCount)
@@ -487,8 +489,6 @@ namespace BEPUphysics.Constraints.Collision
 
             entityA = contactManifoldConstraint.EntityA;
             entityB = contactManifoldConstraint.EntityB;
-            entityADynamic = entityA != null && entityA.isDynamic;
-            entityBDynamic = entityB != null && entityB.isDynamic;
         }
 
         internal void CleanUp()

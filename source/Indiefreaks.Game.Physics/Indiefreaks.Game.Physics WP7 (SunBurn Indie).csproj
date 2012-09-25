@@ -84,9 +84,33 @@
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </None>
   </ItemGroup>
-  <ItemGroup>
+   <ItemGroup>
+    <Compile Include="BEPU\BroadPhaseEntries\BroadPhaseEntry.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\Collidable.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\CollidableCollection.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\CollidablePair.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\DetectorVolume.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\EntityCollidableCollection.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\Events\CollisionEventTypes.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\Events\CompoundEventManager.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\Events\ContactEventManager.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\Events\EntryEventManager.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\Events\IContactEventTriggerer.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\Events\IEntryEventTriggerer.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\InstancedMesh.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\CompoundCollidable.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\CompoundHelper.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\CompoundHierarchy.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\ConvexCollidable.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\EntityCollidable.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\MobileCollidable.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\MobileMeshCollidable.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\MobileCollidables\TriangleCollidable.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\StaticCollidable.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\StaticGroup.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\StaticMesh.cs" />
+    <Compile Include="BEPU\BroadPhaseEntries\Terrain.cs" />
     <Compile Include="BEPU\BroadPhaseSystems\BroadPhase.cs" />
-    <Compile Include="BEPU\BroadPhaseSystems\BroadPhaseEntry.cs" />
     <Compile Include="BEPU\BroadPhaseSystems\BroadPhaseOverlap.cs" />
     <Compile Include="BEPU\BroadPhaseSystems\BruteForce.cs" />
     <Compile Include="BEPU\BroadPhaseSystems\Hierarchies\DynamicHierarchy.cs" />
@@ -102,26 +126,6 @@
     <Compile Include="BEPU\BroadPhaseSystems\SortAndSweep\SortAndSweep1D.cs" />
     <Compile Include="BEPU\BroadPhaseSystems\SortAndSweep\SortedGrid2DSet.cs" />
     <Compile Include="BEPU\BroadPhaseSystems\SortAndSweep\Testing\SortAndSweep3D.cs" />
-    <Compile Include="BEPU\Collidables\Collidable.cs" />
-    <Compile Include="BEPU\Collidables\CollidableCollection.cs" />
-    <Compile Include="BEPU\Collidables\CollidablePair.cs" />
-    <Compile Include="BEPU\Collidables\EntityCollidableCollection.cs" />
-    <Compile Include="BEPU\Collidables\Events\CollisionEventTypes.cs" />
-    <Compile Include="BEPU\Collidables\Events\ContactEventManager.cs" />
-    <Compile Include="BEPU\Collidables\Events\EntryEventManager.cs" />
-    <Compile Include="BEPU\Collidables\Events\IContactEventTriggerer.cs" />
-    <Compile Include="BEPU\Collidables\Events\IEntryEventTriggerer.cs" />
-    <Compile Include="BEPU\Collidables\InstancedMesh.cs" />
-    <Compile Include="BEPU\Collidables\MobileCollidables\CompoundCollidable.cs" />
-    <Compile Include="BEPU\Collidables\MobileCollidables\CompoundHelper.cs" />
-    <Compile Include="BEPU\Collidables\MobileCollidables\CompoundHierarchy.cs" />
-    <Compile Include="BEPU\Collidables\MobileCollidables\ConvexCollidable.cs" />
-    <Compile Include="BEPU\Collidables\MobileCollidables\EntityCollidable.cs" />
-    <Compile Include="BEPU\Collidables\MobileCollidables\MobileCollidable.cs" />
-    <Compile Include="BEPU\Collidables\MobileCollidables\MobileMeshCollidable.cs" />
-    <Compile Include="BEPU\Collidables\MobileCollidables\TriangleCollidable.cs" />
-    <Compile Include="BEPU\Collidables\StaticMesh.cs" />
-    <Compile Include="BEPU\Collidables\Terrain.cs" />
     <Compile Include="BEPU\CollisionRuleManagement\CollisionGroup.cs" />
     <Compile Include="BEPU\CollisionRuleManagement\CollisionGroupPair.cs" />
     <Compile Include="BEPU\CollisionRuleManagement\CollisionRule.cs" />
@@ -145,6 +149,7 @@
     <Compile Include="BEPU\CollisionShapes\InstancedMeshShape.cs" />
     <Compile Include="BEPU\CollisionShapes\MobileMeshShape.cs" />
     <Compile Include="BEPU\CollisionShapes\ShapeDistributionInformation.cs" />
+    <Compile Include="BEPU\CollisionShapes\StaticGroupShape.cs" />
     <Compile Include="BEPU\CollisionShapes\StaticMeshShape.cs" />
     <Compile Include="BEPU\CollisionShapes\TerrainShape.cs" />
     <Compile Include="BEPU\CollisionTests\CollisionAlgorithms\BoxBoxCollider.cs" />
@@ -240,6 +245,8 @@
     <Compile Include="BEPU\Constraints\TwoEntity\Motors\RevoluteMotor.cs" />
     <Compile Include="BEPU\Constraints\TwoEntity\Motors\TwistMotor.cs" />
     <Compile Include="BEPU\Constraints\TwoEntity\TwoEntityConstraint.cs" />
+    <Compile Include="BEPU\ConvexHullHelper.cs" />
+    <Compile Include="BEPU\ConvexHullHelper.Pruning.cs" />
     <Compile Include="BEPU\DataStructures\BoundingBoxTree.cs" />
     <Compile Include="BEPU\DataStructures\HashSet.cs" />
     <Compile Include="BEPU\DataStructures\MeshBoundingBoxTree.cs" />
@@ -264,6 +271,13 @@
     <Compile Include="BEPU\DeactivationManagement\SimulationIsland.cs" />
     <Compile Include="BEPU\DeactivationManagement\SimulationIslandConnection.cs" />
     <Compile Include="BEPU\DeactivationManagement\SimulationIslandMember.cs" />
+    <Compile Include="BEPU\DeactivationManagement\SimulationIslandMemberList.cs" />
+    <Compile Include="BEPU\Drawer\DrawerResource.Designer.cs">
+      <DependentUpon>DrawerResource.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="BEPU\Drawer\Font\TextDrawer.cs" />
     <Compile Include="BEPU\Drawer\Lines\BoundingBoxDrawer.cs" />
     <Compile Include="BEPU\Drawer\Lines\ContactDrawer.cs" />
     <Compile Include="BEPU\Drawer\Lines\Display types\DisplayBallSocketJoint.cs" />
@@ -284,8 +298,6 @@
     <Compile Include="BEPU\Drawer\Lines\SimulationIslandDrawer.cs" />
     <Compile Include="BEPU\Drawer\Lines\SolverDisplayObject.cs" />
     <Compile Include="BEPU\Drawer\Models\BatchInformation.cs" />
-    <Compile Include="BEPU\Drawer\Models\BruteModelDrawer.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\BruteDisplayObjectEntry.cs" />
     <Compile Include="BEPU\Drawer\Models\Display types\DisplayEntityModel.cs" />
     <Compile Include="BEPU\Drawer\Models\Display types\DisplayFluid.cs" />
     <Compile Include="BEPU\Drawer\Models\Display types\DisplayInstancedMesh.cs" />
@@ -299,7 +311,7 @@
     <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayCone.cs" />
     <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayConvexHull.cs" />
     <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayCylinder.cs" />
-    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayEntity.cs" />
+    <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayEntityCollidable.cs" />
     <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayMinkowskiSum.cs" />
     <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplayMobileMesh.cs" />
     <Compile Include="BEPU\Drawer\Models\Display types\Entity types\DisplaySphere.cs" />
@@ -344,8 +356,8 @@
     <Compile Include="BEPU\Materials\Material.cs" />
     <Compile Include="BEPU\Materials\MaterialManager.cs" />
     <Compile Include="BEPU\Materials\MaterialPair.cs" />
-    <Compile Include="BEPU\Materials\PropertyCombiners.cs" />
     <Compile Include="BEPU\MathExtensions\AffineTransform.cs" />
+    <Compile Include="BEPU\MathExtensions\MathChecker.cs" />
     <Compile Include="BEPU\MathExtensions\Matrix2x2.cs" />
     <Compile Include="BEPU\MathExtensions\Matrix2x3.cs" />
     <Compile Include="BEPU\MathExtensions\Matrix3x2.cs" />
@@ -369,8 +381,14 @@
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\ContactInformation.cs" />
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\ConvexConstraintPairHandler.cs" />
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\ConvexPairHandler.cs" />
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\DetectorVolumeCompoundPairHandler.cs" />
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\DetectorVolumeConvexPairHandler.cs" />
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\DetectorVolumeGroupPairHandler.cs" />
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\DetectorVolumeMobileMeshPairHandler.cs" />
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\DetectorVolumePairHandler.cs" />
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\GeneralConvexPairHandler.cs" />
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\GroupPairHandler.cs" />
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\IDetectorVolumePairHandlerParent.cs" />
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\InstancedMeshConvexPairHandler.cs" />
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\InstancedMeshPairHandler.cs" />
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\InstancedMeshSpherePairHandler.cs" />
@@ -388,6 +406,10 @@
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\NarrowPhasePair.cs" />
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\SpherePairHandler.cs" />
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\StandardPairHandler.cs" />
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\StaticGroupCompoundPairHandler.cs" />
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\StaticGroupConvexPairHandler.cs" />
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\StaticGroupMobileMeshPairHandler.cs" />
+    <Compile Include="BEPU\NarrowPhaseSystems\Pairs\StaticGroupPairHandler.cs" />
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\StaticMeshConvexPairHandler.cs" />
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\StaticMeshPairHandler.cs" />
     <Compile Include="BEPU\NarrowPhaseSystems\Pairs\StaticMeshSpherePairHandler.cs" />
@@ -434,6 +456,12 @@
     <Compile Include="BEPU\ResourceManagement\ResourcePool.cs" />
     <Compile Include="BEPU\ResourceManagement\Resources.cs" />
     <Compile Include="BEPU\ResourceManagement\UnsafeResourcePool.cs" />
+    <Compile Include="BEPU\Resources\WindowsPhysicsResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WindowsPhysicsResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="BEPU\Resources\Xbox360PhysicsResources.Designer.cs" />
     <Compile Include="BEPU\Settings\CollisionDetectionSettings.cs" />
     <Compile Include="BEPU\Settings\CollisionResponseSettings.cs" />
     <Compile Include="BEPU\Settings\MotionSettings.cs" />
@@ -453,7 +481,6 @@
     <Compile Include="BEPU\TimeStepSettings.cs" />
     <Compile Include="BEPU\Toolbox.cs" />
     <Compile Include="BEPU\UpdateableSystems\CombinedUpdateable.cs" />
-    <Compile Include="BEPU\UpdateableSystems\DetectorVolume.cs" />
     <Compile Include="BEPU\UpdateableSystems\FluidVolume.cs" />
     <Compile Include="BEPU\UpdateableSystems\ForceFields\BoundingBoxForceFieldShape.cs" />
     <Compile Include="BEPU\UpdateableSystems\ForceFields\ForceField.cs" />
@@ -475,6 +502,7 @@
     <Compile Include="BEPU\Vehicle\Wheel.cs" />
     <Compile Include="BEPU\Vehicle\WheelBrake.cs" />
     <Compile Include="BEPU\Vehicle\WheelDrivingMotor.cs" />
+    <Compile Include="BEPU\Vehicle\WheelFrictionBlender.cs" />
     <Compile Include="BEPU\Vehicle\WheelShape.cs" />
     <Compile Include="BEPU\Vehicle\WheelSlidingFriction.cs" />
     <Compile Include="BEPU\Vehicle\WheelSuspension.cs" />

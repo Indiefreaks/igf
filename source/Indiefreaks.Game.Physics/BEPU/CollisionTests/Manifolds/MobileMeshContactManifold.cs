@@ -9,6 +9,8 @@ using BEPUphysics.CollisionShapes;
 using BEPUphysics.ResourceManagement;
 using BEPUphysics.CollisionTests.CollisionAlgorithms;
 using System.Diagnostics;
+using BEPUphysics.NarrowPhaseSystems.Pairs;
+using Microsoft.Xna.Framework.Input;
 
 namespace BEPUphysics.CollisionTests.Manifolds
 {
@@ -39,13 +41,6 @@ namespace BEPUphysics.CollisionTests.Manifolds
         }
 
         //Expand the convex's bounding box to include the mobile mesh's movement.
-        BoundingBox expandedConvexBoundingBox;
-        public override void Update(float dt)
-        {
-            expandedConvexBoundingBox = convex.boundingBox;
-
-            base.Update(dt);
-        }
 
         protected internal override int FindOverlappingTriangles(float dt)
         {
@@ -146,7 +141,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
             get { return mesh.improveBoundaryBehavior; }
         }
 
-        float previousDepth = 0;
+        float previousDepth;
         Vector3 lastValidConvexPosition;
         protected override void ProcessCandidates(RawValueList<ContactData> candidates)
         {
@@ -186,11 +181,12 @@ namespace BEPUphysics.CollisionTests.Manifolds
                 }
                 Vector3.Divide(ref ray.Direction, (float)Math.Sqrt(rayDirectionLength), out ray.Direction);
 
+
                 RayHit hit;
                 if (mesh.Shape.IsLocalRayOriginInMesh(ref ray, out hit))
                 {
-                    ContactData newContact = new ContactData();
-                    newContact.Id = 2; //Give it a special id so that we know that it came from the inside.
+                    ContactData newContact = new ContactData {Id = 2};
+                    //Give it a special id so that we know that it came from the inside.
                     Matrix3X3.Transform(ref ray.Position, ref orientation, out newContact.Position);
                     Vector3.Add(ref newContact.Position, ref mesh.worldTransform.Position, out newContact.Position);
 
@@ -271,15 +267,17 @@ namespace BEPUphysics.CollisionTests.Manifolds
         }
 
         UnsafeResourcePool<TriangleConvexPairTester> testerPool = new UnsafeResourcePool<TriangleConvexPairTester>();
-        protected override void GiveBackTester(CollisionAlgorithms.TrianglePairTester tester)
+        protected override void GiveBackTester(TrianglePairTester tester)
         {
             testerPool.GiveBack((TriangleConvexPairTester)tester);
         }
 
-        protected override CollisionAlgorithms.TrianglePairTester GetTester()
+        protected override TrianglePairTester GetTester()
         {
             return testerPool.Take();
         }
+
+
 
     }
 }

@@ -8,7 +8,7 @@ using BEPUphysics.Constraints.TwoEntity.Joints;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BEPU.Drawer.Lines
+namespace BEPUphysics.Drawer.Lines
 {
     /// <summary>
     /// Manages the graphical representation of joints and constraints.

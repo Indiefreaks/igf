@@ -12,7 +12,7 @@ using SynapseGaming.LightingSystem.Rendering;
 namespace Indiefreaks.Xna.Physics
 {
     /// <summary>
-    /// Base BEPUCollisionMove implementation for BEPUPhysics Entity classes.
+    /// Base BEPUCollisionMove implementation for BEPUphysics Entity classes.
     /// </summary>
     /// <typeparam name="TEntity">The type of the Entity this class will use</typeparam>
     /// <typeparam name="TScaleValueType"></typeparam>

@@ -172,33 +172,7 @@ namespace BEPUphysics.CollisionShapes
         /// leading to very bad jittering.
         /// </summary>
         internal TriangleSidedness solidSidedness;
-        /// <summary>
-        /// If an object is detected to be within the mobile mesh with a penetration depth greater than this limit,
-        /// it will try a different direction to verify that it wasn't a false positive.
-        /// </summary>
-        public static float DepthDoubleCheckLimit = .2f;
-        static int numberOfContainmentChecks = 3;
-        /// <summary>
-        /// This is how many tests are required before an object is accepted as actually inside the solid portion of a mesh.
-        /// The reason for the additional tests is robustness; one test may fail, but two is extremely unlikely, and three more so.
-        /// More tests may also introduce false negatives, though they resolve quickly and are generally not as much of a problem as
-        /// false positives.
-        /// Valid values are 1, 2, or 3.  Defaults to 3.
-        /// </summary>
-        public static int NumberOfContainmentChecks
-        {
-            get
-            {
-                return numberOfContainmentChecks;
-            }
-            set
-            {
-                if (value == 1 || value == 2 || value == 3)
-                    numberOfContainmentChecks = value;
-                else
-                    throw new Exception("May only use 1, 2, or 3 containment checks.");
-            }
-        }
+
 
         /// <summary>
         /// Tests to see if a ray's origin is contained within the mesh.
@@ -211,79 +185,33 @@ namespace BEPUphysics.CollisionShapes
         /// <returns>Whether or not the ray origin was in the mesh.</returns>
         public bool IsLocalRayOriginInMesh(ref Ray ray, out RayHit hit)
         {
-            if (IsLocalRayOriginInMeshHelper(ref ray, out hit))
-            {
-                if (numberOfContainmentChecks > 1 && hit.T > DepthDoubleCheckLimit)
-                {
-                    //It's an extremely deep penetration... Suspicious.
-                    //Send the ray in the other direction to corroborate the result.
-                    //A false positive can sometimes occur
-                    Ray alternateRay;
-                    Vector3.Negate(ref ray.Direction, out alternateRay.Direction);
-                    alternateRay.Position = ray.Position;
-                    RayHit alternateHit;
-                    if (!IsLocalRayOriginInMeshHelper(ref alternateRay, out alternateHit))
-                    {
-                        //The double check didn't hit anything.  It's very unlikely that the object is actually inside the shape.
-                        return false;
-                    }
-                    else if (numberOfContainmentChecks > 2)
-                    {
-                        //It found a hit in the other direction.  Triple checking is enabled though, so let's try a third direction!
-                        //This one will be perpendicular to the current ray direction.
-                        Vector3.Cross(ref ray.Direction, ref Toolbox.UpVector, out alternateRay.Direction);
-                        float lengthSquared = alternateRay.Direction.LengthSquared();
-                        if (lengthSquared < Toolbox.Epsilon)
-                        {
-                            //The ray direction was already pointing nearly up.  Pick a different direction.
-                            Vector3.Cross(ref ray.Direction, ref Toolbox.RightVector, out alternateRay.Direction);
-                            lengthSquared = alternateRay.Direction.LengthSquared();
-                        }
-                        Vector3.Divide(ref alternateRay.Direction, (float)Math.Sqrt(lengthSquared), out alternateRay.Direction);
-                        alternateRay.Position = ray.Position;
-                        if (!IsLocalRayOriginInMeshHelper(ref alternateRay, out alternateHit))
-                        {
-                            //No hit was found on the third test!  The fact that we had two false positives is extremely improbable,
-                            //but it's better to assume that it is not intersecting.
-                            return false;
-                        }
-                    }
-
-                }
-                return true;
-            }
-            return false;
-        }
-
-        private bool IsLocalRayOriginInMeshHelper(ref Ray ray, out RayHit hit)
-        {
             var overlapList = Resources.GetIntList();
+            hit = new RayHit();
+            hit.T = float.MaxValue;
             if (triangleMesh.Tree.GetOverlaps(ray, overlapList))
             {
-                var hits = Resources.GetRayHitList();
-                hit = new RayHit();
-                hit.T = float.MaxValue;
+                bool minimumClockwise = false;
                 for (int i = 0; i < overlapList.Count; i++)
                 {
                     Vector3 vA, vB, vC;
                     triangleMesh.Data.GetTriangle(overlapList[i], out vA, out vB, out vC);
+                    bool hitClockwise;
                     RayHit tempHit;
-                    if (Toolbox.FindRayTriangleIntersection(ref ray, float.MaxValue, TriangleSidedness.DoubleSided, ref vA, ref vB, ref vC, out tempHit) &&
-                        IsHitUnique(hits, ref tempHit) && //Adds if unique.
+                    if (Toolbox.FindRayTriangleIntersection(ref ray, float.MaxValue, ref vA, ref vB, ref vC, out hitClockwise, out tempHit) &&
                         tempHit.T < hit.T)
                     {
                         hit = tempHit;
+                        minimumClockwise = hitClockwise;
                     }
                 }
-                int hitCount = hits.count;
-                Resources.GiveBack(hits);
                 Resources.GiveBack(overlapList);
-                //An odd number of hits implies that the object started inside.
-                return hitCount % 2 != 0;
+
+                //If the mesh is hit from behind by the ray on the first hit, then the ray is inside.
+                return hit.T < float.MaxValue && ((solidSidedness == TriangleSidedness.Clockwise && !minimumClockwise) || (solidSidedness == TriangleSidedness.Counterclockwise && minimumClockwise));
             }
             Resources.GiveBack(overlapList);
-            hit = new RayHit() { T = float.MaxValue };
             return false;
+
         }
 
         /// <summary>
@@ -317,7 +245,7 @@ namespace BEPUphysics.CollisionShapes
 
             //Pick a ray direction that goes to a random location on the mesh.  
             //A vertex would work, but targeting the middle of a triangle avoids some edge cases.
-            Ray ray = new Ray();
+            var ray = new Ray();
             Vector3 vA, vB, vC;
             triangleMesh.Data.GetTriangle(((triangleMesh.Data.indices.Length / 3) / 2) * 3, out vA, out vB, out vC);
             ray.Direction = (vA + vB + vC) / 3;
@@ -373,12 +301,12 @@ namespace BEPUphysics.CollisionShapes
                         if (hit.T < minimumT)
                         {
                             minimumT = hit.T;
-                            minimum = hits.count - 1;
+                            minimum = hitList[i];
                         }
                         if (hit.T > maximumT)
                         {
                             maximumT = hit.T;
-                            maximum = hits.count - 1;
+                            maximum = hitList[i];
                         }
                     }
                 }
@@ -419,12 +347,48 @@ namespace BEPUphysics.CollisionShapes
 
         void ComputeShapeInformation(TransformableMeshData data, out ShapeDistributionInformation shapeInformation)
         {
-            var indices = Resources.GetIntList();
+            //Compute the surface vertices of the shape.
             surfaceVertices.Clear();
-            Toolbox.GetConvexHull(data.vertices, indices, surfaceVertices);
-            for (int i = 0; i < surfaceVertices.count; i++)
+            try
             {
-                AffineTransform.Transform(ref surfaceVertices.Elements[i], ref data.worldTransform, out surfaceVertices.Elements[i]);
+                ConvexHullHelper.GetConvexHull(data.vertices, surfaceVertices);
+                for (int i = 0; i < surfaceVertices.count; i++)
+                {
+                    AffineTransform.Transform(ref surfaceVertices.Elements[i], ref data.worldTransform, out surfaceVertices.Elements[i]);
+                }
+            }
+            catch
+            {
+                surfaceVertices.Clear();
+                //If the convex hull failed, then the point set has no volume.  A mobile mesh is allowed to have zero volume, however.
+                //In this case, compute the bounding box of all points.
+                BoundingBox box = new BoundingBox();
+                for (int i = 0; i < data.vertices.Length; i++)
+                {
+                    Vector3 v;
+                    data.GetVertexPosition(i, out v);
+                    if (v.X > box.Max.X)
+                        box.Max.X = v.X;
+                    if (v.X < box.Min.X)
+                        box.Min.X = v.X;
+                    if (v.Y > box.Max.Y)
+                        box.Max.Y = v.Y;
+                    if (v.Y < box.Min.Y)
+                        box.Min.Y = v.Y;
+                    if (v.Z > box.Max.Z)
+                        box.Max.Z = v.Z;
+                    if (v.Z < box.Min.Z)
+                        box.Min.Z = v.Z;
+                }
+                //Add the corners.  This will overestimate the size of the surface a bit.
+                surfaceVertices.Add(box.Min);
+                surfaceVertices.Add(box.Max);
+                surfaceVertices.Add(new Vector3(box.Min.X, box.Min.Y, box.Max.Z));
+                surfaceVertices.Add(new Vector3(box.Min.X, box.Max.Y, box.Min.Z));
+                surfaceVertices.Add(new Vector3(box.Max.X, box.Min.Y, box.Min.Z));
+                surfaceVertices.Add(new Vector3(box.Min.X, box.Max.Y, box.Max.Z));
+                surfaceVertices.Add(new Vector3(box.Max.X, box.Max.Y, box.Min.Z));
+                surfaceVertices.Add(new Vector3(box.Max.X, box.Min.Y, box.Max.Z));
             }
             shapeInformation.Center = new Vector3();
 
@@ -658,9 +622,9 @@ namespace BEPUphysics.CollisionShapes
             boundingBox = new BoundingBox();
 #endif
             //Sample the local directions from the matrix, implicitly transposed.
-            Vector3 rightDirection = new Vector3(o.M11, o.M21, o.M31);
-            Vector3 upDirection = new Vector3(o.M12, o.M22, o.M32);
-            Vector3 backDirection = new Vector3(o.M13, o.M23, o.M33);
+            var rightDirection = new Vector3(o.M11, o.M21, o.M31);
+            var upDirection = new Vector3(o.M12, o.M22, o.M32);
+            var backDirection = new Vector3(o.M13, o.M23, o.M33);
 
             int right = 0, left = 0, up = 0, down = 0, backward = 0, forward = 0;
             float minX = float.MaxValue, maxX = -float.MaxValue, minY = float.MaxValue, maxY = -float.MaxValue, minZ = float.MaxValue, maxZ = -float.MaxValue;

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using BEPUphysics.CollisionShapes;
 
-namespace BEPU.Drawer.Models
+namespace BEPUphysics.Drawer.Models
 {
     /// <summary>
     /// Simple display object for triangles.
@@ -100,13 +100,13 @@ namespace BEPU.Drawer.Models
                             indices.Add((ushort)(numColumns * j + i));
                             if (reverseWinding)
                             {
-                                indices.Add((ushort)(numColumns * j + i + 1));
                                 indices.Add((ushort)(numColumns * (j + 1) + i + 1));
+                                indices.Add((ushort)(numColumns * j + i + 1));
                             }
                             else
                             {
-                                indices.Add((ushort)(numColumns * (j + 1) + i + 1));
                                 indices.Add((ushort)(numColumns * j + i + 1));
+                                indices.Add((ushort)(numColumns * (j + 1) + i + 1));
                             }
 
                             //v1 v4 v3

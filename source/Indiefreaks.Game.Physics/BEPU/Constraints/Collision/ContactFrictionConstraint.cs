@@ -72,8 +72,6 @@ namespace BEPUphysics.Constraints.Collision
 
             entityA = contactManifoldConstraint.EntityA;
             entityB = contactManifoldConstraint.EntityB;
-            entityAIsDynamic = entityA != null && entityA.isDynamic;
-            entityBIsDynamic = entityB != null && entityB.isDynamic;
         }
 
         ///<summary>
@@ -98,9 +96,9 @@ namespace BEPUphysics.Constraints.Collision
         }
 
         /// <summary>
-        /// Gets the total force applied by this friction constraint.
+        /// Gets the total impulse applied by this friction constraint in the last time step.
         /// </summary>
-        public float TotalForce
+        public float TotalImpulse
         {
             get { return accumulatedImpulse; }
         }
@@ -181,6 +179,8 @@ namespace BEPUphysics.Constraints.Collision
         {
 
 
+            entityAIsDynamic = entityA != null && entityA.isDynamic;
+            entityBIsDynamic = entityB != null && entityB.isDynamic;
 
             //Compute the three dimensional relative velocity at the point.
 

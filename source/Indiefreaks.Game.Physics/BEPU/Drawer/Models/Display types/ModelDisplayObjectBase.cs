@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BEPU.Drawer.Models
+namespace BEPUphysics.Drawer.Models
 {
     /// <summary>
     /// Base class of ModelDisplayObjects.
     /// </summary>
-    public abstract class ModelDisplayObjectBase
+    public abstract class ModelDisplayObject
     {
         protected static Random Random = new Random();
 
 
-        protected ModelDisplayObjectBase(ModelDrawer drawer)
+        protected ModelDisplayObject(ModelDrawer drawer)
         {
             Drawer = drawer;
             BatchInformation = new BatchInformation();

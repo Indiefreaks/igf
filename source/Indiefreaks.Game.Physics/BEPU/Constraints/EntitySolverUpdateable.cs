@@ -150,11 +150,11 @@ namespace BEPUphysics.Constraints
             {
                 entitiesChanged = true;
             }
-            
+
             if (entitiesChanged)
             {
                 //Probably need to wake things up given that such a significant change was made.
-                
+
                 for (int i = 0; i < involvedEntities.count; i++)
                 {
                     Entity e = involvedEntities.Elements[i];
@@ -218,9 +218,12 @@ namespace BEPUphysics.Constraints
 
         void UpdateConnectedMembers()
         {
+
             //Since we're about to change this updateable's connections, make sure the 
             //simulation islands hear about it.  This is NOT thread safe.
             var deactivationManager = simulationIslandConnection.DeactivationManager;
+
+
             if (deactivationManager != null)
             {
                 simulationIslandConnection.Owner = null; //Orphan the simulation island connection.
@@ -229,19 +232,22 @@ namespace BEPUphysics.Constraints
             else if (!simulationIslandConnection.SlatedForRemoval) //If it's not already going to be cleaned up, then we need to do it here.
                 Resources.GiveBack(simulationIslandConnection); //Well, since we're going to orphan the connection, we'll need to take care of its trash.
 
+
             //The SimulationIslandConnection is immutable.
             //So create a new one!
             //Assume we've already dealt with the old connection.
             simulationIslandConnection = Resources.GetSimulationIslandConnection();
             for (int i = 0; i < involvedEntities.count; i++)
             {
-                simulationIslandConnection.members.Add(involvedEntities.Elements[i].activityInformation);
+                simulationIslandConnection.Add(involvedEntities.Elements[i].activityInformation);
             }
             simulationIslandConnection.Owner = this;
+
 
             //Add the new reference back.
             if (deactivationManager != null)
                 deactivationManager.Add(simulationIslandConnection);
+
         }
 
 
@@ -252,9 +258,9 @@ namespace BEPUphysics.Constraints
 
             int IComparer<Entity>.Compare(Entity x, Entity y)
             {
-                if (x.GetHashCode() > y.GetHashCode())
+                if (x.InstanceId > y.InstanceId)
                     return 1;
-                if (x.GetHashCode() < y.GetHashCode())
+                if (x.InstanceId < y.InstanceId)
                     return -1;
                 return 0;
             }

@@ -11,7 +11,7 @@ using SynapseGaming.LightingSystem.Rendering;
 namespace Indiefreaks.Xna.Physics
 {
     /// <summary>
-    /// Manager wrapping BEPUPhysics features
+    /// Manager wrapping BEPUphysics features
     /// </summary>
     public class BEPUPhysicsManager : ICollisionManager, ISubmit<BEPUCollisionMove>
     {
@@ -30,7 +30,7 @@ namespace Indiefreaks.Xna.Physics
         }
 
         /// <summary>
-        /// Returns the current BEPUPhysics Space instance
+        /// Returns the current BEPUphysics Space instance
         /// </summary>
         public Space Space { get; private set; }
 

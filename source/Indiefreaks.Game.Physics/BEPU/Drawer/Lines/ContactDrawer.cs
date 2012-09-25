@@ -8,7 +8,7 @@ using BEPUphysics;
 using BEPUphysics.NarrowPhaseSystems.Pairs;
 using Microsoft.Xna.Framework;
 
-namespace BEPU.Drawer.Lines
+namespace BEPUphysics.Drawer.Lines
 {
     /// <summary>
     /// Renders contact points.

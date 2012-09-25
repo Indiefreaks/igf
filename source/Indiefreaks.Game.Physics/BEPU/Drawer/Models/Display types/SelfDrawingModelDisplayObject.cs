@@ -2,7 +2,7 @@
 
 using Microsoft.Xna.Framework;
 
-namespace BEPU.Drawer.Models
+namespace BEPUphysics.Drawer.Models
 {
     /// <summary>
     /// Superclass of display types that can draw themselves.

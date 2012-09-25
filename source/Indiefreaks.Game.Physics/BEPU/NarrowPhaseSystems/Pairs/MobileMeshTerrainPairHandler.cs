@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.BroadPhaseSystems;
 using BEPUphysics.Collidables;
 using BEPUphysics.Collidables.MobileCollidables;
@@ -25,11 +26,11 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
 
         Terrain mesh;
 
-        protected override Collidable CollidableB
+        public override Collidable CollidableB
         {
             get { return mesh; }
         }
-        protected override Entities.Entity EntityB
+        public override Entities.Entity EntityB
         {
             get { return null; }
         }
@@ -76,10 +77,6 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
             return toReturn;
         }
 
-        protected override void CleanUpCollidable(TriangleCollidable collidable)
-        {
-            base.CleanUpCollidable(collidable);
-        }
 
         protected override void ConfigureCollidable(TriangleEntry entry, float dt)
         {

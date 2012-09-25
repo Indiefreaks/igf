@@ -11,19 +11,19 @@ using BEPUphysics.CollisionShapes;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using BEPUphysics.Collidables.MobileCollidables;
 
-namespace BEPU.Drawer.Models
+namespace BEPUphysics.Drawer.Models
 {
     /// <summary>
     /// Manages and draws models.
     /// </summary>
     public abstract class ModelDrawer
     {
-        private readonly Dictionary<object, ModelDisplayObjectBase> displayObjects = new Dictionary<object, ModelDisplayObjectBase>();
+        private readonly Dictionary<object, ModelDisplayObject> displayObjects = new Dictionary<object, ModelDisplayObject>();
         private readonly RasterizerState fillState;
 
         private readonly List<SelfDrawingModelDisplayObject> selfDrawingDisplayObjects = new List<SelfDrawingModelDisplayObject>();
         private readonly RasterizerState wireframeState;
-        protected Texture2D[] textures = new Texture2D[8];
+        protected Texture2D colors;
 
 
 
@@ -76,23 +76,19 @@ namespace BEPU.Drawer.Models
         protected ModelDrawer(Game game)
         {
             Game = game;
-            Color[][] colours = new Color[][] 
-            { 
-                new Color[1]{new Color(255, 216, 0)},
-                new Color[1]{new Color(79, 200, 255)},
-                new Color[1]{new Color(255, 0, 0)},
-                new Color[1]{new Color(177, 0, 254)},
-                new Color[1]{new Color(255, 130, 151)},
-                new Color[1]{new Color(254, 106, 0)},
-                new Color[1]{new Color(168, 165, 255)},
-                new Color[1]{new Color(0, 254, 33)}
-            };
 
-            for (int i = 0; i < 8; i++)
-            {
-                textures[i] = new Texture2D(Game.GraphicsDevice, 1, 1);
-                textures[i].SetData<Color>(colours[i]);
-            }
+            colors = new Texture2D(game.GraphicsDevice, 8, 1);
+            colors.SetData(new[] 
+            { 
+                new Color(255, 216, 0),
+                new Color(79, 200, 255),
+                new Color(255, 0, 0),
+                new Color(177, 0, 254),
+                new Color(255, 130, 151),
+                new Color(254, 106, 0),
+                new Color(168, 165, 255),
+                new Color(0, 254, 33)
+            });
 
 
             fillState = new RasterizerState();
@@ -117,25 +113,30 @@ namespace BEPU.Drawer.Models
         /// </summary>
         /// <param name="objectToDisplay">Object to create a display object for.</param>
         /// <returns>Display object for an object.</returns>
-        internal ModelDisplayObjectBase GetDisplayObject(object objectToDisplay)
+        public ModelDisplayObject GetDisplayObject(object objectToDisplay)
         {
             Type displayType;
             if (!displayObjects.ContainsKey(objectToDisplay))
             {
-                Entity e;
                 if (displayTypes.TryGetValue(objectToDisplay.GetType(), out displayType))
                 {
 #if !WINDOWS
-                    return (ModelDisplayObjectBase)displayType.GetConstructor(
+                    return (ModelDisplayObject)displayType.GetConstructor(
                                                      new Type[] { typeof(ModelDrawer), objectToDisplay.GetType() })
                                                      .Invoke(new object[] { this, objectToDisplay });
 #else
-                    return (ModelDisplayObjectBase)Activator.CreateInstance(displayType, new[] { this, objectToDisplay });
+                    return (ModelDisplayObject)Activator.CreateInstance(displayType, new[] { this, objectToDisplay });
 #endif
                 }
-                else if ((e = objectToDisplay as Entity) != null)
+                Entity e;
+                if ((e = objectToDisplay as Entity) != null)
                 {
-                    return new DisplayEntity(this, e);
+                    return new DisplayEntityCollidable(this, e.CollisionInformation);
+                }
+                EntityCollidable entityCollidable;
+                if ((entityCollidable = objectToDisplay as EntityCollidable) != null)
+                {
+                    return new DisplayEntityCollidable(this, entityCollidable);
                 }
 
             }
@@ -148,9 +149,9 @@ namespace BEPU.Drawer.Models
         /// </summary>
         /// <param name="objectToDisplay">Object to be added to the model drawer.</param>
         /// <returns>ModelDisplayObject created for the object.  Null if it couldn't be added.</returns>
-        public ModelDisplayObjectBase Add(object objectToDisplay)
+        public ModelDisplayObject Add(object objectToDisplay)
         {
-            ModelDisplayObjectBase displayObject = GetDisplayObject(objectToDisplay);
+            ModelDisplayObject displayObject = GetDisplayObject(objectToDisplay);
             if (displayObject != null)
             {
                 Add(displayObject);
@@ -176,36 +177,44 @@ namespace BEPU.Drawer.Models
         }
 
         /// <summary>
-        /// Adds a display object to the drawer.
+        /// Adds a display object directly to the drawer without being linked to a source.
         /// </summary>
         /// <param name="displayObject">Display object to add.</param>
-        protected abstract void Add(ModelDisplayObjectBase displayObject);
+        public abstract void Add(ModelDisplayObject displayObject);
 
         /// <summary>
         /// Removes an object from the drawer.
         /// </summary>
         /// <param name="objectToRemove">Object to remove.</param>
-        public void Remove(object objectToRemove)
+        /// <returns>Whether or not the object was present.</returns>
+        public bool Remove(object objectToRemove)
         {
-            Remove(displayObjects[objectToRemove]);
-            displayObjects.Remove(objectToRemove);
+            ModelDisplayObject displayObject;
+            if (displayObjects.TryGetValue(objectToRemove, out displayObject))
+            {
+                Remove(displayObject);
+                displayObjects.Remove(objectToRemove);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
         /// Removes an object from the drawer.
         /// </summary>
         /// <param name="displayObject">Display object to remove.</param>
-        public void Remove(SelfDrawingModelDisplayObject displayObject)
+        /// <returns>Whether or not the object was present.</returns>
+        public bool Remove(SelfDrawingModelDisplayObject displayObject)
         {
-            selfDrawingDisplayObjects.Remove(displayObject);
+            return selfDrawingDisplayObjects.Remove(displayObject);
         }
 
 
         /// <summary>
-        /// Removes a display object from the drawer.
+        /// Removes a display object from the drawer.  Only use this if display object was added directly.
         /// </summary>
         /// <param name="displayObject">Object to remove.</param>
-        protected abstract void Remove(ModelDisplayObjectBase displayObject);
+        public abstract void Remove(ModelDisplayObject displayObject);
 
         /// <summary>
         /// Cleans out the model drawer of any existing display objects.

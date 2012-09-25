@@ -35,7 +35,7 @@ namespace Indiefreaks.Xna.Physics.Entities
         }
 
         /// <summary>
-        /// Returns the BEPUPhysics StaticMesh instance
+        /// Returns the BEPUphysics StaticMesh instance
         /// </summary>
         public StaticMesh StaticMesh
         {

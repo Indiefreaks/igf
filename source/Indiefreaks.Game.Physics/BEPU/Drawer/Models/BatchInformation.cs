@@ -1,4 +1,4 @@
-﻿namespace BEPU.Drawer.Models
+﻿namespace BEPUphysics.Drawer.Models
 {
     /// <summary>
     /// Contains some information about a ModelDisplayObject's batch.

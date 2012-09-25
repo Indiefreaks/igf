@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.BroadPhaseSystems;
 using BEPUphysics.Collidables.MobileCollidables;
 using BEPUphysics.Entities;
@@ -7,6 +8,9 @@ using Microsoft.Xna.Framework;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using BEPUphysics.DataStructures;
 using BEPUphysics.DeactivationManagement;
+using System.Diagnostics;
+using BEPUphysics.Collidables;
+using BEPUphysics.MathExtensions;
 
 namespace BEPUphysics.ResourceManagement
 {
@@ -24,7 +28,8 @@ namespace BEPUphysics.ResourceManagement
         {
             SubPoolRayHitList = new LockingResourcePool<RawList<RayHit>>();
             SubPoolRayCastResultList = new LockingResourcePool<RawList<RayCastResult>>();
-            SubPoolCollisionEntryList = new LockingResourcePool<RawList<BroadPhaseEntry>>();
+            SubPoolBroadPhaseEntryList = new LockingResourcePool<RawList<BroadPhaseEntry>>();
+            SubPoolCollidableList = new LockingResourcePool<RawList<Collidable>>();
             SubPoolCompoundChildList = new LockingResourcePool<RawList<CompoundChild>>();
             SubPoolIntList = new LockingResourcePool<RawList<int>>();
             SubPoolIntSet = new LockingResourcePool<HashSet<int>>();
@@ -139,16 +144,17 @@ namespace BEPUphysics.ResourceManagement
         //        }
 
         //#else
-        static ResourcePool<RawList<RayHit>> SubPoolRayHitList;// = new LockingResourcePool<RawList<RayHit>>();
-        static ResourcePool<RawList<RayCastResult>> SubPoolRayCastResultList;// = new LockingResourcePool<RawList<RayCastResult>>();
-        static ResourcePool<RawList<BroadPhaseEntry>> SubPoolCollisionEntryList;// = new LockingResourcePool<RawList<BroadPhaseEntry>>();
-        static ResourcePool<RawList<int>> SubPoolIntList;// = new LockingResourcePool<List<int>>();
+        static ResourcePool<RawList<RayHit>> SubPoolRayHitList;
+        static ResourcePool<RawList<RayCastResult>> SubPoolRayCastResultList;
+        static ResourcePool<RawList<BroadPhaseEntry>> SubPoolBroadPhaseEntryList;
+        static ResourcePool<RawList<Collidable>> SubPoolCollidableList;
+        static ResourcePool<RawList<int>> SubPoolIntList;
         static ResourcePool<HashSet<int>> SubPoolIntSet;
-        static ResourcePool<RawList<float>> SubPoolFloatList;// = new LockingResourcePool<List<float>>();
-        static ResourcePool<RawList<Vector3>> SubPoolVectorList;// = new LockingResourcePool<List<Vector3>>();;
-        static ResourcePool<RawList<Entity>> SubPoolEntityRawList;//= new LockingResourcePool<RawList<Entity>>(16);
-        static ResourcePool<TriangleShape> SubPoolTriangleShape;// = new LockingResourcePool<TriangleShape>();
-        static ResourcePool<RawList<CompoundChild>> SubPoolCompoundChildList;//= new LockingResourcePool<RawList<CompoundChild>>();
+        static ResourcePool<RawList<float>> SubPoolFloatList;
+        static ResourcePool<RawList<Vector3>> SubPoolVectorList;
+        static ResourcePool<RawList<Entity>> SubPoolEntityRawList;
+        static ResourcePool<TriangleShape> SubPoolTriangleShape;
+        static ResourcePool<RawList<CompoundChild>> SubPoolCompoundChildList;
         static ResourcePool<TriangleCollidable> SubPoolTriangleCollidables;
         static ResourcePool<RawList<BEPUphysics.CollisionTests.Manifolds.TriangleMeshConvexContactManifold.TriangleIndices>> SubPoolTriangleIndicesList;
         static ResourcePool<SimulationIslandConnection> SimulationIslandConnections;
@@ -192,12 +198,12 @@ namespace BEPUphysics.ResourceManagement
         }
 
         /// <summary>
-        /// Retrieves an CollisionEntry list from the resource pool.
+        /// Retrieves an BroadPhaseEntry list from the resource pool.
         /// </summary>
-        /// <returns>Empty CollisionEntry list.</returns>
-        public static RawList<BroadPhaseEntry> GetCollisionEntryList()
+        /// <returns>Empty BroadPhaseEntry list.</returns>
+        public static RawList<BroadPhaseEntry> GetBroadPhaseEntryList()
         {
-            return SubPoolCollisionEntryList.Take();
+            return SubPoolBroadPhaseEntryList.Take();
         }
 
         /// <summary>
@@ -207,7 +213,26 @@ namespace BEPUphysics.ResourceManagement
         public static void GiveBack(RawList<BroadPhaseEntry> list)
         {
             list.Clear();
-            SubPoolCollisionEntryList.GiveBack(list);
+            SubPoolBroadPhaseEntryList.GiveBack(list);
+        }
+
+        /// <summary>
+        /// Retrieves a Collidable list from the resource pool.
+        /// </summary>
+        /// <returns>Empty Collidable list.</returns>
+        public static RawList<Collidable> GetCollidableList()
+        {
+            return SubPoolCollidableList.Take();
+        }
+
+        /// <summary>
+        /// Returns a resource to the pool.
+        /// </summary>
+        /// <param name="list">List to return.</param>
+        public static void GiveBack(RawList<Collidable> list)
+        {
+            list.Clear();
+            SubPoolCollidableList.GiveBack(list);
         }
 
         /// <summary>
@@ -375,6 +400,8 @@ namespace BEPUphysics.ResourceManagement
             shape.vA = a;
             shape.vB = b;
             shape.vC = c;
+            var identity = RigidTransform.Identity;
+            tri.UpdateBoundingBoxForTransform(ref identity);
             return tri;
 
         }
@@ -416,7 +443,7 @@ namespace BEPUphysics.ResourceManagement
             triangleIndices.Clear();
             SubPoolTriangleIndicesList.GiveBack(triangleIndices);
         }
-        
+
         /// <summary>
         /// Retrieves a simulation island connection from the resource pool.
         /// </summary>
@@ -424,6 +451,7 @@ namespace BEPUphysics.ResourceManagement
         public static SimulationIslandConnection GetSimulationIslandConnection()
         {
             return SimulationIslandConnections.Take();
+
         }
 
         /// <summary>
@@ -434,6 +462,7 @@ namespace BEPUphysics.ResourceManagement
         {
             connection.CleanUp();
             SimulationIslandConnections.GiveBack(connection);
+
         }
     }
 }

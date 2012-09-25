@@ -1,6 +1,8 @@
-﻿using BEPUphysics.Threading;
+﻿using BEPUphysics.BroadPhaseEntries;
+using BEPUphysics.Threading;
 using BEPUphysics.CollisionRuleManagement;
 using BEPUphysics.DataStructures;
+using System;
 
 namespace BEPUphysics.BroadPhaseSystems
 {
@@ -48,13 +50,25 @@ namespace BEPUphysics.BroadPhaseSystems
         /// Adds an entry to the broad phase.
         /// </summary>
         /// <param name="entry">Entry to add.</param>
-        public abstract void Add(BroadPhaseEntry entry);
+        public virtual void Add(BroadPhaseEntry entry)
+        {
+            if (entry.BroadPhase == null)
+                entry.BroadPhase = this;
+            else
+                throw new Exception("Cannot add entry; it already belongs to a broad phase.");
+        }
 
         /// <summary>
         /// Removes an entry from the broad phase.
         /// </summary>
         /// <param name="entry">Entry to remove.</param>
-        public abstract void Remove(BroadPhaseEntry entry);
+        public virtual void Remove(BroadPhaseEntry entry)
+        {
+            if (entry.BroadPhase == this)
+                entry.BroadPhase = null;
+            else
+                throw new Exception("Cannot remove entry; it does not belong to this broad phase.");
+        }
 
         protected internal void AddOverlap(BroadPhaseOverlap overlap)
         {
@@ -82,7 +96,7 @@ namespace BEPUphysics.BroadPhaseSystems
         protected internal CollisionRule GetCollisionRule(BroadPhaseEntry entryA, BroadPhaseEntry entryB)
         {
             if (entryA.IsActive || entryB.IsActive)
-                return CollisionRules.collisionRuleCalculator(entryA.collisionRules, entryB.collisionRules);
+                return CollisionRules.collisionRuleCalculator(entryA, entryB);
             return CollisionRule.NoBroadPhase;
         }
 

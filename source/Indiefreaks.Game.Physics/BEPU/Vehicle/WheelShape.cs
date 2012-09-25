@@ -4,6 +4,7 @@ using BEPUphysics.Entities.Prefabs;
 using Microsoft.Xna.Framework;
 using BEPUphysics.CollisionRuleManagement;
 using BEPUphysics.Materials;
+using BEPUphysics.Collidables;
 
 namespace BEPUphysics.Vehicle
 {
@@ -19,7 +20,6 @@ namespace BEPUphysics.Vehicle
 
         private float airborneWheelDeceleration = 4;
         private float brakeFreezeWheelDeceleration = 40;
-        private CollisionRules collisionRules = new CollisionRules();
 
         /// <summary>
         /// Collects collision pairs from the environment.
@@ -37,6 +37,16 @@ namespace BEPUphysics.Vehicle
         protected internal Wheel wheel;
 
         protected internal Matrix worldTransform;
+
+        CollisionRules collisionRules = new CollisionRules() { Group = CollisionRules.DefaultDynamicCollisionGroup};
+        /// <summary>
+        /// Gets or sets the collision rules used by the wheel.
+        /// </summary>
+        public CollisionRules CollisionRules
+        {
+            get { return collisionRules; }
+            set { collisionRules = value; }
+        }
 
         /// <summary>
         /// Gets or sets the graphical radius of the wheel.
@@ -71,15 +81,6 @@ namespace BEPUphysics.Vehicle
         {
             get { return brakeFreezeWheelDeceleration; }
             set { brakeFreezeWheelDeceleration = Math.Abs(value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the collision rules used to filter wheel supports.
-        /// </summary>
-        public CollisionRules CollisionRules
-        {
-            get { return collisionRules; }
-            set { collisionRules = value; }
         }
 
         /// <summary>
@@ -165,9 +166,9 @@ namespace BEPUphysics.Vehicle
 
         internal void OnAdditionToSpace(ISpace space)
         {
-            detector.CollisionInformation.CollisionRules.Specific.Add(wheel.vehicle.Body.CollisionInformation.collisionRules, CollisionRule.NoBroadPhase);
-            detector.CollisionInformation.CollisionRules.Personal = CollisionRule.NoNarrowPhaseUpdate;
-            collisionRules.group = CollisionRules.DefaultDynamicCollisionGroup;
+            detector.CollisionInformation.collisionRules.Specific.Add(wheel.vehicle.Body.CollisionInformation.collisionRules, CollisionRule.NoBroadPhase);
+            detector.CollisionInformation.collisionRules.Personal = CollisionRule.NoNarrowPhaseUpdate;
+            detector.CollisionInformation.collisionRules.group = CollisionRules.DefaultDynamicCollisionGroup;
 
         }
 
@@ -232,10 +233,11 @@ namespace BEPUphysics.Vehicle
         /// <param name="location">Contact point between the wheel and the support.</param>
         /// <param name="normal">Contact normal between the wheel and the support.</param>
         /// <param name="suspensionLength">Length of the suspension at the contact.</param>
-        /// <param name="entity">Supporting object.</param>
+        /// <param name="supportCollidable">Collidable supporting the wheel, if any.</param>
+        /// <param name="entity">Entity supporting the wheel, if any.</param>
         /// <param name="material">Material of the support.</param>
         /// <returns>Whether or not any support was found.</returns>
-        protected internal abstract bool FindSupport(out Vector3 location, out Vector3 normal, out float suspensionLength, out Entity entity, out Material material);
+        protected internal abstract bool FindSupport(out Vector3 location, out Vector3 normal, out float suspensionLength, out Collidable supportCollidable, out Entity entity, out Material material);
 
         /// <summary>
         /// Initializes the detector entity and any other necessary logic.

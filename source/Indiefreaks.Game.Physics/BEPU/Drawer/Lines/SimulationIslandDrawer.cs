@@ -110,7 +110,7 @@ using Microsoft.Xna.Framework;
 using BEPUphysics.Entities;
 using BEPUphysics.DeactivationManagement;
 
-namespace BEPU.Drawer.Lines
+namespace BEPUphysics.Drawer.Lines
 {
     /// <summary>
     /// Renders bounding boxes of simulation islands.

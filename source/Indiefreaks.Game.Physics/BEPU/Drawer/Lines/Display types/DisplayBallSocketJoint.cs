@@ -1,7 +1,7 @@
 ﻿using BEPUphysics.Constraints.TwoEntity.Joints;
 using Microsoft.Xna.Framework;
 
-namespace BEPU.Drawer.Lines
+namespace BEPUphysics.Drawer.Lines
 {
     /// <summary>
     /// Graphical representation of a ball socket joint.

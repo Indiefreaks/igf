@@ -6,7 +6,7 @@ using BEPUphysics.CollisionShapes;
 using System;
 using BEPUphysics.Collidables.MobileCollidables;
 
-namespace BEPU.Drawer.Models
+namespace BEPUphysics.Drawer.Models
 {
     /// <summary>
     /// Helper class that can create shape mesh data.

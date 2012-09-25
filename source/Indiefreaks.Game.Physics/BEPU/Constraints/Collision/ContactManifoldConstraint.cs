@@ -111,6 +111,7 @@ namespace BEPUphysics.Constraints.Collision
         {
             entityA = null;
             entityB = null;
+
             OnInvolvedEntitiesChanged();
         }
 
@@ -136,33 +137,12 @@ namespace BEPUphysics.Constraints.Collision
         public override void UpdateSolverActivity()
         {
 
-            ////Thanks to the new flux updateable approach, there are strong guarantees about activity and state.
-            ////This means, if this constraint is in the solver (and thus this method is being called),
-            ////we already know one of the involved objects is active!
-            ////So!
-            ////New:
-            //isActiveInSolver = isActive && pair.broadPhaseOverlap.collisionRule < CollisionRule.NoSolver;
-            //if (isActiveInSolver)
-            //{
-            //    int numberOfActiveChildren = 0;
-            //    for (int i = 0; i < solverUpdateables.count; i++)
-            //    {
-            //        if (solverUpdateables.Elements[i].isActive)
-            //        {
-            //            solverUpdateables.Elements[i].isActiveInSolver = true;
-            //            numberOfActiveChildren++;
-            //        }
-            //    }
-            //    if (numberOfActiveChildren == 0)
-            //        isActiveInSolver = false;
-            //}
-
-            //Old:
             if (isActive)
             {
+                var aValid = entityA != null && entityA.isDynamic;
                 isActiveInSolver = pair.BroadPhaseOverlap.collisionRule < CollisionRule.NoSolver &&
-                                   ((entityA != null && entityA.activityInformation.IsActive) ||
-                                   (entityB != null && entityB.activityInformation.IsActive));
+                                   ((entityA != null && entityA.isDynamic && entityA.activityInformation.IsActive) || //At least one of the objects must be an active dynamic entity.
+                                   (entityB != null && entityB.isDynamic && entityB.activityInformation.IsActive));
                 for (int i = 0; i < solverUpdateables.count; i++)
                 {
                     solverUpdateables.Elements[i].isActiveInSolver = solverUpdateables.Elements[i].isActive && isActiveInSolver;
@@ -170,6 +150,8 @@ namespace BEPUphysics.Constraints.Collision
             }
             else
                 isActiveInSolver = false;
+            
+
         }
 
         ///<summary>
@@ -181,13 +163,13 @@ namespace BEPUphysics.Constraints.Collision
         {
             if (materialA != null && materialB != null)
                 MaterialManager.GetInteractionProperties(materialA, materialB, out materialInteraction);
-            else if (materialA == null)
+            else if (materialA == null && materialB != null)
             {
                 materialInteraction.KineticFriction = materialB.kineticFriction;
                 materialInteraction.StaticFriction = materialB.staticFriction;
                 materialInteraction.Bounciness = materialB.bounciness;
             }
-            else if (materialB == null)
+            else if (materialA != null)
             {
                 materialInteraction.KineticFriction = materialA.kineticFriction;
                 materialInteraction.StaticFriction = materialA.staticFriction;

@@ -135,8 +135,6 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
         /// </summary>
         /// <param name="shapeA">First shape in the pair.</param>
         /// <param name="shapeB">Second shape in the pair.</param>
-        /// <param name="transformA">Transformation to apply to the first shape.</param>
-        /// <param name="transformB">Transformation to apply to the second shape.</param>
         /// <param name="position">Position within the overlapped volume of the two shapes in shape A's local space, if any.</param>
         /// <returns>Whether or not the two shapes overlap.</returns>
         public static bool GetLocalOverlapPosition(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform localTransformB, out Vector3 position)
@@ -1592,7 +1590,6 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
                 {
                     //The portal is now on the surface.  The algorithm can now compute the TOI and exit.
                     float lengthSquared = n.LengthSquared();
-                    float t;
                     if (lengthSquared > Toolbox.Epsilon * .00001f)
                     {
                         Vector3.Divide(ref n, (float)Math.Sqrt(lengthSquared), out hit.Normal);
@@ -1602,10 +1599,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
                         Vector3.Dot(ref  hit.Normal, ref localDirection, out dot);
                         //supportDot is the distance to the plane.
                         Vector3.Dot(ref  hit.Normal, ref v1, out supportDot);
-                        if (dot > 0)
-                            t = supportDot / dot;
-                        else
-                            t = 0;
+
 
                         hit.T = sweepLength - supportDot / dot;
                     }
@@ -1613,7 +1607,6 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
                     {
                         Vector3.Normalize(ref localDirection, out hit.Normal);
                         hit.T = sweepLength;
-                        t = 0;
                     }
                     //Sometimes, when the objects are intersecting, the T parameter can be negative.
                     //In this case, just go with t = 0.

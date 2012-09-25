@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using BEPUphysics.DataStructures;
 using BEPUphysics.Entities;
-using System.Threading;
 
 namespace BEPUphysics.DeactivationManagement
 {
@@ -101,26 +97,29 @@ namespace BEPUphysics.DeactivationManagement
                 }
                 else
                 {
-                    //Update the flagging system.
-                    //If time <= 0, the entity is considered active.
-                    //Forcing a kinematic active needs to allow the system to run for a whole frame.
-                    //This means that in here, if it is < 0, we set it to zero.  It will still update for the rest of the frame.
-                    //Then, next frame, when its == 0, set it to 1.  It will be considered inactive unless it was activated manually again.
+                    //If it's not dynamic, then deactivation candidacy is based entirely on whether or not the object has velocity (and the IsAlwaysActive state).
+                    IsDeactivationCandidate = velocity == 0 && !IsAlwaysActive;
 
-                    if (velocityTimeBelowLimit == 0)
-                        velocityTimeBelowLimit = 1;
-                    else if (velocityTimeBelowLimit < 0)
-                        velocityTimeBelowLimit = 0;
-
-                    //If it's not dynamic, then deactivation candidacy is based entirely on whether or not the object has velocity.
-                    if (velocity == 0)
+                    if (IsDeactivationCandidate)
                     {
-                        IsDeactivationCandidate = true;
+                        //Update the flagging system.
+                        //If time <= 0, the entity is considered active.
+                        //Forcing a kinematic active needs to allow the system to run for a whole frame.
+                        //This means that in here, if it is < 0, we set it to zero.  It will still update for the rest of the frame.
+                        //Then, next frame, when its == 0, set it to 1.  It will be considered inactive unless it was activated manually again.
+                        if (velocityTimeBelowLimit == 0)
+                            velocityTimeBelowLimit = 1;
+                        else if (velocityTimeBelowLimit < 0)
+                            velocityTimeBelowLimit = 0;
                     }
                     else
                     {
-                        //Alright, so it's moving.
-                        IsDeactivationCandidate = false;
+                        //If velocity is not zero, then the flag is set to 'this is active.'
+                        velocityTimeBelowLimit = -1;
+                    }
+
+                    if (velocityTimeBelowLimit <= 0)
+                    {
                         //There's a single oddity we need to worry about in this case.
                         //An active kinematic object has no simulation island.  Without intervention,
                         //an active kinematic object will not keep an island awake.
@@ -129,14 +128,14 @@ namespace BEPUphysics.DeactivationManagement
 
                         for (int i = 0; i < connections.count; i++)
                         {
-                            var connectedMembers = connections.Elements[i].members;
+                            var connectedMembers = connections.Elements[i].entries;
                             for (int j = connectedMembers.count - 1; j >= 0; j--)
                             {
                                 //The change locker must be obtained before attempting to access the SimulationIsland.
                                 //Path compression can force the simulation island to evaluate to null briefly.
                                 //Do not permit the object to undergo path compression during this (brief) operation.
-                                connectedMembers.Elements[j].simulationIslandChangeLocker.Enter();
-                                var island = connectedMembers.Elements[j].SimulationIsland;
+                                connectedMembers.Elements[j].Member.simulationIslandChangeLocker.Enter();
+                                var island = connectedMembers.Elements[j].Member.SimulationIsland;
                                 if (island != null)
                                 {
                                     //It's possible a kinematic entity to go inactive for one frame, allowing nearby entities to go to sleep.
@@ -147,12 +146,11 @@ namespace BEPUphysics.DeactivationManagement
                                     island.Activate();
                                     island.allowDeactivation = false;
                                 }
-                                connectedMembers.Elements[j].simulationIslandChangeLocker.Exit();
+                                connectedMembers.Elements[j].Member.simulationIslandChangeLocker.Exit();
                             }
                         }
-
-
                     }
+
                 }
             }
             previousVelocity = velocity;
@@ -238,11 +236,14 @@ namespace BEPUphysics.DeactivationManagement
                     //then this member has either not been added to a deactivation manager,
                     //or it is a kinematic entity.
                     //In either case, using the previous velocity is a reasonable approach.
+                    //This previous velocity is represented here by a flagging system that uses the velocityTimeBelowLimit.
 
-                    //Kinematic objects use the time as a flag- if it's greater than zero,
-                    //then the entity's been awake for at least a frame and go to sleep.
-                    //If it is zero, though, then the kinematic needs to be considered awake.
-                    return previousVelocity > 0 || velocityTimeBelowLimit <= 0;
+                    //-A kinematic entity with a velocityTimeBelowLimit of -1 was found to be active during the last deactivation candidacy analysis due to its velocity,
+                    //or it was recently activated, or IsAlwaysActive is set to true.
+                    //-A kinematic entity with a velocityTimeBelowLimit of 0 did not have its activity refreshed during the deactivation candidacy, 
+                    //but we still consider it active so that a full frame can complete.
+                    //-A kinematic entity with a velocityTimeBelowLimit of 1 did not have its activity refreshed in the last two frames so we can consider it inactive.
+                    return velocityTimeBelowLimit <= 0;
                 }
             }
 
@@ -275,10 +276,23 @@ namespace BEPUphysics.DeactivationManagement
 
         }
 
+        bool isAlwaysActive;
         /// <summary>
         /// Gets or sets whether or not this member is always active.
         /// </summary>
-        public bool IsAlwaysActive { get; set; }
+        public bool IsAlwaysActive
+        {
+            get
+            {
+                return isAlwaysActive;
+            }
+            set
+            {
+                isAlwaysActive = value;
+                if (isAlwaysActive)
+                    Activate();
+            }
+        }
 
 
 
@@ -388,17 +402,26 @@ namespace BEPUphysics.DeactivationManagement
         /// Removes a connection reference from the member.
         ///</summary>
         ///<param name="connection">Reference to remove.</param>
-        internal void RemoveConnectionReference(SimulationIslandConnection connection)
+        ///<param name="index">Index of the connection in this member's list</param>
+        internal void RemoveConnectionReference(SimulationIslandConnection connection, int index)
         {
-            connections.FastRemove(connection);
+            if (connections.count > index)
+            {
+                connections.FastRemoveAt(index);
+                if (connections.count > index)
+                    connections.Elements[index].SetListIndex(this, index);
+            }
         }
+
         ///<summary>
         /// Adds a connection reference to the member.
         ///</summary>
         ///<param name="connection">Reference to add.</param>
-        internal void AddConnectionReference(SimulationIslandConnection connection)
+        ///<returns>Index of the connection in the member's list.</returns>
+        internal int AddConnectionReference(SimulationIslandConnection connection)
         {
             connections.Add(connection);
+            return connections.count - 1;
         }
 
 

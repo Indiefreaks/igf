@@ -1,4 +1,5 @@
-﻿using BEPUphysics.BroadPhaseSystems;
+﻿using BEPUphysics.BroadPhaseEntries;
+using BEPUphysics.BroadPhaseSystems;
 using BEPUphysics.Collidables;
 using BEPUphysics.CollisionRuleManagement;
 using BEPUphysics.Entities;
@@ -16,11 +17,32 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public abstract class CollidablePairHandler : NarrowPhasePair
     {
-        protected abstract Collidable CollidableA { get; }
-        protected abstract Collidable CollidableB { get; }
+        /// <summary>
+        /// Gets the first collidable associated with the pair.
+        /// </summary>
+        public abstract Collidable CollidableA { get; }
+        /// <summary>
+        /// Gets the second collidable associated with the pair.
+        /// </summary>
+        public abstract Collidable CollidableB { get; }
         //Entities could be null!
-        protected abstract Entity EntityA { get; }
-        protected abstract Entity EntityB { get; }
+        /// <summary>
+        /// Gets the first entity associated with the pair.  This could be null if no entity is associated with CollidableA.
+        /// </summary>
+        public abstract Entity EntityA { get; }        
+        /// <summary>
+        /// Gets the second entity associated with the pair.  This could be null if no entity is associated with CollidableB.
+        /// </summary>
+        public abstract Entity EntityB { get; }
+
+        /// <summary>
+        /// Index of this pair in CollidableA's pairs list.
+        /// </summary>
+        internal int listIndexA = -1;
+        /// <summary>
+        /// Index of this pair in CollidableB's pairs list.
+        /// </summary>
+        internal int listIndexB = -1;
 
         protected internal abstract int ContactCount { get; }
 
@@ -110,8 +132,8 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         protected internal override void OnAddedToNarrowPhase()
         {
-            CollidableA.pairs.Add(this);
-            CollidableB.pairs.Add(this);
+            CollidableA.AddPair(this, ref listIndexA);
+            CollidableB.AddPair(this, ref listIndexB);
         }
 
         protected virtual void OnContactAdded(Contact contact)
@@ -158,8 +180,13 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
             }
 
             //Remove this pair from each collidable.  This can be done safely because the CleanUp is called sequentially.
-            CollidableA.pairs.Remove(this);
-            CollidableB.pairs.Remove(this);
+            //However, only do it if we have been added to the collidables! This does not happen until this pair is added to the narrow phase.
+            //For pairs which never get added to the broad phase, such as those in queries, we should not attempt to remove something that isn't there!
+            if (listIndexA != -1)
+            {
+                CollidableA.RemovePair(this, ref listIndexA);
+                CollidableB.RemovePair(this, ref listIndexB);
+            }
 
             //Notify the colliders that the pair went away.
             if (!suppressEvents)
@@ -170,8 +197,6 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
 
 
             broadPhaseOverlap = new BroadPhaseOverlap();
-            (this as NarrowPhasePair).NeedsUpdate = false;
-            (this as NarrowPhasePair).NarrowPhase = null;
             suppressEvents = false;
             timeOfImpact = 1;
             Parent = null;
@@ -186,7 +211,6 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         /// Forces an update of the pair's material properties.
         ///</summary>
         /// <param name="properties">Properties to use in the collision.</param>
-
         public abstract void UpdateMaterialProperties(InteractionProperties properties);
 
         ///<summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.BroadPhaseSystems;
 using BEPUphysics.BroadPhaseSystems.Hierarchies;
 using BEPUphysics.Collidables.MobileCollidables;
@@ -17,6 +18,7 @@ using BEPUphysics.ResourceManagement;
 using System.Collections.ObjectModel;
 using BEPUphysics.BroadPhaseSystems.SortAndSweep;
 using BEPUphysics.DataStructures;
+using BEPUphysics.MathExtensions;
 
 namespace BEPUphysics
 {
@@ -193,21 +195,24 @@ namespace BEPUphysics
             get { return BufferedStates.Entities; }
         }
 
+        ///<summary>
+        /// Constructs a new space for things to live in.
+        /// Uses the SpecializedThreadManager.
+        ///</summary>
+        public Space()
+            : this(new SpecializedThreadManager())
+        {
+        }
 
         ///<summary>
         /// Constructs a new space for things to live in.
         ///</summary>
-        public Space()
+        ///<param name="threadManager">Thread manager to use with the space.</param>
+        public Space(IThreadManager threadManager)
         {
-            NarrowPhaseHelper.CollisionManagers = NarrowPhaseHelper.CollisionManagers; //Forces the NarrowPhaseHelper to run the static constructor.  Better to do it now instead of mid-simulation.
-
             timeStepSettings = new TimeStepSettings();
 
-#if !WINDOWS
-            threadManager = new SpecializedThreadManager();
-#else
-            threadManager = new SpecializedThreadManager();
-#endif
+            this.threadManager = threadManager;
 
             SpaceObjectBuffer = new SpaceObjectBuffer(this);
             EntityStateWriteBuffer = new EntityStateWriteBuffer();
@@ -481,6 +486,7 @@ namespace BEPUphysics
 
         void DoTimeStep()
         {
+
             SpaceObjectBuffer.Update();
             EntityStateWriteBuffer.Update();
             DeactivationManager.Update();
@@ -491,7 +497,6 @@ namespace BEPUphysics
             BeforeNarrowPhaseUpdateables.Update();
             NarrowPhase.Update();
             BeforeSolverUpdateables.Update();
-            NarrowPhase.FlushGeneratedSolverUpdateables();
             Solver.Update();
             BeforePositionUpdateUpdateables.Update();
             PositionUpdater.Update();
@@ -615,7 +620,7 @@ namespace BEPUphysics
         /// <returns>Whether or not the ray hit anything.</returns>
         public bool RayCast(Ray ray, float maximumLength, IList<RayCastResult> outputRayCastResults)
         {
-            var outputIntersections = Resources.GetCollisionEntryList();
+            var outputIntersections = Resources.GetBroadPhaseEntryList();
             if (BroadPhase.QueryAccelerator.RayCast(ray, maximumLength, outputIntersections))
             {
 
@@ -643,7 +648,7 @@ namespace BEPUphysics
         /// <returns>Whether or not the ray hit anything.</returns>
         public bool RayCast(Ray ray, float maximumLength, Func<BroadPhaseEntry, bool> filter, IList<RayCastResult> outputRayCastResults)
         {
-            var outputIntersections = Resources.GetCollisionEntryList();
+            var outputIntersections = Resources.GetBroadPhaseEntryList();
             if (BroadPhase.QueryAccelerator.RayCast(ray, maximumLength, outputIntersections))
             {
 

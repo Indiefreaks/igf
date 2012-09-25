@@ -1,4 +1,5 @@
 ﻿using System;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.BroadPhaseSystems;
 using BEPUphysics.Collidables;
 using BEPUphysics.Collidables.MobileCollidables;
@@ -28,19 +29,19 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         NonConvexContactManifoldConstraint contactConstraint = new NonConvexContactManifoldConstraint();
 
 
-        protected override Collidable CollidableA
+        public override Collidable CollidableA
         {
             get { return convex; }
         }
-        protected override Collidable CollidableB
+        public override Collidable CollidableB
         {
             get { return mobileMesh; }
         }
-        protected override Entities.Entity EntityA
+        public override Entities.Entity EntityA
         {
             get { return convex.entity; }
         }
-        protected override Entities.Entity EntityB
+        public override Entities.Entity EntityB
         {
             get { return mobileMesh.entity; }
         }
@@ -58,6 +59,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         {
             get { return contactConstraint; }
         }
+
         protected internal abstract MobileMeshContactManifold MeshManifold { get; }
 
         ///<summary>
@@ -118,21 +120,21 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="dt">Timestep duration.</param>
         public override void UpdateTimeOfImpact(Collidable requester, float dt)
         {
-            //TODO: This conditional early outing stuff could be pulled up into a common system, along with most of the pair handler.
             var overlap = BroadPhaseOverlap;
+            var meshMode = mobileMesh.entity == null ? PositionUpdateMode.Discrete : mobileMesh.entity.PositionUpdateMode;
             var convexMode = convex.entity == null ? PositionUpdateMode.Discrete : convex.entity.PositionUpdateMode;
 
             if (
-                    (mobileMesh.IsActive || (convex.entity == null ? false : convex.entity.activityInformation.IsActive)) && //At least one has to be active.
+                    (mobileMesh.IsActive || convex.IsActive) && //At least one has to be active.
                     (
                         (
                             convexMode == PositionUpdateMode.Continuous &&   //If both are continuous, only do the process for A.
-                            mobileMesh.entity.PositionUpdateMode == PositionUpdateMode.Continuous &&
+                            meshMode == PositionUpdateMode.Continuous &&
                             overlap.entryA == requester
                         ) ||
                         (
                             convexMode == PositionUpdateMode.Continuous ^   //If only one is continuous, then we must do it.
-                            mobileMesh.entity.PositionUpdateMode == PositionUpdateMode.Continuous
+                            meshMode == PositionUpdateMode.Continuous
                         )
                     )
                 )
@@ -142,10 +144,22 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
 
                 //Only perform the test if the minimum radii are small enough relative to the size of the velocity.
                 Vector3 velocity;
-                if (convex.entity != null)
-                    Vector3.Subtract(ref convex.entity.linearVelocity, ref mobileMesh.entity.linearVelocity, out velocity);
-                else
+                if (convexMode == PositionUpdateMode.Discrete)
+                {                    
+                    //Convex is static for the purposes of CCD.
                     Vector3.Negate(ref mobileMesh.entity.linearVelocity, out velocity);
+                }
+                else if (meshMode == PositionUpdateMode.Discrete)
+                {
+                    //Mesh is static for the purposes of CCD.
+                    velocity = convex.entity.linearVelocity;
+                }
+                else
+                {
+                    //Both objects can move.
+                    Vector3.Subtract(ref convex.entity.linearVelocity, ref mobileMesh.entity.linearVelocity, out velocity);
+
+                }
                 Vector3.Multiply(ref velocity, dt, out velocity);
                 float velocitySquared = velocity.LengthSquared();
 
@@ -217,14 +231,14 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         {
             info.Contact = MeshManifold.contacts.Elements[index];
             //Find the contact's normal and friction forces.
-            info.FrictionForce = 0;
-            info.NormalForce = 0;
+            info.FrictionImpulse = 0;
+            info.NormalImpulse = 0;
             for (int i = 0; i < contactConstraint.frictionConstraints.count; i++)
             {
                 if (contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.contact == info.Contact)
                 {
-                    info.FrictionForce = contactConstraint.frictionConstraints.Elements[i].accumulatedImpulse;
-                    info.NormalForce = contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.accumulatedImpulse;
+                    info.FrictionImpulse = contactConstraint.frictionConstraints.Elements[i].accumulatedImpulse;
+                    info.NormalImpulse = contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.accumulatedImpulse;
                     break;
                 }
             }

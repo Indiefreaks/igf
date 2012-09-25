@@ -103,7 +103,7 @@ namespace BEPUphysics.CollisionShapes
             {
                 for (int j = 0; j < heights.GetLength(1); j++)
                 {
-                    Vector3 vertex = new Vector3(i, heights[i, j], j);
+                    var vertex = new Vector3(i, heights[i, j], j);
                     Matrix3X3.Transform(ref vertex, ref transform.LinearTransform, out vertex);
                     if (vertex.X < minX)
                     {
@@ -330,6 +330,7 @@ namespace BEPUphysics.CollisionShapes
                         Vector3.Add(ref hit.Location, ref ray.Position, out hit.Location);
                         Matrix3X3.TransformTranspose(ref hit2.Normal, ref inverse.LinearTransform, out hit.Normal);
                         hit.T = hit2.T;
+                        return true;
                     }
                     else if (didHit1)
                     {
@@ -572,8 +573,8 @@ namespace BEPUphysics.CollisionShapes
         ///<summary>
         /// Gets overlapped triangles with the terrain shape with a bounding box in the local space of the shape.
         ///</summary>
-        ///<param name="localSpaceBoundingBox">Bounding box in the local space of the terrain shape.</param>
-        ///<param name="overlappedTriangles">Indices of triangles whose bounding boxes overlap the input bounding box.</param>
+        ///<param name="localBoundingBox">Bounding box in the local space of the terrain shape.</param>
+        ///<param name="overlappedElements">Indices of elements whose bounding boxes overlap the input bounding box.</param>
         public bool GetOverlaps(BoundingBox localBoundingBox, RawList<int> overlappedElements)
         {
             int width = heights.GetLength(0);
@@ -698,7 +699,7 @@ namespace BEPUphysics.CollisionShapes
             }
         }
 
-        
+
     }
 
     /// <summary>

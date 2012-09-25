@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using BEPUphysics.BroadPhaseSystems;
+﻿using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.Collidables;
 using BEPUphysics.Collidables.MobileCollidables;
-using BEPUphysics.Constraints;
-using BEPUphysics.Constraints.Collision;
-using BEPUphysics.DataStructures;
 using BEPUphysics.ResourceManagement;
-using BEPUphysics.CollisionRuleManagement;
-using BEPUphysics.CollisionTests;
 using Microsoft.Xna.Framework;
 using BEPUphysics.MathExtensions;
 
@@ -23,13 +16,13 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
 
         MobileMeshCollidable mesh;
 
-        protected override Collidable CollidableB
+        public override Collidable CollidableB
         {
             get { return mesh; }
         }
-        protected override Entities.Entity EntityB
+        public override Entities.Entity EntityB
         {
-            get { return null; }
+            get { return mesh.entity; }
         }
         protected override Materials.Material MaterialB
         {

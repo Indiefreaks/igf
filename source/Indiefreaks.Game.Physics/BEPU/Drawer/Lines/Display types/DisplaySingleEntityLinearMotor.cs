@@ -2,7 +2,7 @@
 using BEPUphysics.Constraints.TwoEntity.Motors;
 using Microsoft.Xna.Framework;
 
-namespace BEPU.Drawer.Lines
+namespace BEPUphysics.Drawer.Lines
 {
     /// <summary>
     /// Graphical representation of a single entity linear motor.
@@ -28,7 +28,7 @@ namespace BEPU.Drawer.Lines
         public override void Update()
         {
             //Move lines around
-            if (LineObject.IsActiveInSolver)
+            if (LineObject.IsActive)
             {
                 toPoint.PositionA = LineObject.Entity.Position;
                 toPoint.PositionB = LineObject.Point;

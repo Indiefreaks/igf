@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -68,7 +69,7 @@ namespace BEPUphysics.DataStructures
             {
                 //Use a permuted version of the triangles instead of the actual triangle list.
                 //Permuting makes the input basically random, improving the quality of the tree.
-                Insert((int)(((1208299L * (i / 3)) % (data.indices.Length / 3)) * 3));
+                Insert((int)(((982451653L * (i / 3)) % (data.indices.Length / 3)) * 3));
             }
         }
 
@@ -458,7 +459,7 @@ namespace BEPUphysics.DataStructures
 
             public override string ToString()
             {
-                return LeafIndex.ToString();
+                return LeafIndex.ToString(CultureInfo.InvariantCulture);
             }
 
             internal override void Analyze(List<int> depths, int depth, ref int nodeCount)

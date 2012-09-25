@@ -1,4 +1,5 @@
 ﻿using System;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.BroadPhaseSystems;
 using BEPUphysics.Collidables;
 using BEPUphysics.Collidables.MobileCollidables;
@@ -26,19 +27,19 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
 
         NonConvexContactManifoldConstraint contactConstraint = new NonConvexContactManifoldConstraint();
 
-        protected override Collidable CollidableA
+        public override Collidable CollidableA
         {
             get { return convex; }
         }
-        protected override Collidable CollidableB
+        public override Collidable CollidableB
         {
             get { return instancedMesh; }
         }
-        protected override Entities.Entity EntityA
+        public override Entities.Entity EntityA
         {
             get { return convex.entity; }
         }
-        protected override Entities.Entity EntityB
+        public override Entities.Entity EntityB
         {
             get { return null; }
         }
@@ -114,7 +115,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="dt">Timestep duration.</param>
         public override void UpdateTimeOfImpact(Collidable requester, float dt)
         {
-            //TODO: This conditional early outing stuff could be pulled up into a common system, along with most of the pair handler.
+            //Notice that we don't test for convex entity null explicitly.  The convex.IsActive property does that for us.
             if (convex.IsActive && convex.entity.PositionUpdateMode == PositionUpdateMode.Continuous)
             {
                 //TODO: This system could be made more robust by using a similar region-based rejection of edges.
@@ -187,14 +188,14 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         {
             info.Contact = MeshManifold.contacts.Elements[index];
             //Find the contact's normal and friction forces.
-            info.FrictionForce = 0;
-            info.NormalForce = 0;
+            info.FrictionImpulse = 0;
+            info.NormalImpulse = 0;
             for (int i = 0; i < contactConstraint.frictionConstraints.count; i++)
             {
                 if (contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.contact == info.Contact)
                 {
-                    info.FrictionForce = contactConstraint.frictionConstraints.Elements[i].accumulatedImpulse;
-                    info.NormalForce = contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.accumulatedImpulse;
+                    info.FrictionImpulse = contactConstraint.frictionConstraints.Elements[i].accumulatedImpulse;
+                    info.NormalImpulse = contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.accumulatedImpulse;
                     break;
                 }
             }

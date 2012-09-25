@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.DataStructures;
 using Microsoft.Xna.Framework;
 using BEPUphysics.Threading;
@@ -47,6 +48,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
         /// <param name="entry">Entry to add.</param>
         public override void Add(BroadPhaseEntry entry)
         {
+            base.Add(entry);
             //Entities do not set up their own bounding box before getting stuck in here.  If they're all zeroed out, the tree will be horrible.
             Vector3 offset;
             Vector3.Subtract(ref entry.boundingBox.Max, ref entry.boundingBox.Min, out offset);
@@ -76,6 +78,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
         /// <param name="entry">Entry to remove.</param>
         public override void Remove(BroadPhaseEntry entry)
         {
+            base.Remove(entry);
             entries.Remove(entry);
         }
 

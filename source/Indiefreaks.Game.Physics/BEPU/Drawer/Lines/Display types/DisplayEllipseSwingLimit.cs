@@ -2,7 +2,7 @@
 using BEPUphysics.Constraints.TwoEntity.JointLimits;
 using Microsoft.Xna.Framework;
 
-namespace BEPU.Drawer.Lines
+namespace BEPUphysics.Drawer.Lines
 {
     /// <summary>
     /// Graphical representation of a twist joint
