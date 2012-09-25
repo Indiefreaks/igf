@@ -141,6 +141,9 @@
     <Reference Include="Microsoft.Xna.Framework.GamerServices" />
     <Reference Include="Microsoft.Xna.Framework.Graphics" />
     <Reference Include="mscorlib" />
+    <Reference Include="SynapseGaming-SunBurn-Indie">
+      <HintPath>C:\Program Files (x86)\Synapse Gaming - SunBurn\Version 2.0.18\ResourceSDK\Xbox360\SynapseGaming-SunBurn-Indie.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />

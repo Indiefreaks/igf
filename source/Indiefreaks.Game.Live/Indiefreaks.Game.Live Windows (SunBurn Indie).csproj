@@ -94,8 +94,9 @@
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
-    <Reference Include="SynapseGaming-SunBurn-Indie, Version=2.0.17.6, Culture=neutral, PublicKeyToken=eb76e51de43fcd70, processorArchitecture=x86">
+    <Reference Include="SynapseGaming-SunBurn-Indie, Version=2.0.18.7, Culture=neutral, PublicKeyToken=eb76e51de43fcd70, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Synapse Gaming - SunBurn\Version 2.0.18\ResourceSDK\Windows\SynapseGaming-SunBurn-Indie.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Private>False</Private>
