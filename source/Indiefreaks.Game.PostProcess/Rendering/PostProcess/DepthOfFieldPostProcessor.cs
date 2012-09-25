@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SynapseGaming.LightingSystem.Core;
 using SynapseGaming.LightingSystem.Rendering;
 
-namespace Indiefreaks.Xna.Rendering.PostProcess.DOF
+namespace Indiefreaks.Xna.Rendering.PostProcess
 {
     /// <summary>
     /// Adds a Depth of field effect to the current rendered scene

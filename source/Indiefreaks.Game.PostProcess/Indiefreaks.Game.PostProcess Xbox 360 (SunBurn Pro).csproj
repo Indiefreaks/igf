@@ -62,16 +62,14 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Rendering\PostProcess\GodRays\" />
-    <Folder Include="Rendering\PostProcess\MotionBlur\" />
-    <Folder Include="Rendering\PostProcess\SSAO\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rendering\PostProcess\Bloom\BloomPostProcessor.cs" />
-    <Compile Include="Rendering\PostProcess\DOF\DepthOfFieldPostProcessor.cs" />
-    <Compile Include="Rendering\PostProcess\GammaCorrection\GammaCorrectionPostProcessor.cs" />
+    <Compile Include="Rendering\PostProcess\BloomPostProcessor.cs" />
+    <Compile Include="Rendering\PostProcess\ColorCorrectionProcessor.cs" />
+    <Compile Include="Rendering\PostProcess\DepthOfFieldPostProcessor.cs" />
+    <Compile Include="Rendering\PostProcess\GammaCorrectionPostProcessor.cs" />
+    <Compile Include="Rendering\PostProcess\NightVisionProcessor.cs" />
     <Compile Include="Rendering\PostProcess\PostProcessToolBox.cs" />
     <Compile Include="Rendering\PostProcess\Resources\Xbox360PostProcessResources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -46,3 +46,6 @@ The goal here is to share with the community what I consider as best practices s
 * C# programming
 * Microsoft Xna Framework
 * SunBurn Engine for advanced rendering
+
+# Build Notes
+* If you are having trouble building, perform a clean then right click the platform folder of your choice and select Rebuild. For example, right click the solution, click clean. Once complete, right click the folder "Framework Projects\Sunburn Pro\Windows" and select Rebuild.

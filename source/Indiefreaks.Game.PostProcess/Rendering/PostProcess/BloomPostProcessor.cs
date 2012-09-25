@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SynapseGaming.LightingSystem.Core;
 using SynapseGaming.LightingSystem.Rendering;
 
-namespace Indiefreaks.Xna.Rendering.PostProcess.Bloom
+namespace Indiefreaks.Xna.Rendering.PostProcess
 {
     public class BloomPostProcessor : BaseRenderTargetPostProcessor
     {

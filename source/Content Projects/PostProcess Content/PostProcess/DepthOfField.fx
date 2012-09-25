@@ -3,7 +3,6 @@
 float FarClip;
 float FocalDistance;
 float FocalWidth;
-float Attenuation;
 
 texture DiffuseMap;
 sampler SceneSampler = sampler_state
@@ -70,7 +69,7 @@ float4 PS_DepthOfField(VertexShaderOutput input) :COLOR0
 	float depth = tex2D(DepthSampler, input.TexCoord).r;
 	float blurFactor = GetBlurFactor(-depth);
 
-	return lerp(originalColor,blurColor,saturate(blurFactor) * Attenuation);
+	return lerp(originalColor,blurColor,saturate(blurFactor));
 }
 
 technique DofPostProcess

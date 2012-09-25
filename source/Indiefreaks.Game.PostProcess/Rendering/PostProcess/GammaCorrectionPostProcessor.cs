@@ -1,10 +1,10 @@
-﻿using Indiefreaks.Xna.Rendering.PostProcess.Resources;
+using Indiefreaks.Xna.Rendering.PostProcess.Resources;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using SynapseGaming.LightingSystem.Core;
 using SynapseGaming.LightingSystem.Rendering;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 
-namespace Indiefreaks.Xna.Rendering.PostProcess.GammaCorrection
+namespace Indiefreaks.Xna.Rendering.PostProcess
 {
     public class GammaCorrectionPostProcessor : BaseRenderTargetPostProcessor
     {

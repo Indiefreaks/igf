@@ -18,9 +18,8 @@ texture SceneTexture;
 sampler SceneSampler 
 {
     Texture = (SceneTexture);
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = Linear;  
+    MinFilter = Point;
+    MagFilter = Point;
     AddressU = Clamp;
     AddressV = Clamp;
 };
