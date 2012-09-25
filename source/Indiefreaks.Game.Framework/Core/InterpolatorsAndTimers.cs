@@ -8,10 +8,13 @@ namespace Indiefreaks.Xna.Core
     /// </summary>
     /// <param name="progress">The current progress of the Interpolator in the range [0, 1].</param>
     /// <returns>A value representing the scaled progress used to generate the Interpolator's Value.</returns>
-    public delegate float InterpolatorScaleDelegate(float progress);
+	public delegate float InterpolatorScaleDelegate(float progress, InterpolatorEaseDirection direction);
+	
+	public enum InterpolatorEaseDirection { In = 0, Out = 1, InOut = 2 }
 
     public sealed class Interpolator
     {
+
         // ReSharper disable StaticFieldInitializersReferesToFieldBelow
         private static readonly Pool<Interpolator> Interpolators = new Pool<Interpolator>(10, i => i._valid)
         {
@@ -40,6 +43,8 @@ namespace Indiefreaks.Xna.Core
         private float _speed;
         private Action<Interpolator> _step;
         private bool _valid;
+
+		private InterpolatorEaseDirection _direction;
 
         /// <summary>
         /// Gets the interpolator's progress in the range of [0, 1].
@@ -82,7 +87,7 @@ namespace Indiefreaks.Xna.Core
             Action<Interpolator> step,
             Action<Interpolator> completed)
         {
-            return Create(start, end, length, InterpolatorScales.Linear, step, completed);
+            return Create(start, end, length, InterpolatorScales.Linear, InterpolatorEaseDirection.InOut, step, completed);
         }
 
         /// <summary>
@@ -100,6 +105,7 @@ namespace Indiefreaks.Xna.Core
             float end,
             float length,
             InterpolatorScaleDelegate scale,
+			InterpolatorEaseDirection direction,
             Action<Interpolator> step,
             Action<Interpolator> completed)
         {
@@ -116,6 +122,7 @@ namespace Indiefreaks.Xna.Core
             i._completed = completed;
             i._scale = scale;
             i._speed = 1f / length;
+			i._direction = direction;
 
             return i;
         }
@@ -147,7 +154,7 @@ namespace Indiefreaks.Xna.Core
                 p.Progress = Math.Min(p.Progress + p._speed * dt, 1f);
 
                 // get the scaled progress and use that to generate the value
-                var scaledProgress = p._scale(p.Progress);
+                var scaledProgress = p._scale(p.Progress, p._direction);
                 p.Value = p.Start + p._range * scaledProgress;
 
                 // invoke the step callback
@@ -169,6 +176,7 @@ namespace Indiefreaks.Xna.Core
         }
     }
 
+
     /// <summary>
     /// A static class that contains predefined scales for Interpolators.
     /// </summary>
@@ -189,30 +197,194 @@ namespace Indiefreaks.Xna.Core
         /// </summary>
         public static readonly InterpolatorScaleDelegate Cubic = CubicInterpolation;
 
-        /// <summary>
-        /// A quartic interpolator scale.
-        /// </summary>
-        public static readonly InterpolatorScaleDelegate Quartic = QuarticInterpolation;
+		/// <summary>
+		/// A quartic interpolator scale.
+		/// </summary>
+		public static readonly InterpolatorScaleDelegate Quartic = QuarticInterpolation;
 
-        private static float LinearInterpolation(float progress)
+		/// <summary>
+		/// A quintic interpolator scale.
+		/// </summary>
+		public static readonly InterpolatorScaleDelegate Quintic = QuinticInterpolation;
+
+		/// <summary>
+		/// A quintic interpolator scale.
+		/// </summary>
+		public static readonly InterpolatorScaleDelegate Exponential = ExponentialInterpolation;
+
+		/// <summary>
+		/// A circular interpolator scale.
+		/// </summary>
+		public static readonly InterpolatorScaleDelegate Circular = CircularInterpolation;
+
+		/// <summary>
+		/// An interpolator scale that bounces back before/after the start/target position.
+		/// </summary>
+		public static readonly InterpolatorScaleDelegate Back = BackInterpolation;
+
+
+		private static float LinearInterpolation(float progress, InterpolatorEaseDirection direction)
         {
             return progress;
         }
 
-        private static float QuadraticInterpolation(float progress)
+        private static float QuadraticInterpolation(float progress, InterpolatorEaseDirection direction)
         {
-            return progress * progress;
+			switch(direction)
+			{
+				case InterpolatorEaseDirection.In:
+					return progress * progress;
+
+				case InterpolatorEaseDirection.Out:
+					return -progress * (progress - 2f);
+
+				case InterpolatorEaseDirection.InOut:
+					progress *= 2f;
+					if (progress < 1f) 
+						return 0.5f * progress * progress;
+					progress--;
+					return -0.5f * (progress * (progress - 2f) - 1f);
+				
+				default:
+					return progress * progress;
+			}
+		}
+
+		private static float CubicInterpolation(float progress, InterpolatorEaseDirection direction)
+        {
+			switch (direction)
+			{
+				case InterpolatorEaseDirection.In:
+					return progress * progress * progress;
+
+				case InterpolatorEaseDirection.Out:
+					progress--;
+					return progress * progress * progress + 1f;
+
+				case InterpolatorEaseDirection.InOut:
+					progress *= 2f;
+					if (progress < 1f)
+						return 0.5f * progress * progress * progress;
+					progress -= 2f;
+					return 0.5f * (progress * progress * progress + 2f);
+
+				default:
+					return progress * progress * progress;
+			}
         }
 
-        private static float CubicInterpolation(float progress)
+		private static float QuarticInterpolation(float progress, InterpolatorEaseDirection direction)
+		{
+			switch (direction)
+			{
+				case InterpolatorEaseDirection.In:
+					return progress * progress * progress * progress;
+
+				case InterpolatorEaseDirection.Out:
+					progress--;
+					return (progress * progress * progress * progress - 1f);
+
+				case InterpolatorEaseDirection.InOut:
+					progress *= 2f;
+					if (progress < 1)
+						return 0.5f * progress * progress * progress * progress;
+					progress -= 2;
+					return -0.5f * (progress * progress * progress * progress - 2f);
+
+				default:
+					return progress * progress * progress * progress;
+			}
+		}
+
+		private static float QuinticInterpolation(float progress, InterpolatorEaseDirection direction)
         {
-            return progress * progress * progress;
+			switch (direction)
+			{
+				case InterpolatorEaseDirection.In:
+					return progress * progress * progress * progress * progress;
+
+				case InterpolatorEaseDirection.Out:
+					progress--;
+					return (progress * progress * progress * progress * progress - 1f);
+
+				case InterpolatorEaseDirection.InOut:
+					progress *= 2f;
+					if (progress < 1)
+						return 0.5f * progress * progress * progress * progress * progress;
+					progress -= 2;
+					return -0.5f * (progress * progress * progress * progress * progress - 2f);
+
+				default:
+					return progress * progress * progress * progress * progress;
+			}
         }
 
-        private static float QuarticInterpolation(float progress)
-        {
-            return progress * progress * progress * progress;
-        }
+		private static float ExponentialInterpolation(float progress, InterpolatorEaseDirection direction)
+		{
+			switch (direction)
+			{
+				case InterpolatorEaseDirection.In:
+					return (progress == 0f) ? 0f : (float)Math.Pow(2f, 10f * (progress - 1f));
+
+				case InterpolatorEaseDirection.Out:
+					return (progress == 1f) ? 0f : -(float)Math.Pow(2f, (-10f * progress) + 1f);
+
+				case InterpolatorEaseDirection.InOut:
+					progress *= 2f;
+					if (progress < 1f) 
+						return 0.5f * (float)Math.Pow(2f, 10f * (progress - 1));
+					return 0.5f * -(float)Math.Pow(2f, -10f * (progress - 1)) + 2f;
+
+				default:
+					return (progress == 0f) ? 0f : (float)Math.Pow(2f, 10f * (progress - 1f));
+			}
+		}
+
+		private static float CircularInterpolation(float progress, InterpolatorEaseDirection direction)
+		{
+			switch (direction)
+			{
+				case InterpolatorEaseDirection.In:
+					return -(float)(Math.Sqrt(1f - progress * progress) - 1f);
+
+				case InterpolatorEaseDirection.Out:
+					progress--;
+					return (float)Math.Sqrt(1f - progress * progress);
+
+				case InterpolatorEaseDirection.InOut:
+					progress *= 2f;
+					if (progress < 1) 
+						return -0.5f * (float)Math.Sqrt(1f - progress * progress) - 1f;
+					progress -= 2;
+					return 0.5f * (float)Math.Sqrt(1f - progress * progress) + 1f;
+
+				default:
+					return -(float)(Math.Sqrt(1f - progress * progress) - 1f);
+			}
+		}
+
+		private static float BackInterpolation(float progress, InterpolatorEaseDirection direction)
+		{
+			switch (direction)
+			{
+				case InterpolatorEaseDirection.In:
+					return progress * progress * (2.70158f * progress - 1.70158f);
+
+				case InterpolatorEaseDirection.Out:
+					progress--;
+					return progress * progress * (2.70158f * progress + 1.70158f) + 1f;
+
+				case InterpolatorEaseDirection.InOut:
+					progress *= 2f;
+					if (progress < 1f)
+						return 0.5f * progress * progress * (3.59491f * progress - 2.59491f);
+					progress -= 2;
+					return 0.5f * progress * progress * (3.59491f * progress - 2.59491f) + 2f;
+
+				default:
+					return progress * progress * (2.70158f * progress - 1.70158f);
+			}
+		}
     }
 
     /// <summary>

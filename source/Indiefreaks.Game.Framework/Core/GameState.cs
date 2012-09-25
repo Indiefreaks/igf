@@ -14,7 +14,7 @@ namespace Indiefreaks.Xna.Core
     {
         protected internal readonly List<IContentHost> ContentToLoad;
         protected readonly List<ILayer> Layers = new List<ILayer>();
-        private readonly FrameBuffers _frameBuffers;
+        private FrameBuffers _frameBuffers;
         private readonly ContentManager _localContentManager;
         protected internal bool LoadingComplete;
         protected internal bool LoadingInProgress;
@@ -49,8 +49,24 @@ namespace Indiefreaks.Xna.Core
             SunBurn = Application.SunBurn;
 
             // create the Framebuffers and assigns the ownership to the SceneInterface
+            CreateFrameBuffers(bufferWidth, bufferHeight, precisionMode, lightingRange);
+
+            Application.GraphicsDevice.DeviceReset += new EventHandler<EventArgs>(GraphicsDevice_DeviceReset);
+        }
+
+        private void CreateFrameBuffers(int bufferWidth, int bufferHeight, DetailPreference precisionMode, DetailPreference lightingRange)
+        {
+            if (_frameBuffers != null)
+                _frameBuffers.Unload();
+            
             _frameBuffers = new FrameBuffers(bufferWidth, bufferHeight, precisionMode, lightingRange);
             SunBurn.ResourceManager.AssignOwnership(_frameBuffers);
+        }
+
+        void GraphicsDevice_DeviceReset(object sender, EventArgs e)
+        {
+            if (_frameBuffers != null)
+            CreateFrameBuffers(Application.Graphics.PreferredBackBufferWidth, Application.Graphics.PreferredBackBufferHeight, _frameBuffers.PrecisionMode, _frameBuffers.LightingRange);
         }
 
         /// <summary>
@@ -59,11 +75,8 @@ namespace Indiefreaks.Xna.Core
         /// <param name = "name">The name of the GameState</param>
         /// <param name = "application">The current Application instance</param>
         protected GameState(string name, Application application)
-#if !WINDOWS_PHONE
-            : this(name, application, 1152, 640, DetailPreference.High, DetailPreference.High)
-#else
-            : this(name, application, application.GraphicsDeviceManager.PreferredBackBufferWidth, application.GraphicsDeviceManager.PreferredBackBufferHeight, DetailPreference.High, DetailPreference.High)
-#endif
+            : this(name, application, Application.Graphics.PreferredBackBufferWidth, Application.Graphics.PreferredBackBufferHeight, 
+					DetailPreference.Medium, DetailPreference.Medium)
         {
         }
 

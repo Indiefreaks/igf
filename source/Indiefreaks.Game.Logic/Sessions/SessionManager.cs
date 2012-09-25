@@ -300,19 +300,19 @@ namespace Indiefreaks.Xna.Sessions
             if (IsIdentifyingPlayers)
             {
 #if !WINDOWS_PHONE
-                if (Application.Input.PlayerOne.Buttons.A.IsPressed || Application.Input.PlayerOne.Buttons.Start.IsPressed)
+				if (Application.Input.PlayerOne.Buttons.A.IsReleased || Application.Input.PlayerOne.Buttons.Start.IsReleased)
                 {
                     IdentifyPlayer(Application.Input.PlayerOne);
                 }
-                if (Application.Input.PlayerTwo.Buttons.A.IsPressed || Application.Input.PlayerTwo.Buttons.Start.IsPressed)
+				if (Application.Input.PlayerTwo.Buttons.A.IsReleased || Application.Input.PlayerTwo.Buttons.Start.IsReleased)
                 {
                     IdentifyPlayer(Application.Input.PlayerTwo);
                 }
-                if (Application.Input.PlayerThree.Buttons.A.IsPressed || Application.Input.PlayerThree.Buttons.Start.IsPressed)
+				if (Application.Input.PlayerThree.Buttons.A.IsReleased || Application.Input.PlayerThree.Buttons.Start.IsReleased)
                 {
                     IdentifyPlayer(Application.Input.PlayerThree);
                 }
-                if (Application.Input.PlayerFour.Buttons.A.IsPressed || Application.Input.PlayerFour.Buttons.Start.IsPressed)
+				if (Application.Input.PlayerFour.Buttons.A.IsReleased || Application.Input.PlayerFour.Buttons.Start.IsReleased)
                 {
                     IdentifyPlayer(Application.Input.PlayerFour);
                 }

@@ -62,6 +62,16 @@ namespace Indiefreaks.Xna.Rendering.Gui
             Height = height;
 
             InputSensibility = 0.2f;
+            Application.Graphics.DeviceReset += (sender, args) =>
+            {
+                if (IsVisible)
+                    foreach (Control control in _controls)
+                    {
+                        if (control.IsVisible)
+                        ((IGuiElement)control).Invalidate();
+                    }
+            };
+
         }
 
         /// <summary>
@@ -79,14 +89,16 @@ namespace Indiefreaks.Xna.Rendering.Gui
         /// Creates a new instance without input support
         /// </summary>
         /// <param name="renderToScreen">Set it to true to render directly to screen; false to use the Texture property and render the Screen content elsewhere</param>
-        public Screen(bool renderToScreen) : this(renderToScreen, false, null)
+        public Screen(bool renderToScreen)
+            : this(renderToScreen, false, null)
         {
         }
 
         /// <summary>
         /// Creates a new instance that renders to screen
         /// </summary>
-        public Screen() : this(true)
+        public Screen()
+            : this(true)
         {
         }
 
@@ -145,7 +157,7 @@ namespace Indiefreaks.Xna.Rendering.Gui
         /// </summary>
         public void SetFocus()
         {
-            if(!HasFocus)
+            if (!HasFocus)
                 OnFocusAcquired();
         }
 
@@ -154,7 +166,7 @@ namespace Indiefreaks.Xna.Rendering.Gui
         /// </summary>
         public void LoseFocus()
         {
-            if(HasFocus)
+            if (HasFocus)
                 OnFocusLost();
         }
 
@@ -173,11 +185,11 @@ namespace Indiefreaks.Xna.Rendering.Gui
             foreach (Control control in _controls)
             {
                 if (control.IsVisible)
-                    ((IGuiElement) control).Render(spriteRenderer);
+                    ((IGuiElement)control).Render(spriteRenderer);
             }
 
             // we refresh this screen if required
-            ((IGuiElement) this).Refresh(device);
+            ((IGuiElement)this).Refresh(device);
 
             // if we're using a RenderTarget for this screen, we set it to the GraphicsDevice
             if (!RendersToScreen)
@@ -195,7 +207,7 @@ namespace Indiefreaks.Xna.Rendering.Gui
                     spriteRenderer.Draw(control.Texture,
                                         !RendersToScreen ? new Rectangle(control.X - X, control.Y - Y, control.Width, control.Height) : new Rectangle(control.X + X, control.Y + Y, control.Width, control.Height),
                                         null,
-                                        _spriteBatchColor*Alpha,
+                                        _spriteBatchColor * Alpha,
                                         control.Rotation,
                                         control.Origin,
                                         SpriteEffects.None,
@@ -424,7 +436,7 @@ namespace Indiefreaks.Xna.Rendering.Gui
                         if (focusableControl.HasFocus)
                         {
                             if (_movementSleep <= 0.2f)
-                                _movementSleep += (float) gameTime.ElapsedGameTime.TotalSeconds;
+                                _movementSleep += (float)gameTime.ElapsedGameTime.TotalSeconds;
                             else if (input.Buttons.LeftStickClick.IsReleased)
                                 focusableControl.OnClicked();
                             else if (input.ThumbSticks.LeftStick.X < 0 && _movementSleep > InputSensibility)
@@ -484,7 +496,7 @@ namespace Indiefreaks.Xna.Rendering.Gui
                 }
 #endif
 
-                if(_focusableControls.Count == 0)
+                if (_focusableControls.Count == 0)
                     return;
 
                 if (input.Buttons.A.IsReleased)
@@ -505,7 +517,7 @@ namespace Indiefreaks.Xna.Rendering.Gui
                         _movementSleep = 0f;
                     }
 
-                    _movementSleep += (float)gameTime.ElapsedGameTime.TotalSeconds;                    
+                    _movementSleep += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 }
                 else if (input.ThumbSticks.LeftStick.Y < 0)
                 {
@@ -520,7 +532,7 @@ namespace Indiefreaks.Xna.Rendering.Gui
                         _movementSleep = 0f;
                     }
 
-                    _movementSleep += (float)gameTime.ElapsedGameTime.TotalSeconds;                    
+                    _movementSleep += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 }
                 else if (input.ThumbSticks.LeftStick.X > 0)
                 {
@@ -530,7 +542,7 @@ namespace Indiefreaks.Xna.Rendering.Gui
                         _movementSleep = 0f;
                     }
 
-                    _movementSleep += (float)gameTime.ElapsedGameTime.TotalSeconds;                    
+                    _movementSleep += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 }
                 else if (input.ThumbSticks.LeftStick.X < 0)
                 {
@@ -540,7 +552,7 @@ namespace Indiefreaks.Xna.Rendering.Gui
                         _movementSleep = 0f;
                     }
 
-                    _movementSleep += (float)gameTime.ElapsedGameTime.TotalSeconds;                    
+                    _movementSleep += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 }
                 else
                 {
@@ -572,7 +584,7 @@ namespace Indiefreaks.Xna.Rendering.Gui
                 return;
             }
 
-            if(HasFocus)
+            if (HasFocus)
                 HandleInput(PlayerInput, gameTime);
         }
 

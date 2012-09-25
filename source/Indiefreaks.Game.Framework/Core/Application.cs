@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+
 using Indiefreaks.Xna.Extensions;
 using Indiefreaks.Xna.Input;
 using Indiefreaks.Xna.Rendering;
@@ -18,6 +19,7 @@ using SynapseGaming.LightingSystem.Rendering.Deferred;
 using SynapseGaming.LightingSystem.Rendering.Forward;
 using SynapseGaming.LightingSystem.Shadows.Deferred;
 using SynapseGaming.LightingSystem.Shadows.Forward;
+using MessageBoxIcon = Microsoft.Xna.Framework.GamerServices.MessageBoxIcon;
 #elif !WINDOWS_PHONE
 using SynapseGaming.LightingSystem.Rendering.Forward;
 using SynapseGaming.LightingSystem.Shadows.Forward;
@@ -53,28 +55,28 @@ namespace Indiefreaks.Xna.Core
             Instance = this;
 
             IsFixedTimeStep = true;
-            TargetElapsedTime = TimeSpan.FromMilliseconds(1000d/60d);
+            TargetElapsedTime = TimeSpan.FromMilliseconds(1000d / 60d);
 
             EnableClearDevice = true;
             ClearDeviceColor = Color.Black;
 
             // create our GraphicsDeviceManager instance
             GraphicsDeviceManager = new GraphicsDeviceManager(this)
-                                        {
-                                            SynchronizeWithVerticalRetrace = true,
+            {
+                SynchronizeWithVerticalRetrace = true,
 #if !WINDOWS_PHONE
-                                            PreferredBackBufferWidth = 1280,
-                                            PreferredBackBufferHeight = 720,
+                PreferredBackBufferWidth = 1280,
+                PreferredBackBufferHeight = 720,
 #else
                 PreferredBackBufferWidth = 800,
                 PreferredBackBufferHeight = 480,
 #endif
-                                        };
+            };
 
             GraphicsDeviceManager.PreparingDeviceSettings += (sender, e) =>
-                                                                 {
+            {
 #if WINDOWS
-    // improves overall performance with dynamic shadows.
+                // improves overall performance with dynamic shadows.
                 e.GraphicsDeviceInformation.
                     PresentationParameters.
                     RenderTargetUsage =
@@ -86,20 +88,20 @@ namespace Indiefreaks.Xna.Core
                                                                          RenderTargetUsage =
                                                                          RenderTargetUsage.PreserveContents;
 #endif
-                                                                     // Used for advanced edge cleanup.
-                                                                     e.GraphicsDeviceInformation.
-                                                                         PresentationParameters.
-                                                                         DepthStencilFormat =
-                                                                         DepthFormat.Depth24Stencil8;
-                                                                 };
+                // Used for advanced edge cleanup.
+                e.GraphicsDeviceInformation.
+                    PresentationParameters.
+                    DepthStencilFormat =
+                    DepthFormat.Depth24Stencil8;
+            };
 
             try
             {
                 // create the SunBurn required SunBurnCoreSystem instance
                 SunBurnCoreSystem = new SunBurnCoreSystem(Services, Content)
-                                        {
-                                            DetectOverSizedFrameBuffers = false
-                                        };
+                {
+                    DetectOverSizedFrameBuffers = false
+                };
             }
             catch (Exception e)
             {
@@ -108,15 +110,15 @@ namespace Indiefreaks.Xna.Core
 
             // create the SunBurn SunBurnSystemPreferences instance used when creating a new SceneInterface instance: defaults to average quality
             SunBurnSystemPreferences = new SystemPreferences
-                                           {
-                                               EffectDetail = DetailPreference.Medium,
-                                               LightingDetail = DetailPreference.Medium,
-                                               MaxAnisotropy = 4,
-                                               PostProcessingDetail = DetailPreference.Medium,
-                                               ShadowDetail = DetailPreference.Medium,
-                                               ShadowQuality = 2.0f,
-                                               TextureSampling = SamplingPreference.Anisotropic,
-                                           };
+            {
+                EffectDetail = DetailPreference.Medium,
+                LightingDetail = DetailPreference.Medium,
+                MaxAnisotropy = 4,
+                PostProcessingDetail = DetailPreference.Medium,
+                ShadowDetail = DetailPreference.Medium,
+                ShadowQuality = 2.0f,
+                TextureSampling = SamplingPreference.Anisotropic,
+            };
 
             // create and register InputManager instance for the game.
             new InputManager(this);
@@ -127,6 +129,12 @@ namespace Indiefreaks.Xna.Core
 
             // create our Thread pool
             Threads = new ThreadPool();
+            Window.ClientSizeChanged += (sender, args) =>
+                {
+                    Graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
+                    Graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
+                    Graphics.ApplyChanges();
+                };
         }
 
         /// <summary>
@@ -144,12 +152,12 @@ namespace Indiefreaks.Xna.Core
         /// </summary>
         public static InputManager Input
         {
-            get { return Instance.Services.GetService(typeof (InputManager)) as InputManager; }
+            get { return Instance.Services.GetService(typeof(InputManager)) as InputManager; }
         }
 
         public static StorageManager Storage
         {
-            get { return Instance.Services.GetService(typeof (StorageManager)) as StorageManager; }
+            get { return Instance.Services.GetService(typeof(StorageManager)) as StorageManager; }
         }
 
         /// <summary>
@@ -230,7 +238,7 @@ namespace Indiefreaks.Xna.Core
 
             // create the background texture used for transitions
             _transitionTexture = new Texture2D(GraphicsDevice, 1, 1);
-            _transitionTexture.SetData(new[] {Color.White});
+            _transitionTexture.SetData(new[] { Color.White });
         }
 
         /// <summary>
@@ -333,16 +341,16 @@ namespace Indiefreaks.Xna.Core
             Threads.Update();
 
             // we update the Interpolator and Timer providers
-            Interpolator.Update((float) gameTime.ElapsedGameTime.TotalSeconds);
-            Timer.Update((float) gameTime.ElapsedGameTime.TotalSeconds);
+            Interpolator.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            Timer.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             // If the current GameState is loaded, we update it, otherwise, we update its LoadingGameState
             if (ActiveGameState != null && ActiveGameState.IsLoadingComplete &&
                 (_loadingGameState == null || _loadingGameState.ShouldRenderLoadedGameState))
-                ((IUpdate) ActiveGameState).Update(gameTime);
+                ((IUpdate)ActiveGameState).Update(gameTime);
             if (_loadingGameState != null && _loadingGameState.IsLoadingComplete &&
                 !_loadingGameState.ShouldRenderLoadedGameState)
-                ((IUpdate) _loadingGameState).Update(gameTime);
+                ((IUpdate)_loadingGameState).Update(gameTime);
         }
 
         public bool EnableClearDevice { get; set; }
@@ -362,16 +370,16 @@ namespace Indiefreaks.Xna.Core
             if (_loadingGameState != null && _loadingGameState.IsLoadingComplete &&
                 !_loadingGameState.ShouldRenderLoadedGameState)
             {
-                ((IDraw) _loadingGameState).Draw(gameTime);
+                ((IDraw)_loadingGameState).Draw(gameTime);
             }
-                // Otherwise, we just render the active GameState
+            // Otherwise, we just render the active GameState
             else if (ActiveGameState != null && ActiveGameState.IsLoadingComplete)
             {
-                ((IDraw) ActiveGameState).Draw(gameTime);
+                ((IDraw)ActiveGameState).Draw(gameTime);
             }
 
             // we render the transition if required
-            if (_fadeActive)
+            if (_fadeActive || _hideActive)
             {
                 _transitionRenderer.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
                 _transitionRenderer.Draw(_transitionTexture, GraphicsDevice.Viewport.Bounds, _transitionColor);
@@ -383,6 +391,7 @@ namespace Indiefreaks.Xna.Core
         }
 
         private static bool _fadeActive;
+        private static bool _hideActive;
 
         /// <summary>
         ///   Fades the whole Application screen in.
@@ -397,18 +406,23 @@ namespace Indiefreaks.Xna.Core
                 return;
             }
 
+            // 
+            if (_hideActive)
+            {
+                _hideActive = false;
+            }
             _fadeActive = true;
 
             Instance._transitionColor = startColor;
 
             Interpolator.Create(1.0f, 0.0f, length,
                                 (step) =>
-                                    {
-                                        Instance._transitionColor = new Color(Convert.ToSingle(Instance._transitionColor.R),
-                                                                              Convert.ToSingle(Instance._transitionColor.G),
-                                                                              Convert.ToSingle(Instance._transitionColor.B),
-                                                                              step.Value);
-                                    }, completed => _fadeActive = false);
+                                {
+                                    Instance._transitionColor = new Color(Convert.ToSingle(Instance._transitionColor.R),
+                                                                          Convert.ToSingle(Instance._transitionColor.G),
+                                                                          Convert.ToSingle(Instance._transitionColor.B),
+                                                                          step.Value);
+                                }, completed => _fadeActive = false);
         }
 
         /// <summary>
@@ -435,18 +449,28 @@ namespace Indiefreaks.Xna.Core
                 return;
             }
 
+            if (_hideActive)
+            {
+                Debug.WriteLine("Screen already hidden");
+                return;
+            }
+
             _fadeActive = true;
 
-            Instance._transitionColor = endColor*0f;
+            Instance._transitionColor = endColor * 0f;
 
             Interpolator.Create(0.0f, 1.0f, length,
                                 (step) =>
-                                    {
-                                        Instance._transitionColor = new Color(Convert.ToSingle(Instance._transitionColor.R),
-                                                                              Convert.ToSingle(Instance._transitionColor.G),
-                                                                              Convert.ToSingle(Instance._transitionColor.B),
-                                                                              step.Value);
-                                    }, completed => _fadeActive = false);
+                                {
+                                    Instance._transitionColor = new Color(Convert.ToSingle(Instance._transitionColor.R),
+                                                                          Convert.ToSingle(Instance._transitionColor.G),
+                                                                          Convert.ToSingle(Instance._transitionColor.B),
+                                                                          step.Value);
+                                }, completed =>
+                                {
+                                    _fadeActive = false;
+                                    _hideActive = true;
+                                });
         }
 
         /// <summary>
@@ -475,6 +499,11 @@ namespace Indiefreaks.Xna.Core
         /// <param name = "loadingGameState"></param>
         public void LoadGameState(GameState gameState, LoadingGameState loadingGameState)
         {
+            if (_hideActive)
+            {
+                _hideActive = false;
+            }
+
             if (gameState == null)
                 throw new ArgumentNullException("gameState");
 
@@ -513,6 +542,74 @@ namespace Indiefreaks.Xna.Core
 
             ActiveGameState.Load();
         }
+#if WINDOWS
+        public void SetWindowMode(WindowMode mode, int width, int height)
+        {
+            var form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(Window.Handle);
+
+            switch (mode)
+            {
+                case WindowMode.Fullscreen:
+                    // If we are not in fullscreen mode, toggle full screen on
+                    if (!Graphics.IsFullScreen)
+                        Graphics.ToggleFullScreen();
+
+                    // Set the backbuffer size
+                    Graphics.PreferredBackBufferWidth = width;
+                    Graphics.PreferredBackBufferHeight = height;
+                    Graphics.ApplyChanges();
+                    break;
+                case WindowMode.Windowed:
+
+                    // If we are in fullscreen mode, toggle full screen off
+                    if (Graphics.IsFullScreen)
+                        Graphics.ToggleFullScreen();
+
+                    // Set the backbuffer size
+                    Graphics.PreferredBackBufferWidth = width;
+                    Graphics.PreferredBackBufferHeight = height;
+                    Graphics.ApplyChanges();
+
+                    // Set window state if desired
+                    form.WindowState = System.Windows.Forms.FormWindowState.Normal;
+
+                    // Set the Border Style
+                    form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+
+                    // Set the ClientSize of the window (to be sure the backbuffer matches the viewport size)
+                    form.ClientSize = new System.Drawing.Size(width, height);
+
+                    // Center the window
+                    form.Location = new System.Drawing.Point(System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Size.Width / 2 - width / 2, System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Size.Height / 2 - height / 2);
+                    break;
+                case WindowMode.Maximized:
+                    if (Graphics.IsFullScreen)
+                        Graphics.ToggleFullScreen();
+
+                    Graphics.PreferredBackBufferWidth = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Size.Width;
+                    Graphics.PreferredBackBufferHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Size.Height;
+                    Graphics.ApplyChanges();
+
+                    // Remove the border
+                    form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+
+                    // Set window state if desired
+                    form.WindowState = System.Windows.Forms.FormWindowState.Normal;
+
+                    // Set the size and location
+                    form.ClientSize = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Size;
+                    form.Location = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Location;
+                    break;
+            }
+        }
+
+        public enum WindowMode
+        {
+            Fullscreen,
+            Windowed,
+            Maximized
+        }
+#endif
 
 #if !WINDOWS_PHONE
         public static void Run<T>() where T : Application, new()
@@ -566,7 +663,7 @@ namespace Indiefreaks.Xna.Core
     {
         private const string ErrorTitle = "Unexpected Error";
         private const string ErrorMessage = "The game had an unexpected error and had to shut down. " + "We're sorry for the inconvenience.";
-        private static readonly string[] ErrorButtons = new[] {"Exit to Dashboard", "View Error Details"};
+        private static readonly string[] ErrorButtons = new[] { "Exit to Dashboard", "View Error Details" };
         private readonly Exception _exception;
         private SpriteBatch _batch;
         private bool _displayException;
@@ -575,10 +672,10 @@ namespace Indiefreaks.Xna.Core
 
         public ExceptionApplication(bool gamerServicesCompoenentAlreadyInitialized, Exception e)
         {
-            new GraphicsDeviceManager(this) {PreferredBackBufferWidth = 1280, PreferredBackBufferHeight = 720};
+            new GraphicsDeviceManager(this) { PreferredBackBufferWidth = 1280, PreferredBackBufferHeight = 720 };
             _exception = e;
 
-            if(!gamerServicesCompoenentAlreadyInitialized)
+            if (!gamerServicesCompoenentAlreadyInitialized)
                 Components.Add(new GamerServicesComponent(this));
 
             Content.RootDirectory = "Content";
@@ -587,7 +684,7 @@ namespace Indiefreaks.Xna.Core
         protected override void LoadContent()
         {
             _batch = new SpriteBatch(GraphicsDevice);
-            
+
 #if WINDOWS
             var resourceContentManager = new ResourceContentManager(Services, Resources.WindowsCoreResources.ResourceManager);
 #elif XBOX
@@ -607,11 +704,11 @@ namespace Indiefreaks.Xna.Core
                     if (!Guide.IsVisible)
                     {
                         Guide.BeginShowMessageBox(PlayerIndex.One, ErrorTitle, ErrorMessage, ErrorButtons, 0, MessageBoxIcon.Error, result =>
-                                                                                                                                        {
-                                                                                                                                            int? choice = Guide.EndShowMessageBox(result);
-                                                                                                                                            if (choice.HasValue && choice.Value == 1) _displayException = true;
-                                                                                                                                            else Exit();
-                                                                                                                                        }, null);
+                        {
+                            int? choice = Guide.EndShowMessageBox(result);
+                            if (choice.HasValue && choice.Value == 1) _displayException = true;
+                            else Exit();
+                        }, null);
                         _shownMessage = true;
                     }
                 }
@@ -635,5 +732,7 @@ namespace Indiefreaks.Xna.Core
             base.Draw(gameTime);
         }
 #endif
+
+
     }
 }

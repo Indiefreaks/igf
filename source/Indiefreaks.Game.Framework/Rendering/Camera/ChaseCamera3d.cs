@@ -146,8 +146,8 @@ namespace Indiefreaks.Xna.Rendering.Camera
             if (TargetEntity != null)
             {
                 // Calculate desired camera properties in world space
-                Vector3 chaseDesiredPosition = TargetEntity.World.Translation + DesiredPositionOffset;  //new Vector3((chaseCoords.X > 0 ? TargetEntity.World.Translation.X : desiredPosition.X), (chaseCoords.Y > 0 ? TargetEntity.World.Translation.Y : desiredPosition.Y), (chaseCoords.Z > 0 ? TargetEntity.World.Translation.Z : desiredPosition.Z));
-                Vector3 chaseTargetPosition = TargetEntity.World.Translation + TargetPositionOffset;  //new Vector3((chaseCoords.X > 0 ? TargetEntity.World.Translation.X : TargetPosition.X), (chaseCoords.Y > 0 ? TargetEntity.World.Translation.Y : TargetPosition.Y), (chaseCoords.Z > 0 ? TargetEntity.World.Translation.Z : TargetPosition.Z));
+                Vector3 chaseDesiredPosition = Vector3.Transform(DesiredPositionOffset, TargetEntity.World);
+                Vector3 chaseTargetPosition = Vector3.Transform(TargetPositionOffset, TargetEntity.World);
 
                 if (chaseCoords.X == 0)
                 {

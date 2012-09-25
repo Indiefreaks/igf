@@ -38,6 +38,8 @@ namespace Indiefreaks.Xna.Rendering.Camera
 
             SceneState = new SceneState();
             SceneEnvironment = new SceneEnvironment();
+            Application.Graphics.DeviceReset += (sender, args) => {
+                _isProjectionDirty = true; };
         }
 
         /// <summary>
