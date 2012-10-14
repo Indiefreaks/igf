@@ -68,7 +68,7 @@ namespace Indiefreaks.Xna.Rendering.Gui
                     foreach (Control control in _controls)
                     {
                         if (control.IsVisible)
-                        ((IGuiElement)control).Invalidate();
+                            ((IGuiElement)control).Invalidate();
                     }
             };
 
@@ -339,10 +339,23 @@ namespace Indiefreaks.Xna.Rendering.Gui
 #else
             const bool useMipMap = true;
 #endif
-            if (Width == 0 || Height == 0)
-                _renderTarget2D = new RenderTarget2D(device, 100, 100, useMipMap, SurfaceFormat.Color, DepthFormat.None, Application.Graphics.GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
-            else
-                _renderTarget2D = new RenderTarget2D(device, Width, Height, useMipMap, SurfaceFormat.Color, DepthFormat.None, Application.Graphics.GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
+            if (_renderTarget2D != null && (Width != _renderTarget2D.Width || Height != _renderTarget2D.Height))
+            {
+                _renderTarget2D.Dispose();
+                _renderTarget2D = null;
+            }
+
+            if (_renderTarget2D == null)
+            {
+                if (Width == 0 || Height == 0)
+                    _renderTarget2D = new RenderTarget2D(device, 100, 100, useMipMap, SurfaceFormat.Color, DepthFormat.None,
+                                                         Application.Graphics.GraphicsDevice.PresentationParameters.MultiSampleCount,
+                                                         RenderTargetUsage.PreserveContents);
+                else
+                    _renderTarget2D = new RenderTarget2D(device, Width, Height, useMipMap, SurfaceFormat.Color, DepthFormat.None,
+                                                         Application.Graphics.GraphicsDevice.PresentationParameters.MultiSampleCount,
+                                                         RenderTargetUsage.PreserveContents);
+            }
         }
 
         /// <summary>
@@ -379,6 +392,7 @@ namespace Indiefreaks.Xna.Rendering.Gui
         {
             _controls.Clear();
             _focusableControls.Clear();
+            _focusedControlIndex = 0;
         }
 
         #region Implementation of IUpdate
