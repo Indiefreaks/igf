@@ -35,13 +35,13 @@ namespace Indiefreaks.Xna.Rendering.Gui
         /// Gets or sets the scale factor to be applied to this control
         /// </summary>
         public Vector2 Scale { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the rotation angle (in radians) of the control
         /// </summary>
         public float Rotation
         {
-            get { return _rotation;}
+            get { return _rotation; }
             set
             {
                 if (_rotation != value)
@@ -129,7 +129,7 @@ namespace Indiefreaks.Xna.Rendering.Gui
         /// </summary>
         public void LoseFocus()
         {
-            if(HasFocus)
+            if (HasFocus)
                 OnFocusLost();
         }
 
@@ -144,7 +144,7 @@ namespace Indiefreaks.Xna.Rendering.Gui
             {
                 GraphicsDevice device = spriteRenderer.GraphicsDevice;
                 // we refresh the control properties
-                ((IGuiElement) this).Refresh(device);
+                ((IGuiElement)this).Refresh(device);
 
                 device.SetRenderTarget(_renderTarget2D);
                 device.Clear(Color.Transparent);
@@ -298,7 +298,19 @@ namespace Indiefreaks.Xna.Rendering.Gui
             var width = Math.Min(Width, 4096);
             var height = Math.Min(Height, 4096);
 #endif
-            _renderTarget2D = new RenderTarget2D(device, Math.Max(width, 1), Math.Max(height,1), useMipMap, SurfaceFormat.Color, DepthFormat.None, Application.Graphics.GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
+            if (_renderTarget2D != null && (width != _renderTarget2D.Width || height != _renderTarget2D.Height))
+            {
+                _renderTarget2D.Dispose();
+                _renderTarget2D = null;
+            }
+
+            if (_renderTarget2D == null)
+            {
+                _renderTarget2D = new RenderTarget2D(device, Math.Max(width, 1), Math.Max(height, 1), useMipMap, SurfaceFormat.Color,
+                                                     DepthFormat.None,
+                                                     Application.Graphics.GraphicsDevice.PresentationParameters.MultiSampleCount,
+                                                     RenderTargetUsage.PreserveContents);
+            }
         }
 
         /// <summary>
