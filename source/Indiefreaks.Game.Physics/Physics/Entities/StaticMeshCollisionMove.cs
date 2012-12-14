@@ -35,6 +35,20 @@ namespace Indiefreaks.Xna.Physics.Entities
         }
 
         /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="collisionObject">The ParentObject this instance will be associated with</param>
+        /// <param name="vertices">The Model vertices used to compute the BEPUPgysics StaticMesh</param>
+        /// <param name="indices">The Model indices used to compute the BEPUPgysics StaticMesh</param>
+        public StaticMeshCollisionMove(ICollisionObject collisionObject, Vector3[] vertices, int[] indices)
+            : base(collisionObject)
+        {
+            ParentObject.World.Decompose(out _collisionObjectScale, out _collisionObjectRotation, out _collisionObjectTranslation);
+
+            SpaceObject = new StaticMesh(vertices, indices, new AffineTransform(_collisionObjectScale, _collisionObjectRotation, _collisionObjectTranslation));
+        }
+
+        /// <summary>
         /// Returns the BEPUphysics StaticMesh instance
         /// </summary>
         public StaticMesh StaticMesh
