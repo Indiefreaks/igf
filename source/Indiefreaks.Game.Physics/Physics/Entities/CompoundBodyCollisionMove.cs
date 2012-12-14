@@ -2,7 +2,7 @@
 using BEPUphysics.CollisionShapes;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using BEPUphysics.Entities.Prefabs;
-using BEPUphysics.MathExtensions;
+using BEPUutilities;
 using Microsoft.Xna.Framework;
 using SynapseGaming.LightingSystem.Collision;
 
@@ -24,7 +24,7 @@ namespace Indiefreaks.Xna.Physics.Entities
                 CompoundShapeEntry childShape = Entity.CollisionInformation.Shape.Shapes[i];
 
                 if (childShape.Shape is TransformableShape)
-                    ((TransformableShape) childShape.Shape).Transform = Matrix3X3.CreateFromMatrix(Matrix.CreateScale(CollisionObjectScale)*CollisionObjectWorldTransform);
+                    ((TransformableShape)childShape.Shape).Transform = Matrix3x3.CreateFromMatrix(Matrix.CreateScale(CollisionObjectScale) * CollisionObjectWorldTransform);
             }
         }
 

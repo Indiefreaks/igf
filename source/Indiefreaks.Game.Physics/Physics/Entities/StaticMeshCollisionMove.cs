@@ -1,7 +1,7 @@
-using BEPUphysics.Collidables;
+using BEPUphysics.BroadPhaseEntries;
 using BEPUphysics.DataStructures;
-using BEPUphysics.MathExtensions;
 using BEPUphysics.NarrowPhaseSystems.Pairs;
+using BEPUutilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SynapseGaming.LightingSystem.Collision;

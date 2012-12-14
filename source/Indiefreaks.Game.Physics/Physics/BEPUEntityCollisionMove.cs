@@ -1,13 +1,10 @@
-using System;
-using BEPUphysics.Collidables;
-using BEPUphysics.Collidables.MobileCollidables;
+using BEPUphysics.BroadPhaseEntries;
+using BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using BEPUphysics.CollisionRuleManagement;
 using BEPUphysics.Entities;
 using BEPUphysics.NarrowPhaseSystems.Pairs;
 using Microsoft.Xna.Framework;
 using SynapseGaming.LightingSystem.Collision;
-using SynapseGaming.LightingSystem.Core;
-using SynapseGaming.LightingSystem.Rendering;
 
 namespace Indiefreaks.Xna.Physics
 {

@@ -1,6 +1,6 @@
 ﻿using System;
-using BEPUphysics.Drawer.Lines;
-using BEPUphysics.Drawer.Models;
+using BEPUphysicsDrawer.Lines;
+using BEPUphysicsDrawer.Models;
 using Indiefreaks.Xna.Core;
 using Indiefreaks.Xna.Extensions;
 using Microsoft.Xna.Framework;

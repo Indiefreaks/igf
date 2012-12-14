@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using BEPUphysics.Collidables.MobileCollidables;
+using BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using BEPUphysics.CollisionShapes.ConvexShapes;
 using BEPUphysics.DataStructures;
 using BEPUphysics.Entities;
 using BEPUphysics.Entities.Prefabs;
-using BEPUphysics.MathExtensions;
+using BEPUutilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SynapseGaming.LightingSystem.Collision;
@@ -40,7 +40,7 @@ namespace Indiefreaks.Xna.Physics.Entities
                 {
                     ConvexHull convexHull = modelConvexHull.Value;
 
-                    TransformableShape shape = new TransformableShape(convexHull.CollisionInformation.Shape, Matrix3X3.CreateFromMatrix(ParentObject.World));
+                    TransformableShape shape = new TransformableShape(convexHull.CollisionInformation.Shape, Matrix3x3.CreateFromMatrix(ParentObject.World));
 
                     SpaceObject = new Entity<ConvexCollidable<TransformableShape>>(
                         new ConvexCollidable<TransformableShape>(shape),
@@ -68,7 +68,7 @@ namespace Indiefreaks.Xna.Physics.Entities
 
                 ModelConvexHulls.Add(modelReference, convexHull);
 
-                TransformableShape shape = new TransformableShape(convexHull.CollisionInformation.Shape, Matrix3X3.CreateFromMatrix(ParentObject.World));
+                TransformableShape shape = new TransformableShape(convexHull.CollisionInformation.Shape, Matrix3x3.CreateFromMatrix(ParentObject.World));
 
                 SpaceObject = new Entity<ConvexCollidable<TransformableShape>>(
                     new ConvexCollidable<TransformableShape>(shape),
@@ -83,7 +83,7 @@ namespace Indiefreaks.Xna.Physics.Entities
 
         protected override void OnCollisionObjectScaleChanged()
         {
-            Entity.CollisionInformation.Shape.Transform = Matrix3X3.CreateFromMatrix(Matrix.CreateScale(CollisionObjectScale) * CollisionObjectWorldTransform);
+            Entity.CollisionInformation.Shape.Transform = Matrix3x3.CreateFromMatrix(Matrix.CreateScale(CollisionObjectScale) * CollisionObjectWorldTransform);
         }
 
         /// <summary>
