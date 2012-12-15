@@ -120,7 +120,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BEPUphysicsDrawer\DrawerResource.Designer.cs" />
+    <Compile Include="BEPUphysicsDrawer\DrawerResource.Designer.cs">
+      <DependentUpon>DrawerResource.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="BEPUphysicsDrawer\Font\TextDrawer.cs" />
     <Compile Include="BEPUphysicsDrawer\Lines\BoundingBoxDrawer.cs" />
     <Compile Include="BEPUphysicsDrawer\Lines\ContactDrawer.cs" />
@@ -555,7 +559,10 @@
     <Content Include="BEPUphysics\Background.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="BEPUphysicsDrawer\DrawerResource.resx" />
+    <EmbeddedResource Include="BEPUphysicsDrawer\DrawerResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DrawerResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="BEPUphysicsDrawer\Resources\InstancedEffect.xnb" />
