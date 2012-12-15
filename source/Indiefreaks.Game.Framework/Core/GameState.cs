@@ -56,9 +56,9 @@ namespace Indiefreaks.Xna.Core
 
         private void CreateFrameBuffers(int bufferWidth, int bufferHeight, DetailPreference precisionMode, DetailPreference lightingRange)
         {
-            if (_frameBuffers != null)
-                _frameBuffers.Unload();
-            
+            //if (_frameBuffers != null)
+            //    _frameBuffers.Unload();
+
             _frameBuffers = new FrameBuffers(bufferWidth, bufferHeight, precisionMode, lightingRange);
             SunBurn.ResourceManager.AssignOwnership(_frameBuffers);
         }
