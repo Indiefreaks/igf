@@ -25,7 +25,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                             {
                                 case NetConnectionStatus.Disconnected:
                                     {
-                                        IPEndPoint lostConnectionIpEndPoint = _incomingMessage.SenderEndpoint;
+                                        IPEndPoint lostConnectionIpEndPoint = _incomingMessage.SenderEndPoint;
 
                                         var playersToRemove = new List<IdentifiedPlayer>(1);
 
@@ -88,7 +88,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                                     {
                                         var synchronizedPlayers = new List<IdentifiedPlayer>();
 
-                                        if (NetUtility.IsLocal(_incomingMessage.SenderEndpoint))
+                                        if (NetUtility.IsLocal(_incomingMessage.SenderEndPoint))
                                         {
                                             foreach (IdentifiedPlayer player in PlayersToSynchronize)
                                             {
@@ -98,7 +98,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                                         }
                                         else
                                         {
-                                            IPEndPoint remoteEndPoint = _incomingMessage.SenderEndpoint;
+                                            IPEndPoint remoteEndPoint = _incomingMessage.SenderEndPoint;
 
                                             foreach (IdentifiedPlayer player in PlayersToSynchronize)
                                             {
@@ -232,7 +232,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                                 _outgoingMessage.Write(BitConverter.GetBytes(_sessionProperties[i].Value));
                             }
 
-                            LidgrenSessionManager.Server.SendDiscoveryResponse(_outgoingMessage, _incomingMessage.SenderEndpoint);
+                            LidgrenSessionManager.Server.SendDiscoveryResponse(_outgoingMessage, _incomingMessage.SenderEndPoint);
 
                             break;
                         }
@@ -291,7 +291,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
             _outgoingMessage = LidgrenSessionManager.Server.CreateMessage();
             _outgoingMessage.Write((byte) LidgrenMessages.SendNewPlayersToClients);
             _outgoingMessage.WriteVariableInt32(clientPlayers.Count);
-            _outgoingMessage.Write(_incomingMessage.SenderEndpoint);
+            _outgoingMessage.Write(_incomingMessage.SenderEndPoint);
 
             foreach (LidgrenIdentifiedPlayer identifiedPlayer in clientPlayers)
             {

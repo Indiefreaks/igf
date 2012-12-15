@@ -186,7 +186,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                         {
                             var sessionType = (SessionType) _incomingMessage.ReadByte();
                             int currentGamerCount = _incomingMessage.ReadVariableInt32();
-                            string hostName = _incomingMessage.SenderEndpoint.Address.ToString();
+                            string hostName = _incomingMessage.SenderEndPoint.Address.ToString();
                             int openPrivateSlots = _incomingMessage.ReadVariableInt32();
                             int openPublicSlots = _incomingMessage.ReadVariableInt32();
                             var averageRoundtripTime = new TimeSpan(0, 0, 0, 0, (int) (_incomingMessage.SenderConnection.AverageRoundtripTime*1000));
@@ -309,9 +309,9 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                 _allPlayers.Add(player);
 
                 if(isOnServer)
-                    _remotePlayerIpEndPoints.Add(player, LidgrenSessionManager.Client.ServerConnection.RemoteEndpoint);
+                    _remotePlayerIpEndPoints.Add(player, LidgrenSessionManager.Client.ServerConnection.RemoteEndPoint);
                 else
-                    _remotePlayerIpEndPoints.Add(player, _incomingMessage.ReadIPEndpoint());
+                    _remotePlayerIpEndPoints.Add(player, _incomingMessage.ReadIPEndPoint());
 
                 OnPlayerJoined(player);
             }
@@ -320,7 +320,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         private void RetrieveNewPlayersFromServer()
         {
             int numberOfNewPlayers = _incomingMessage.ReadVariableInt32();
-            IPEndPoint ipEndPoint = _incomingMessage.ReadIPEndpoint();
+            IPEndPoint ipEndPoint = _incomingMessage.ReadIPEndPoint();
 
             for (int i = 0; i < numberOfNewPlayers; i++)
             {

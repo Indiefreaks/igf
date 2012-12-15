@@ -55,6 +55,8 @@ namespace Lidgren.Network
 			else
 			{
 				// message must be fragmented!
+				if (recipient.m_status != NetConnectionStatus.Connected)
+					return NetSendResult.FailedNotConnected;
 				SendFragmentedMessage(msg, new NetConnection[] { recipient }, method, sequenceChannel);
 				return NetSendResult.Queued; // could be different for each connection; Queued is "most true"
 			}
@@ -62,11 +64,13 @@ namespace Lidgren.Network
 
 		internal int GetMTU(IList<NetConnection> recipients)
 		{
-			NetException.Assert(recipients.Count > 0);
+			int count = recipients.Count;
+			NetException.Assert(count > 0);
 
 			int mtu = int.MaxValue;
-			foreach (NetConnection conn in recipients)
+			for(int i=0;i<count;i++)
 			{
+				var conn = recipients[i];
 				int cmtu = conn.m_currentMTU;
 				if (cmtu < mtu)
 					mtu = cmtu;
@@ -81,7 +85,7 @@ namespace Lidgren.Network
 		/// <param name="recipients">The list of recipients to send to</param>
 		/// <param name="method">How to deliver the message</param>
 		/// <param name="sequenceChannel">Sequence channel within the delivery method</param>
-		public void SendMessage(NetOutgoingMessage msg, IList<NetConnection> recipients, NetDeliveryMethod method, int sequenceChannel)
+		public void SendMessage(NetOutgoingMessage msg, List<NetConnection> recipients, NetDeliveryMethod method, int sequenceChannel)
 		{
 			if (msg == null)
 				throw new ArgumentNullException("msg");
@@ -110,11 +114,8 @@ namespace Lidgren.Network
 						continue;
 					}
 					NetSendResult res = conn.EnqueueMessage(msg, method, sequenceChannel);
-					if (res == NetSendResult.Dropped)
-					{
-						LogDebug(msg + " dropped immediately due to full queues");
+					if (res != NetSendResult.Queued && res != NetSendResult.Sent)
 						Interlocked.Decrement(ref msg.m_recyclingCount);
-					}
 				}
 			}
 			else
@@ -216,7 +217,7 @@ namespace Lidgren.Network
 			om.m_isFragment = false;
 			om.m_receiveTime = NetTime.Now;
 			om.m_senderConnection = null;
-			om.m_senderEndpoint = m_socket.LocalEndPoint as IPEndPoint;
+			om.m_senderEndPoint = m_socket.LocalEndPoint as IPEndPoint;
 			om.m_bitLength = msg.LengthBits;
 
 			ReleaseMessage(om);

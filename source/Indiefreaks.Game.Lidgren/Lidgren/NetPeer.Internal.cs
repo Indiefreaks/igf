@@ -1,4 +1,6 @@
-﻿#define IS_MAC_AVAILABLE
+﻿#if !__ANDROID__ && !IOS
+#define IS_MAC_AVAILABLE
+#endif
 
 using System;
 using System.Net;
@@ -34,7 +36,7 @@ namespace Lidgren.Network
 		internal long m_uniqueIdentifier;
 		internal bool m_executeFlushSendQueue;
 
-		private AutoResetEvent m_messageReceivedEvent = new AutoResetEvent(false);
+		private AutoResetEvent m_messageReceivedEvent;
 		private List<NetTuple<SynchronizationContext, SendOrPostCallback>> m_receiveCallbacks;
 
 		/// <summary>
@@ -52,6 +54,18 @@ namespace Lidgren.Network
 			if (m_receiveCallbacks == null)
 				m_receiveCallbacks = new List<NetTuple<SynchronizationContext, SendOrPostCallback>>();
 			m_receiveCallbacks.Add(new NetTuple<SynchronizationContext, SendOrPostCallback>(SynchronizationContext.Current, callback));
+		}
+
+		/// <summary>
+		/// Call this to unregister a callback, but remember to do it in the same synchronization context!
+		/// </summary>
+		public void UnregisterReceivedCallback(SendOrPostCallback callback)
+		{
+			if (m_receiveCallbacks == null)
+				return;
+			m_receiveCallbacks.Remove(new NetTuple<SynchronizationContext, SendOrPostCallback>(SynchronizationContext.Current, callback));
+			if (m_receiveCallbacks.Count < 1)
+				m_receiveCallbacks = null;
 		}
 
 		internal void ReleaseMessage(NetIncomingMessage msg)
@@ -106,10 +120,17 @@ namespace Lidgren.Network
 				m_socket.Blocking = false;
 				m_socket.Bind(ep);
 
-				const uint IOC_IN = 0x80000000;
-				const uint IOC_VENDOR = 0x18000000;
-				uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
-				m_socket.IOControl((int)SIO_UDP_CONNRESET, new byte[] { Convert.ToByte(false) }, null);
+				try
+				{
+					const uint IOC_IN = 0x80000000;
+					const uint IOC_VENDOR = 0x18000000;
+					uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
+					m_socket.IOControl((int)SIO_UDP_CONNRESET, new byte[] { Convert.ToByte(false) }, null);
+				}
+				catch
+				{
+					// ignore; SIO_UDP_CONNRESET not supported on this platform
+				}
 
 				IPEndPoint boundEp = m_socket.LocalEndPoint as IPEndPoint;
 				LogDebug("Socket bound to " + boundEp + ": " + m_socket.IsBound);
@@ -205,8 +226,12 @@ namespace Lidgren.Network
 				}
 			}
 
+			FlushDelayedPackets();
+
 			// one final heartbeat, will send stuff and do disconnect
 			Heartbeat();
+
+			Thread.Sleep(10);
 
 			lock (m_initializeLock)
 			{
@@ -214,7 +239,11 @@ namespace Lidgren.Network
 				{
 					if (m_socket != null)
 					{
-						m_socket.Shutdown(SocketShutdown.Receive);
+						try
+						{
+							m_socket.Shutdown(SocketShutdown.Receive);
+						}
+						catch { }
 						m_socket.Close(2); // 2 seconds timeout
 					}
 					if (m_messageReceivedEvent != null)
@@ -253,7 +282,7 @@ namespace Lidgren.Network
 			int maxCHBpS = 1250 - m_connections.Count;
 			if (maxCHBpS < 250)
 				maxCHBpS = 250;
-			if (delta > (1.0 / (double)maxCHBpS)) // max connection heartbeats/second max
+			if (delta > (1.0 / (double)maxCHBpS) || delta < 0.0) // max connection heartbeats/second max
 			{
 				m_frameCounter++;
 				m_lastHeartbeat = dnow;
@@ -274,10 +303,10 @@ namespace Lidgren.Network
 						{
 #if DEBUG
 							// sanity check
-							if (conn.m_status == NetConnectionStatus.Disconnected && m_handshakes.ContainsKey(conn.RemoteEndpoint))
+							if (conn.m_status == NetConnectionStatus.Disconnected && m_handshakes.ContainsKey(conn.RemoteEndPoint))
 							{
 								LogWarning("Sanity fail! Handshakes list contained disconnected connection!");
-								m_handshakes.Remove(conn.RemoteEndpoint);
+								m_handshakes.Remove(conn.RemoteEndPoint);
 							}
 #endif
 							break; // collection has been modified
@@ -305,7 +334,7 @@ namespace Lidgren.Network
 							// remove connection
 							//
 							m_connections.Remove(conn);
-							m_connectionLookup.Remove(conn.RemoteEndpoint);
+							m_connectionLookup.Remove(conn.RemoteEndPoint);
 							break; // can't continue iteration here
 						}
 					}
@@ -340,6 +369,10 @@ namespace Lidgren.Network
 			//if (m_socket == null || m_socket.Available < 1)
 			//	return;
 
+			// update now
+			dnow = NetTime.Now;
+			now = (float)dnow;
+
 			do
 			{
 				int bytesReceived = 0;
@@ -369,13 +402,13 @@ namespace Lidgren.Network
 
 				IPEndPoint ipsender = (IPEndPoint)m_senderRemote;
 
-				if (ipsender.Port == 1900)
+				if (m_upnp != null && now < m_upnp.m_discoveryResponseDeadline)
 				{
-					// UPnP response
+					// is this an UPnP response?
 					try
 					{
 						string resp = System.Text.Encoding.ASCII.GetString(m_receiveBuffer, 0, bytesReceived);
-						if (resp.Contains("upnp:rootdevice"))
+						if (resp.Contains("upnp:rootdevice") || resp.Contains("UPnP/1.0"))
 						{
 							resp = resp.Substring(resp.ToLower().IndexOf("location:") + 9);
 							resp = resp.Substring(0, resp.IndexOf("\r")).Trim();
@@ -389,7 +422,6 @@ namespace Lidgren.Network
 				NetConnection sender = null;
 				m_connectionLookup.TryGetValue(ipsender, out sender);
 
-				double receiveTime = NetTime.Now;
 				//
 				// parse packet into messages
 				//
@@ -431,7 +463,7 @@ namespace Lidgren.Network
 							if (sender != null)
 								sender.ReceivedLibraryMessage(tp, ptr, payloadByteLength);
 							else
-								ReceivedUnconnectedLibraryMessage(receiveTime, ipsender, tp, ptr, payloadByteLength);
+								ReceivedUnconnectedLibraryMessage(dnow, ipsender, tp, ptr, payloadByteLength);
 						}
 						else
 						{
@@ -440,11 +472,11 @@ namespace Lidgren.Network
 
 							NetIncomingMessage msg = CreateIncomingMessage(NetIncomingMessageType.Data, payloadByteLength);
 							msg.m_isFragment = isFragment;
-							msg.m_receiveTime = receiveTime;
+							msg.m_receiveTime = dnow;
 							msg.m_sequenceNumber = sequenceNumber;
 							msg.m_receivedMessageType = tp;
 							msg.m_senderConnection = sender;
-							msg.m_senderEndpoint = ipsender;
+							msg.m_senderEndPoint = ipsender;
 							msg.m_bitLength = payloadBitLength;
 							Buffer.BlockCopy(m_receiveBuffer, ptr, msg.m_data, 0, payloadByteLength);
 							if (sender != null)
@@ -492,7 +524,7 @@ namespace Lidgren.Network
 			m_executeFlushSendQueue = true;
 		}
 
-		internal void HandleIncomingDiscoveryRequest(double now, IPEndPoint senderEndpoint, int ptr, int payloadByteLength)
+		internal void HandleIncomingDiscoveryRequest(double now, IPEndPoint senderEndPoint, int ptr, int payloadByteLength)
 		{
 			if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.DiscoveryRequest))
 			{
@@ -501,12 +533,12 @@ namespace Lidgren.Network
 					Buffer.BlockCopy(m_receiveBuffer, ptr, dm.m_data, 0, payloadByteLength);
 				dm.m_receiveTime = now;
 				dm.m_bitLength = payloadByteLength * 8;
-				dm.m_senderEndpoint = senderEndpoint;
+				dm.m_senderEndPoint = senderEndPoint;
 				ReleaseMessage(dm);
 			}
 		}
 
-		internal void HandleIncomingDiscoveryResponse(double now, IPEndPoint senderEndpoint, int ptr, int payloadByteLength)
+		internal void HandleIncomingDiscoveryResponse(double now, IPEndPoint senderEndPoint, int ptr, int payloadByteLength)
 		{
 			if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.DiscoveryResponse))
 			{
@@ -515,15 +547,15 @@ namespace Lidgren.Network
 					Buffer.BlockCopy(m_receiveBuffer, ptr, dr.m_data, 0, payloadByteLength);
 				dr.m_receiveTime = now;
 				dr.m_bitLength = payloadByteLength * 8;
-				dr.m_senderEndpoint = senderEndpoint;
+				dr.m_senderEndPoint = senderEndPoint;
 				ReleaseMessage(dr);
 			}
 		}
 
-		private void ReceivedUnconnectedLibraryMessage(double now, IPEndPoint senderEndpoint, NetMessageType tp, int ptr, int payloadByteLength)
+		private void ReceivedUnconnectedLibraryMessage(double now, IPEndPoint senderEndPoint, NetMessageType tp, int ptr, int payloadByteLength)
 		{
 			NetConnection shake;
-			if (m_handshakes.TryGetValue(senderEndpoint, out shake))
+			if (m_handshakes.TryGetValue(senderEndPoint, out shake))
 			{
 				shake.ReceivedHandshake(now, tp, ptr, payloadByteLength);
 				return;
@@ -535,16 +567,16 @@ namespace Lidgren.Network
 			switch (tp)
 			{
 				case NetMessageType.Discovery:
-					HandleIncomingDiscoveryRequest(now, senderEndpoint, ptr, payloadByteLength);
+					HandleIncomingDiscoveryRequest(now, senderEndPoint, ptr, payloadByteLength);
 					return;
 				case NetMessageType.DiscoveryResponse:
-					HandleIncomingDiscoveryResponse(now, senderEndpoint, ptr, payloadByteLength);
+					HandleIncomingDiscoveryResponse(now, senderEndPoint, ptr, payloadByteLength);
 					return;
 				case NetMessageType.NatIntroduction:
 					HandleNatIntroduction(ptr);
 					return;
 				case NetMessageType.NatPunchMessage:
-					HandleNatPunch(ptr, senderEndpoint);
+					HandleNatPunch(ptr, senderEndPoint);
 					return;
 				case NetMessageType.ConnectResponse:
 
@@ -552,7 +584,7 @@ namespace Lidgren.Network
 					{
 						foreach (var hs in m_handshakes)
 						{
-							if (hs.Key.Address.Equals(senderEndpoint.Address))
+							if (hs.Key.Address.Equals(senderEndPoint.Address))
 							{
 								if (hs.Value.m_connectionInitiator)
 								{
@@ -565,11 +597,11 @@ namespace Lidgren.Network
 									m_connectionLookup.Remove(hs.Key);
 									m_handshakes.Remove(hs.Key);
 
-									LogDebug("Detected host port change; rerouting connection to " + senderEndpoint);
-									hsconn.MutateEndpoint(senderEndpoint);
+									LogDebug("Detected host port change; rerouting connection to " + senderEndPoint);
+									hsconn.MutateEndPoint(senderEndPoint);
 
-									m_connectionLookup.Add(senderEndpoint, hsconn);
-									m_handshakes.Add(senderEndpoint, hsconn);
+									m_connectionLookup.Add(senderEndPoint, hsconn);
+									m_handshakes.Add(senderEndPoint, hsconn);
 
 									hsconn.ReceivedHandshake(now, tp, ptr, payloadByteLength);
 									return;
@@ -578,17 +610,17 @@ namespace Lidgren.Network
 						}
 					}
 
-					LogWarning("Received unhandled library message " + tp + " from " + senderEndpoint);
+					LogWarning("Received unhandled library message " + tp + " from " + senderEndPoint);
 					return;
 				case NetMessageType.Connect:
 					// proceed
 					break;
 				case NetMessageType.Disconnect:
 					// this is probably ok
-					LogVerbose("Received Disconnect from unconnected source: " + senderEndpoint);
+					LogVerbose("Received Disconnect from unconnected source: " + senderEndPoint);
 					return;
 				default:
-					LogWarning("Received unhandled library message " + tp + " from " + senderEndpoint);
+					LogWarning("Received unhandled library message " + tp + " from " + senderEndPoint);
 					return;
 			}
 
@@ -600,13 +632,14 @@ namespace Lidgren.Network
 				// server full
 				NetOutgoingMessage full = CreateMessage("Server full");
 				full.m_messageType = NetMessageType.Disconnect;
-				SendLibrary(full, senderEndpoint);
+				SendLibrary(full, senderEndPoint);
 				return;
 			}
 
 			// Ok, start handshake!
-			NetConnection conn = new NetConnection(this, senderEndpoint);
-			m_handshakes.Add(senderEndpoint, conn);
+			NetConnection conn = new NetConnection(this, senderEndPoint);
+			conn.m_status = NetConnectionStatus.ReceivedInitiation;
+			m_handshakes.Add(senderEndPoint, conn);
 			conn.ReceivedHandshake(now, tp, ptr, payloadByteLength);
 
 			return;
@@ -617,7 +650,7 @@ namespace Lidgren.Network
 			// LogDebug("Accepted connection " + conn);
 			conn.InitExpandMTU(NetTime.Now);
 
-			if (m_handshakes.Remove(conn.m_remoteEndpoint) == false)
+			if (m_handshakes.Remove(conn.m_remoteEndPoint) == false)
 				LogWarning("AcceptConnection called but m_handshakes did not contain it!");
 
 			lock (m_connections)
@@ -629,7 +662,7 @@ namespace Lidgren.Network
 				else
 				{
 					m_connections.Add(conn);
-					m_connectionLookup.Add(conn.m_remoteEndpoint, conn);
+					m_connectionLookup.Add(conn.m_remoteEndPoint, conn);
 				}
 			}
 		}

@@ -28,17 +28,17 @@ namespace Lidgren.Network
 			}
 		}
 
-		internal byte[] GetStorage(int minimumCapacity)
+		internal byte[] GetStorage(int minimumCapacityInBytes)
 		{
 			if (m_storagePool == null)
-				return new byte[minimumCapacity];
+				return new byte[minimumCapacityInBytes];
 
 			lock (m_storagePool)
 			{
 				for (int i = 0; i < m_storagePool.Count; i++)
 				{
 					byte[] retval = m_storagePool[i];
-					if (retval != null && retval.Length >= minimumCapacity)
+					if (retval != null && retval.Length >= minimumCapacityInBytes)
 					{
 						m_storagePool[i] = null;
 						m_storagePoolBytes -= retval.Length;
@@ -46,8 +46,8 @@ namespace Lidgren.Network
 					}
 				}
 			}
-			m_statistics.m_bytesAllocated += minimumCapacity;
-			return new byte[minimumCapacity];
+			m_statistics.m_bytesAllocated += minimumCapacityInBytes;
+			return new byte[minimumCapacityInBytes];
 		}
 
 		internal void Recycle(byte[] storage)
@@ -214,7 +214,7 @@ namespace Lidgren.Network
 			if (string.IsNullOrEmpty(text))
 			{
 				retval = CreateIncomingMessage(tp, 1);
-				retval.Write("");
+				retval.Write(string.Empty);
 				return retval;
 			}
 

@@ -33,6 +33,7 @@ namespace Lidgren.Network
 		private readonly string m_appIdentifier;
 		private string m_networkThreadName;
 		private IPAddress m_localAddress;
+		private IPAddress m_broadcastAddress;
 		internal bool m_acceptIncomingConnections;
 		internal int m_maximumConnections;
 		internal int m_defaultOutgoingMessageCapacity;
@@ -76,6 +77,12 @@ namespace Lidgren.Network
 			m_disabledTypes = NetIncomingMessageType.ConnectionApproval | NetIncomingMessageType.UnconnectedData | NetIncomingMessageType.VerboseDebugMessage | NetIncomingMessageType.ConnectionLatencyUpdated;
 			m_networkThreadName = "Lidgren network thread";
 			m_localAddress = IPAddress.Any;
+			m_broadcastAddress = IPAddress.Broadcast;
+			var ip = NetUtility.GetBroadcastAddress();
+			if (ip != null)
+			{
+				m_broadcastAddress = ip;
+			}
 			m_port = 0;
 			m_receiveBufferSize = 131071;
 			m_sendBufferSize = 131071;
@@ -282,6 +289,20 @@ namespace Lidgren.Network
 				if (m_isLocked)
 					throw new NetException(c_isLockedMessage);
 				m_localAddress = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the local broadcast address to use when broadcasting
+		/// </summary>
+		public IPAddress BroadcastAddress
+		{
+			get { return m_broadcastAddress; }
+			set
+			{
+				if (m_isLocked)
+					throw new NetException(c_isLockedMessage);
+				m_broadcastAddress = value;
 			}
 		}
 
