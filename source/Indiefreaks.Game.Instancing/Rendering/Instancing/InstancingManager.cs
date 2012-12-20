@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using SynapseGaming.LightingSystem.Core;
 
+using Indiefreaks.Xna.Rendering.Instancing.Skinned;
+using SynapseGaming.LightingSystem.Effects.Deferred;
+
 namespace Indiefreaks.Xna.Rendering.Instancing
 {
     /// <summary>
@@ -12,6 +15,8 @@ namespace Indiefreaks.Xna.Rendering.Instancing
     {
         private readonly List<InstanceFactory> _instanceFactories = new List<InstanceFactory>();
         private readonly IManagerServiceProvider _sceneInterface;
+        private readonly List<SkinnedInstanceFactory> _skinnedInstanceFactories = new List<SkinnedInstanceFactory>();
+        private readonly IGraphicsDeviceService _graphicsDeviceService;
      
         public InstancingManager(IManagerServiceProvider sceneInterface)
         {
@@ -87,6 +92,13 @@ namespace Indiefreaks.Xna.Rendering.Instancing
             _instanceFactories.Add(instanceFactory);
 
             return instanceFactory;
+        }
+
+        public SkinnedInstanceFactory CreateSkinnedInstanceFactory(ISkinnedInstanceSource source, DeferredSasEffect shader)
+        {
+            var skinnedInstanceFactory = new SkinnedInstanceFactory(_graphicsDeviceService.GraphicsDevice, source, shader);
+            _skinnedInstanceFactories.Add(skinnedInstanceFactory);
+            return skinnedInstanceFactory;
         }
     }
 }
