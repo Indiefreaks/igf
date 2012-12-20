@@ -89,6 +89,16 @@
     <Compile Include="Rendering\Instancing\InstanceFactory.cs" />
     <Compile Include="Rendering\Instancing\InstanceModel.cs" />
     <Compile Include="Rendering\Instancing\InstancingManager.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\InstancedAnimationClip.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\InstancedSkinnedModel.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\InstancedSkinnedSceneObject.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\InstancedSkinningData.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\InstancedTypeReaders.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\InstancedVertexPositionTextureBumpSkin.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\ISkinnedInstanceSource.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\Keyframe.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\SkinnedInstanceEntity.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\SkinnedInstanceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework">
@@ -123,6 +133,9 @@
     <Reference Include="System.Xml.Linq">
       <Private>False</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Rendering\Instancing\Skinned\README.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

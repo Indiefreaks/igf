@@ -62,7 +62,9 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Rendering\Instancing\Skinned\README.txt" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\Instancing\IInstanceSource.cs" />
@@ -71,6 +73,16 @@
     <Compile Include="Rendering\Instancing\InstanceFactory.cs" />
     <Compile Include="Rendering\Instancing\InstanceModel.cs" />
     <Compile Include="Rendering\Instancing\InstancingManager.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\InstancedAnimationClip.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\InstancedSkinnedModel.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\InstancedSkinnedSceneObject.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\InstancedSkinningData.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\InstancedTypeReaders.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\InstancedVertexPositionTextureBumpSkin.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\ISkinnedInstanceSource.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\Keyframe.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\SkinnedInstanceEntity.cs" />
+    <Compile Include="Rendering\Instancing\Skinned\SkinnedInstanceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework">
