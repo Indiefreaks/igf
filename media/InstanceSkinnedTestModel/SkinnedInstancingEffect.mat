@@ -1,0 +1,21 @@
+//-----------------------------------------------
+// Synapse Gaming - SunBurn Lighting System
+// Exported from the SunBurn material editor
+//-----------------------------------------------
+
+Locale: en-US
+
+DepthTechnique: "Skinning_Depth_Technique"
+DiffuseTexture: ""
+DoubleSided: False
+EffectFile: "SkinnedInstancing.fx"
+FinalTechnique: "Skinning_Final_Technique"
+GBufferTechnique: "Skinning_GBuffer_Technique"
+Invariant: False
+ShadowGenerationTechnique: "Skinning_Shadow_Technique"
+Speed: 4
+Strength: 0.2
+Technique: "Skinning_Technique"
+Transparency: 0.5
+TransparencyMapParameterName: "DiffuseTexture"
+TransparencyMode: None

@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Animations>
+  <Animation>
+    <Name>Take 001</Name>
+    <Framerate>30</Framerate>
+
+    <RemoveAfterTasks />
+    <!--
+    <Split>
+      <Name>Walk</Name>
+      <StartTimeSeconds>1</StartTimeSeconds>
+      <EndTimeSeconds>25</EndTimeSeconds>
+    </Split>
+
+    <Split>
+      <Name>Emerge</Name>
+      <StartTimeSeconds>26</StartTimeSeconds>
+      <EndTimeSeconds>70</EndTimeSeconds>
+    </Split>
+    -->
+    
+    <SplitTask>
+      <Name>Walk</Name>
+      <StartFrame>0</StartFrame>
+      <EndFrame>22</EndFrame>
+    </SplitTask>
+
+    <SplitTask>
+      <Name>Emerge</Name>
+      <StartFrame>25</StartFrame>
+      <EndFrame>69</EndFrame>
+    </SplitTask>
+
+    <SplitTask>
+      <Name>WalkTrans</Name>
+      <StartFrame>70</StartFrame>
+      <EndFrame>79</EndFrame>
+    </SplitTask>
+
+    <SplitTask>
+      <Name>Jump</Name>
+      <StartFrame>81</StartFrame>
+      <EndFrame>99</EndFrame>
+    </SplitTask>
+
+    <SplitTask>
+      <Name>Rear</Name>
+      <StartFrame>121</StartFrame>
+      <EndFrame>149</EndFrame>
+    </SplitTask>
+
+    <SplitTask>
+      <Name>Bite1</Name>
+      <StartFrame>196</StartFrame>
+      <EndFrame>219</EndFrame>
+    </SplitTask>
+
+    <SplitTask>
+      <Name>Bite2</Name>
+      <StartFrame>211</StartFrame>
+      <EndFrame>229</EndFrame>
+    </SplitTask>
+
+    <SplitTask>
+      <Name>Stomp</Name>
+      <StartFrame>231</StartFrame>
+      <EndFrame>269</EndFrame>
+    </SplitTask>
+
+    <SplitTask>
+      <Name>TakeDamage</Name>
+      <StartFrame>271</StartFrame>
+      <EndFrame>287</EndFrame>
+    </SplitTask>
+
+    <SplitTask>
+      <Name>LookAround</Name>
+      <StartFrame>289</StartFrame>
+      <EndFrame>329</EndFrame>
+    </SplitTask>
+
+    <SplitTask>
+      <Name>Idle</Name>
+      <StartFrame>331</StartFrame>
+      <EndFrame>379</EndFrame>
+    </SplitTask>
+
+    <SplitTask>
+      <Name>Die</Name>
+      <StartFrame>381</StartFrame>
+      <EndFrame>399</EndFrame>
+    </SplitTask>
+    
+  </Animation>
+</Animations>
