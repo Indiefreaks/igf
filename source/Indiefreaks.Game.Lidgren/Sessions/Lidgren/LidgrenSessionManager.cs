@@ -119,7 +119,11 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         /// <remarks>it doesn't yet support multiple local players</remarks>
         public override void CreateWanSession(int maxPlayers, SessionProperties sessionProperties)
         {
-            throw new NotImplementedException();
+            IPAddress ipAddress;
+            var host = NetUtility.GetMyAddress(out ipAddress);
+
+            _networkSessionLocker = CreatingSession;
+            LidgrenSession.BeginCreate(host.ToString(), SessionType.WideAreaNetwork, 1, maxPlayers, 0, sessionProperties, OnLidgrenSessionCreated, _networkSessionLocker);
         }
 
         /// <summary>
@@ -133,9 +137,30 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
             if (CurrentSession != null)
                 throw new CoreException("Session is already running");
 
+            if (sessionType == SessionType.WideAreaNetwork)
+                throw new NotImplementedException("Use FindSessionsWan method instead");
+
             _networkSessionLocker = FindingSessions;
             LidgrenSession.BeginFind(sessionType, maxLocalPlayers, sessionProperties, OnLidgrenSessionsFound, _networkSessionLocker);
         }
+
+        /// <summary>
+        /// Sends a Find query on the network interface to look for AvailableSession instances asynchrnously
+        /// </summary>
+        /// <param name="sessionType">The SessionType we're looking for</param>
+        /// <param name="maxLocalPlayers">The Maximum local players that can be added to the session used to filter sessions that have a limited number of opened public slots</param>
+        /// <param name="sessionProperties">The SessionProperties that will be used to filter query results. Can be null</param>
+        /// <param name="host">The for WAN session discovery</param>
+        /// <param name="port">The for WAN session discovery</param>
+        public void FindSessionsWan(SessionType sessionType, int maxLocalPlayers, SessionProperties sessionProperties, string host = null, int port = ServerPort)
+        {
+            if (CurrentSession != null)
+                throw new CoreException("Session is already running");
+
+            _networkSessionLocker = FindingSessions;
+            LidgrenSession.BeginFindWan(sessionType, maxLocalPlayers, sessionProperties, host, port, OnLidgrenSessionsFound, _networkSessionLocker);
+        }
+
 
         private void OnLidgrenSessionsFound(IAsyncResult ar)
         {

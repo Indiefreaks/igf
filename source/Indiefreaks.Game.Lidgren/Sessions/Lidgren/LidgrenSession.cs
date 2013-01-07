@@ -115,10 +115,25 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
             _localDiscoveryRequested = true;
 
             var asyncFind = new AsynchronousFind(Find);
-            return asyncFind.BeginInvoke(sessionType, maxLocalPlayers, sessionProperties, callback, asyncState);
+            return asyncFind.BeginInvoke(sessionType, maxLocalPlayers, sessionProperties, null, LidgrenSessionManager.ServerPort, callback, asyncState);
         }
 
-        private static List<LidgrenAvailableSession> Find(SessionType sessionType, int maxLocalPlayers, SessionProperties sessionProperties)
+        internal static IAsyncResult BeginFindWan(SessionType sessionType, int maxLocalPlayers, SessionProperties sessionProperties, string host, int port, AsyncCallback callback, object asyncState)
+        {
+            LidgrenSessionsFound.Clear();
+
+            if (sessionType == SessionType.SinglePlayer || sessionType == SessionType.SplitScreen)
+            {
+                throw new CoreException("Cannot look for SinglePlayer or SplitScreen sessions");
+            }
+
+            _localDiscoveryRequested = true;
+
+            var asyncFind = new AsynchronousFind(Find);
+            return asyncFind.BeginInvoke(sessionType, maxLocalPlayers, sessionProperties, host, port, callback, asyncState);
+        }
+
+        private static List<LidgrenAvailableSession> Find(SessionType sessionType, int maxLocalPlayers, SessionProperties sessionProperties, string host = null, int port = LidgrenSessionManager.ServerPort)
         {
             switch (sessionType)
             {
@@ -129,7 +144,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                     }
                 case SessionType.WideAreaNetwork:
                     {
-                        throw new NotImplementedException();
+                        LidgrenSessionManager.Client.DiscoverKnownPeer(host, port);
                     }
             }
 
@@ -492,7 +507,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
 
         #region Nested type: AsynchronousFind
 
-        private delegate List<LidgrenAvailableSession> AsynchronousFind(SessionType sessionType, int maxLocalPlayers, SessionProperties sessionProperties);
+        private delegate List<LidgrenAvailableSession> AsynchronousFind(SessionType sessionType, int maxLocalPlayers, SessionProperties sessionProperties, string host, int port);
 
         #endregion
 
