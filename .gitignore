@@ -168,3 +168,10 @@ pip-log.txt
 
 Binaries/*
 *.cachefile
+
+
+#################
+## EXCEPTIONS
+#################
+!source/Indiefreaks.Game.Physics/BEPUphysicsDrawer/Resources/InstancedEffect.xnb
+!source/Indiefreaks.Game.Physics/BEPUphysicsDrawer/Resources/InstancedEffectXbox.xnb

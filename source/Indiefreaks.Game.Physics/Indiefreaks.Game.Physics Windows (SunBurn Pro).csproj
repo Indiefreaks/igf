@@ -571,6 +571,7 @@
     <EmbeddedResource Include="BEPUphysicsDrawer\DrawerResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DrawerResource.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

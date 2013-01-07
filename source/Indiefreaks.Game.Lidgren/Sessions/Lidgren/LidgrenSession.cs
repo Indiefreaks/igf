@@ -145,6 +145,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                 case SessionType.WideAreaNetwork:
                     {
                         LidgrenSessionManager.Client.DiscoverKnownPeer(host, port);
+                        break;
                     }
             }
 
