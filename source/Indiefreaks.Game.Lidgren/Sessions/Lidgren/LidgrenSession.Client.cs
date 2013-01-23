@@ -52,9 +52,11 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                     case NetIncomingMessageType.Data:
                         {
                             var msgType = (LidgrenMessages) _incomingMessage.ReadByte();
-                            
+
                             switch (msgType)
                             {
+
+
                                 case LidgrenMessages.SendPlayersListToJustConnectedClient:
                                     {
                                         foreach (var localPlayer in LidgrenSessionManager.LocalPlayers.Values)
@@ -94,6 +96,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                                         RetrieveSceneEntitiesFromServer();
                                         break;
                                     }
+                                case LidgrenMessages.ExecuteServerCommandOnClientsDataExchanged:
                                 case LidgrenMessages.ExecuteCommandOnServerDataExchanged:
                                     {
                                         ushort commandId = _incomingMessage.ReadUInt16();
@@ -155,15 +158,18 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                                             networkValue = _incomingMessage.ReadVector3();
                                         else if (command.NetworkValueType == typeof (Vector4))
                                             networkValue = _incomingMessage.ReadVector4();
-                                        else
-                                            throw new CoreException("Not supported NetworkValueType");
+                                        //else
+                                        //    throw new CoreException("Not supported NetworkValueType");
 
-                                        if (networkValue == null)
-                                            throw new CoreException("No value transfered");
+                                        //if (networkValue == null)
+                                        //    throw new CoreException("No value transfered");
 
-                                        command.ApplyServerResult(command, networkValue);
+                                        if (command.ApplyServerResult != null)
+                                            command.ApplyServerResult(command, networkValue);
+                  
                                         break;
                                     }
+                                case LidgrenMessages.ExecuteServerCommandOnClientsNoDataExchanged:
                                 case LidgrenMessages.ExecuteCommandOnServerNoDataExchanged:
                                     {
                                         ushort commandId = _incomingMessage.ReadUInt16();
@@ -174,9 +180,12 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
 
                                         object networkValue = null;
 
-                                        command.ApplyServerResult(command, networkValue);
+                                        if (command.ApplyServerResult != null)
+                                            command.ApplyServerResult(command, networkValue);
+
                                         break;
                                     }
+                                
                                 default:
                                     break;
                             }
