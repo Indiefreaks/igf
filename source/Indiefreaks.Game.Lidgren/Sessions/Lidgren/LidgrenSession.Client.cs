@@ -101,6 +101,9 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                                     {
                                         ushort commandId = _incomingMessage.ReadUInt16();
 
+                                        if (!Commands.ContainsKey(commandId))
+                                            break;
+
                                         Command command = Commands[commandId];
 
                                         command.WaitingForServerReply = false;
