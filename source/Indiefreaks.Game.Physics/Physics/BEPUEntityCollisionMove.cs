@@ -118,6 +118,7 @@ namespace Indiefreaks.Xna.Physics
         /// <param name="pair"/>
         private void OnEntityCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler pair)
         {
+            
             OnCollisionDetected(sender, other, pair);
         }
 
