@@ -131,9 +131,12 @@ namespace Indiefreaks.Xna.Core
             Threads = new ThreadPool();
             Window.ClientSizeChanged += (sender, args) =>
                 {
-                    Graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
-                    Graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
-                    Graphics.ApplyChanges();
+                    if (Window.ClientBounds.Width > 0 && Window.ClientBounds.Height > 0)
+                    {
+                        Graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
+                        Graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
+                        Graphics.ApplyChanges();
+                    }
                 };
         }
 
