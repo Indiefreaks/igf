@@ -201,7 +201,9 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                             string hostName = _incomingMessage.SenderEndPoint.Address.ToString();
                             int openPrivateSlots = _incomingMessage.ReadVariableInt32();
                             int openPublicSlots = _incomingMessage.ReadVariableInt32();
-                            var averageRoundtripTime = new TimeSpan(0, 0, 0, 0, (int) (_incomingMessage.SenderConnection.AverageRoundtripTime*1000));
+
+                            // TODO: this needs to be fixed, commented out because _incomingMessage.SenderConnection is null on remote discovery
+                            var averageRoundtripTime = new TimeSpan(0, 0, 0, 0, 0);//(int) (_incomingMessage.SenderConnection.AverageRoundtripTime*1000));
 
                             var sessionProperties = new SessionProperties();
                             int sessionPropertiesCount = _incomingMessage.ReadVariableInt32();
@@ -209,7 +211,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                             {
                                 for (int i = 0; i < sessionPropertiesCount; i++)
                                 {
-                                    sessionProperties[i] = Convert.ToInt32(_incomingMessage.ReadBytes(32));
+                                    sessionProperties[i] = BitConverter.ToInt32(_incomingMessage.ReadBytes(4),0);
                                 }
                             }
 

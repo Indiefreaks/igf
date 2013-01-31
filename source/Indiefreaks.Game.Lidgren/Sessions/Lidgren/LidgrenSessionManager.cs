@@ -33,7 +33,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
             };
             serverConfiguration.EnableMessageType(NetIncomingMessageType.DiscoveryRequest);
             Server = new NetServer(serverConfiguration);
-            
+
             var clientConfiguration = new NetPeerConfiguration(Application.Instance.Name)
             {
                 AcceptIncomingConnections = false,
@@ -47,7 +47,8 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         /// <summary>
         /// Creates a new instance
         /// </summary>
-        public LidgrenSessionManager(IManagerServiceProvider sceneInterface) : base(sceneInterface)
+        public LidgrenSessionManager(IManagerServiceProvider sceneInterface)
+            : base(sceneInterface)
         {
         }
 
@@ -62,7 +63,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
             var identifiedPlayer = new LidgrenIdentifiedPlayer(playerInput);
 
             LocalPlayers.Add(playerInput.PlayerIndex, identifiedPlayer);
-         
+
             OnPlayerLogin(identifiedPlayer);
         }
 
@@ -72,7 +73,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         /// <remarks>No network resources will be used</remarks>
         public override void CreateSinglePlayerSession()
         {
-            if(CurrentSession != null)
+            if (CurrentSession != null)
                 throw new CoreException("Session is already running");
 
             IPAddress ipAddress;
@@ -134,11 +135,15 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         /// <param name="sessionProperties">The SessionProperties that will be used to filter query results. Can be null</param>
         public override void FindSessions(SessionType sessionType, int maxLocalPlayers, SessionProperties sessionProperties)
         {
+
             if (CurrentSession != null)
                 throw new CoreException("Session is already running");
 
             if (sessionType == SessionType.WideAreaNetwork)
                 throw new NotImplementedException("Use FindSessionsWan method instead");
+
+            // Create a temporary session to listen for discovery messages
+            CurrentSession = new LidgrenSession(sessionType, maxLocalPlayers, 0, sessionProperties);
 
             _networkSessionLocker = FindingSessions;
             LidgrenSession.BeginFind(sessionType, maxLocalPlayers, sessionProperties, OnLidgrenSessionsFound, _networkSessionLocker);
@@ -165,6 +170,11 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         private void OnLidgrenSessionsFound(IAsyncResult ar)
         {
             var foundSessions = new List<AvailableSession>(LidgrenSession.EndFind(ar));
+
+            // cleanup the temp session, this might could be reused.
+            CurrentSession.EndSession(); // not sure if this is needed
+            CurrentSession = null;
+            
             OnSessionsFound(foundSessions);
         }
 
@@ -178,17 +188,19 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                 throw new CoreException("Session is already running");
 
             _networkSessionLocker = JoiningSession;
+            
             LidgrenSession.BeginJoin(availableSession as LidgrenAvailableSession, OnLidgrenSessionJoined, _networkSessionLocker);
         }
 
         private void OnLidgrenSessionJoined(IAsyncResult ar)
         {
+            CurrentSession = LidgrenSession.EndJoin(ar);
             OnSessionJoined();
         }
 
         internal static void CloseSession()
         {
-            if(CurrentSession == null)
+            if (CurrentSession == null)
                 return;
 
             Client.Shutdown("Closing Session");

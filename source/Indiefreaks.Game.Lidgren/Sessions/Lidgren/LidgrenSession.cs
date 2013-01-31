@@ -33,6 +33,32 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         private const int LocalDiscoveryTimeOut = 1000;
         private static bool _localDiscoveryRequested;
 
+
+        /// <summary>
+        /// This constructor is used to create a temporary session exclusivly for the purpose of listening for Discovery messages
+        /// </summary>
+        internal LidgrenSession(SessionType sessionType, int maxGamers, int privateReservedSlots, SessionProperties sessionProperties)
+        {
+            _isHost = false;
+            _sessionType = sessionType;
+            _sessionProperties = sessionProperties;
+
+            if (maxGamers > MaximumSupportedGamersInSession)
+                throw new CoreException("Cannot create sessions for more than " + MaximumSupportedGamersInSession + " players.");
+            else
+                _maxGamers = maxGamers;
+
+            _privateReservedSlots = privateReservedSlots;
+
+            LidgrenSessionManager.Client.Start();
+            //LidgrenSessionManager.Client.Connect(serverHost, LidgrenSessionManager.ServerPort);
+            _previousSecondBytesSent += LidgrenSessionManager.Client.Statistics.SentBytes;
+            _previousSecondBytesReceived += LidgrenSessionManager.Client.Statistics.ReceivedBytes;
+
+            _clientSessionState = SessionState.Lobby;
+            _serverSessionState = SessionState.Lobby;
+        }
+
         private LidgrenSession(string serverHost, SessionType sessionType, int maxGamers, int privateReservedSlots, SessionProperties sessionProperties, bool isHost)
         {
             _isHost = isHost;
@@ -62,7 +88,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                     }
                 }
             }
-
+            
             LidgrenSessionManager.Client.Start();
             LidgrenSessionManager.Client.Connect(serverHost, LidgrenSessionManager.ServerPort);
             _previousSecondBytesSent += LidgrenSessionManager.Client.Statistics.SentBytes;
@@ -120,8 +146,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
 
         internal static IAsyncResult BeginFindWan(SessionType sessionType, int maxLocalPlayers, SessionProperties sessionProperties, string host, int port, AsyncCallback callback, object asyncState)
         {
-            LidgrenSessionsFound.Clear();
-
+            
             if (sessionType == SessionType.SinglePlayer || sessionType == SessionType.SplitScreen)
             {
                 throw new CoreException("Cannot look for SinglePlayer or SplitScreen sessions");
@@ -154,7 +179,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                 Thread.Sleep(LocalDiscoveryTimeOut);
                 _localDiscoveryRequested = false;
             }
-            
+
             return new List<LidgrenAvailableSession>(LidgrenSessionsFound);
         }
 
@@ -214,6 +239,8 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
 
                 if (asyncResult.AsyncDelegate is AsynchronousCreate)
                     session = ((AsynchronousCreate) asyncResult.AsyncDelegate).EndInvoke(result);
+                else if (asyncResult.AsyncDelegate is AsynchronousJoin)
+                    session = ((AsynchronousJoin)asyncResult.AsyncDelegate).EndInvoke(result);
             }
             finally
             {
