@@ -313,7 +313,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
 
             foreach (IdentifiedPlayer identifiedPlayer in _allPlayers)
             {
-                _outgoingMessage.Write(identifiedPlayer.UniqueId);
+                _outgoingMessage.Write(identifiedPlayer.UniqueId.ToString());
                 _outgoingMessage.Write(identifiedPlayer.DisplayName);
                 _outgoingMessage.Write(identifiedPlayer.IsHost);
                 _outgoingMessage.Write(identifiedPlayer.IsLocal);
