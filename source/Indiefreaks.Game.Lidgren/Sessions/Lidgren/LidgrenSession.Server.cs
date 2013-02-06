@@ -265,6 +265,8 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                                      DisplayName = _incomingMessage.ReadString(),
                                  };
 
+                _remotePlayerIpEndPoints.Add(player, _incomingMessage.SenderEndPoint);
+
                 // we test if the provided player is local
                 foreach ( var localPlayer in LidgrenSessionManager.LocalPlayers.Values)
                 {
