@@ -321,6 +321,8 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                 // if false, the player is on a remote client & the client will have to retrieve the IPEndPoint by reading another bytes on the message
                 if(!identifiedPlayer.IsLocal)
                     _outgoingMessage.Write(_remotePlayerIpEndPoints[identifiedPlayer]);
+                else 
+                    _outgoingMessage.Write(LidgrenSessionManager.Client.ServerConnection.RemoteEndPoint);
             }
 
             LidgrenSessionManager.Server.SendMessage(_outgoingMessage, _incomingMessage.SenderConnection, NetDeliveryMethod.ReliableOrdered);

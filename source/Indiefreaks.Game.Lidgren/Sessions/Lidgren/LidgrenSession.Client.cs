@@ -322,9 +322,9 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                 _remotePlayers.Add(player);
                 _allPlayers.Add(player);
 
-                if(isOnServer)
-                    _remotePlayerIpEndPoints.Add(player, LidgrenSessionManager.Client.ServerConnection.RemoteEndPoint);
-                else
+                //if(isOnServer)
+                //    _remotePlayerIpEndPoints.Add(player, LidgrenSessionManager.Client.ServerConnection.RemoteEndPoint);
+                //else
                     _remotePlayerIpEndPoints.Add(player, _incomingMessage.ReadIPEndPoint());
 
                 OnPlayerJoined(player);
