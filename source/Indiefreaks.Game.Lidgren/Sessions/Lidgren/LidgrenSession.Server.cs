@@ -83,6 +83,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
 
                                         if (LidgrenSessionManager.Server.ConnectionsCount > 1)
                                             SendNewPlayersToClients(clientPlayers);
+                                        SendSessionStateChangedToClients();
                                         break;
                                     }
                                 case LidgrenMessages.SendSynchronizationDoneToServer:
@@ -267,7 +268,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                     };
 
                 _remotePlayerIpEndPoints.Add(player, _incomingMessage.SenderEndPoint);
-
+                
                 // we test if the provided player is local
                 var localPlayer = LidgrenSessionManager.LocalPlayers.Values.FirstOrDefault(p => p == player);
                 if (localPlayer != null)
@@ -280,6 +281,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                     newPlayers.Add(player);
                 }
             }
+            LidgrenSessionManager.Server.Connections.Add(new NetConnection(new NetPeer(new NetPeerConfiguration("scrap")), _incomingMessage.SenderEndPoint));
 
             return newPlayers;
         }
