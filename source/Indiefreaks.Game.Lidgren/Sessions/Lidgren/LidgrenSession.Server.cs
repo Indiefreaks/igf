@@ -309,7 +309,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
             _outgoingMessage = LidgrenSessionManager.Server.CreateMessage();
             _outgoingMessage.Write((byte) LidgrenMessages.SendPlayersListToJustConnectedClient);
             
-            _outgoingMessage.Write(_allPlayers.Count);
+            _outgoingMessage.WriteVariableInt32(_allPlayers.Count);
 
             foreach (IdentifiedPlayer identifiedPlayer in _allPlayers)
             {
