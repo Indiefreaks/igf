@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using Indiefreaks.Xna.Core;
 using Indiefreaks.Xna.Logic;
@@ -319,12 +320,17 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                 if(isHost)
                     player.SetIsHost();
 
-                _remotePlayers.Add(player);
-                _allPlayers.Add(player);
 
-                //if(isOnServer)
-                //    _remotePlayerIpEndPoints.Add(player, LidgrenSessionManager.Client.ServerConnection.RemoteEndPoint);
-                //else
+                if (LidgrenSessionManager.LocalPlayers.Values.All(p => p != player))
+                {
+                    _remotePlayers.Add(player);
+                    _allPlayers.Add(player);
+                }
+
+
+                if(isOnServer)
+                    _remotePlayerIpEndPoints.Add(player, LidgrenSessionManager.Client.ServerConnection.RemoteEndPoint);
+                else
                     _remotePlayerIpEndPoints.Add(player, _incomingMessage.ReadIPEndPoint());
 
                 OnPlayerJoined(player);
