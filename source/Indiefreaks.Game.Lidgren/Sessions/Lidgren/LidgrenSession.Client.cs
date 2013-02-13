@@ -371,9 +371,12 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
 
                 IdentifiedPlayer player = _remotePlayers.Find(match => match.UniqueId == playerUniqueId);
 
-                _remotePlayers.Remove(player);
-                _remotePlayerIpEndPoints.Remove(player);
-                _allPlayers.Remove(player);
+                if (player != null) // if we already disconnected them because we are the server 
+                {
+                    _remotePlayers.Remove(player);
+                    _remotePlayerIpEndPoints.Remove(player);
+                    _allPlayers.Remove(player);
+                }
 
                 OnPlayerLeft(player);
             }
