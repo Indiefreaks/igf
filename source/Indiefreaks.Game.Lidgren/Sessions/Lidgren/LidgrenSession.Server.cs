@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Indiefreaks.Xna.Core;
 using Indiefreaks.Xna.Logic;
@@ -20,7 +21,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                 {
                     case NetIncomingMessageType.StatusChanged:
                         {
-                            var status = (NetConnectionStatus) _incomingMessage.ReadByte();
+                            var status = (NetConnectionStatus)_incomingMessage.ReadByte();
                             switch (status)
                             {
                                 case NetConnectionStatus.Disconnected:
@@ -69,7 +70,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                         }
                     case NetIncomingMessageType.Data:
                         {
-                            var msgType = (LidgrenMessages) _incomingMessage.ReadByte();
+                            var msgType = (LidgrenMessages)_incomingMessage.ReadByte();
 
                             switch (msgType)
                             {
@@ -80,7 +81,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                                         if (AllPlayers.Count > 0)
                                             SendPlayersListToJustConnectedClient();
 
-                                        if(LidgrenSessionManager.Server.ConnectionsCount > 1)
+                                        if (LidgrenSessionManager.Server.ConnectionsCount > 1)
                                             SendNewPlayersToClients(clientPlayers);
                                         break;
                                     }
@@ -132,56 +133,56 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
 
                                         Command command = Commands[commandId];
 
-                                        if (command.NetworkValueType == typeof (bool))
+                                        if (command.NetworkValueType == typeof(bool))
                                             command.NetworkValue = _incomingMessage.ReadBoolean();
-                                        else if (command.NetworkValueType == typeof (byte))
+                                        else if (command.NetworkValueType == typeof(byte))
                                             command.NetworkValue = _incomingMessage.ReadByte();
-                                        else if (command.NetworkValueType == typeof (byte[]))
+                                        else if (command.NetworkValueType == typeof(byte[]))
                                         {
                                             int tempNumberOfBytes = _incomingMessage.ReadInt32();
                                             command.NetworkValue = _incomingMessage.ReadBytes(tempNumberOfBytes);
                                         }
-                                        else if (command.NetworkValueType == typeof (char))
+                                        else if (command.NetworkValueType == typeof(char))
                                             command.NetworkValue = Convert.ToChar(_incomingMessage.ReadByte());
-                                        else if (command.NetworkValueType == typeof (char[]))
+                                        else if (command.NetworkValueType == typeof(char[]))
                                         {
                                             int tempNumberOfChars = _incomingMessage.ReadInt32();
                                             for (int i = 0; i < tempNumberOfChars; i++)
                                             {
-                                                command.NetworkValue = _incomingMessage.ReadBytes(tempNumberOfChars*8);
+                                                command.NetworkValue = _incomingMessage.ReadBytes(tempNumberOfChars * 8);
                                             }
                                         }
-                                        else if (command.NetworkValueType == typeof (Color))
+                                        else if (command.NetworkValueType == typeof(Color))
                                             command.NetworkValue = new Color(_incomingMessage.ReadVector4());
-                                        else if (command.NetworkValueType == typeof (double))
+                                        else if (command.NetworkValueType == typeof(double))
                                             command.NetworkValue = _incomingMessage.ReadDouble();
-                                        else if (command.NetworkValueType == typeof (float))
+                                        else if (command.NetworkValueType == typeof(float))
                                             command.NetworkValue = _incomingMessage.ReadSingle();
-                                        else if (command.NetworkValueType == typeof (int))
+                                        else if (command.NetworkValueType == typeof(int))
                                             command.NetworkValue = _incomingMessage.ReadInt32();
-                                        else if (command.NetworkValueType == typeof (long))
+                                        else if (command.NetworkValueType == typeof(long))
                                             command.NetworkValue = _incomingMessage.ReadInt64();
-                                        else if (command.NetworkValueType == typeof (Matrix))
+                                        else if (command.NetworkValueType == typeof(Matrix))
                                             command.NetworkValue = _incomingMessage.ReadMatrix();
-                                        else if (command.NetworkValueType == typeof (Quaternion))
+                                        else if (command.NetworkValueType == typeof(Quaternion))
                                             command.NetworkValue = _incomingMessage.ReadRotation(24);
-                                        else if (command.NetworkValueType == typeof (sbyte))
+                                        else if (command.NetworkValueType == typeof(sbyte))
                                             command.NetworkValue = _incomingMessage.ReadSByte();
-                                        else if (command.NetworkValueType == typeof (short))
+                                        else if (command.NetworkValueType == typeof(short))
                                             command.NetworkValue = _incomingMessage.ReadInt16();
-                                        else if (command.NetworkValueType == typeof (string))
+                                        else if (command.NetworkValueType == typeof(string))
                                             command.NetworkValue = _incomingMessage.ReadString();
-                                        else if (command.NetworkValueType == typeof (uint))
+                                        else if (command.NetworkValueType == typeof(uint))
                                             command.NetworkValue = _incomingMessage.ReadUInt32();
-                                        else if (command.NetworkValueType == typeof (ulong))
+                                        else if (command.NetworkValueType == typeof(ulong))
                                             command.NetworkValue = _incomingMessage.ReadInt64();
-                                        else if (command.NetworkValueType == typeof (ushort))
+                                        else if (command.NetworkValueType == typeof(ushort))
                                             command.NetworkValue = _incomingMessage.ReadUInt16();
-                                        else if (command.NetworkValueType == typeof (Vector2))
+                                        else if (command.NetworkValueType == typeof(Vector2))
                                             command.NetworkValue = _incomingMessage.ReadVector2();
-                                        else if (command.NetworkValueType == typeof (Vector3))
+                                        else if (command.NetworkValueType == typeof(Vector3))
                                             command.NetworkValue = _incomingMessage.ReadVector3();
-                                        else if (command.NetworkValueType == typeof (Vector4))
+                                        else if (command.NetworkValueType == typeof(Vector4))
                                             command.NetworkValue = _incomingMessage.ReadVector4();
 
                                         if (command.NetworkValue == null)
@@ -221,7 +222,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                         {
                             _outgoingMessage = LidgrenSessionManager.Server.CreateMessage();
 
-                            _outgoingMessage.Write((byte) SessionType);
+                            _outgoingMessage.Write((byte)SessionType);
                             _outgoingMessage.WriteVariableInt32(AllPlayers.Count);
                             _outgoingMessage.WriteVariableInt32(_privateReservedSlots);
                             _outgoingMessage.WriteVariableInt32(_maxGamers - AllPlayers.Count - _privateReservedSlots);
@@ -261,26 +262,21 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
             {
                 // we retrieve the player sent by the client
                 var player = new LidgrenIdentifiedPlayer(_incomingMessage.ReadString())
-                                 {
-                                     DisplayName = _incomingMessage.ReadString(),
-                                 };
+                    {
+                        DisplayName = _incomingMessage.ReadString(),
+                    };
 
                 _remotePlayerIpEndPoints.Add(player, _incomingMessage.SenderEndPoint);
 
                 // we test if the provided player is local
-                foreach ( var localPlayer in LidgrenSessionManager.LocalPlayers.Values)
+                var localPlayer = LidgrenSessionManager.LocalPlayers.Values.FirstOrDefault(p => p == player);
+                if (localPlayer != null)
                 {
-                    // if that is the case, we add the local player to the server session in AllPlayers list.
-                    if (localPlayer == player)
-                    {
-                        _allPlayers.Add(localPlayer);
-                    }
-                    // otherwise, we add the remote player to the server session in AllPlayers list.
-                    else
-                    {
-                        _allPlayers.Add(player);
-                    }
-
+                    _allPlayers.Add(localPlayer);
+                }
+                else
+                {
+                    _allPlayers.Add(player);
                     newPlayers.Add(player);
                 }
             }
@@ -291,7 +287,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         private void SendNewPlayersToClients(List<LidgrenIdentifiedPlayer> clientPlayers)
         {
             _outgoingMessage = LidgrenSessionManager.Server.CreateMessage();
-            _outgoingMessage.Write((byte) LidgrenMessages.SendNewPlayersToClients);
+            _outgoingMessage.Write((byte)LidgrenMessages.SendNewPlayersToClients);
             _outgoingMessage.WriteVariableInt32(clientPlayers.Count);
             _outgoingMessage.Write(_incomingMessage.SenderEndPoint);
 
@@ -307,8 +303,8 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         private void SendPlayersListToJustConnectedClient()
         {
             _outgoingMessage = LidgrenSessionManager.Server.CreateMessage();
-            _outgoingMessage.Write((byte) LidgrenMessages.SendPlayersListToJustConnectedClient);
-            
+            _outgoingMessage.Write((byte)LidgrenMessages.SendPlayersListToJustConnectedClient);
+
             _outgoingMessage.WriteVariableInt32(_allPlayers.Count);
 
             foreach (IdentifiedPlayer identifiedPlayer in _allPlayers)
@@ -319,10 +315,10 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                 _outgoingMessage.Write(identifiedPlayer.IsLocal);
                 // if true, the player is on the Server & the Client will have to retrieve the IPEndPoint from the connection to the server
                 // if false, the player is on a remote client & the client will have to retrieve the IPEndPoint by reading another bytes on the message
-                if(!identifiedPlayer.IsLocal)
+                if (!identifiedPlayer.IsLocal)
                     _outgoingMessage.Write(_remotePlayerIpEndPoints[identifiedPlayer]);
-                else 
-                    _outgoingMessage.Write(LidgrenSessionManager.Client.ServerConnection.RemoteEndPoint);
+                //else
+                //    _outgoingMessage.Write(LidgrenSessionManager.Client.ServerConnection.RemoteEndPoint);
             }
 
             LidgrenSessionManager.Server.SendMessage(_outgoingMessage, _incomingMessage.SenderConnection, NetDeliveryMethod.ReliableOrdered);
@@ -356,7 +352,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         {
             if (!IsHost)
                 throw new CoreException("Only the host can execute server commands on clients");
-            
+
             _outgoingMessage = LidgrenSessionManager.Server.CreateMessage();
 
             if (command.NetworkValue != null)
@@ -365,7 +361,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
             }
             else
             {
-                _outgoingMessage.Write((byte) LidgrenMessages.ExecuteServerCommandOnClientsNoDataExchanged);
+                _outgoingMessage.Write((byte)LidgrenMessages.ExecuteServerCommandOnClientsNoDataExchanged);
             }
 
             _outgoingMessage.Write(command.Id);
@@ -381,7 +377,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         private void SendDisconnectedPlayersToClients(List<IdentifiedPlayer> playersToRemove)
         {
             _outgoingMessage = LidgrenSessionManager.Server.CreateMessage();
-            _outgoingMessage.Write((byte) LidgrenMessages.SendDisconnectedPlayersToClients);
+            _outgoingMessage.Write((byte)LidgrenMessages.SendDisconnectedPlayersToClients);
             _outgoingMessage.WriteVariableInt32(playersToRemove.Count);
 
             foreach (IdentifiedPlayer identifiedPlayer in playersToRemove)
@@ -396,8 +392,8 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         private void SendSessionStateChangedToClients()
         {
             _outgoingMessage = LidgrenSessionManager.Server.CreateMessage();
-            _outgoingMessage.Write((byte) LidgrenMessages.SendSessionStateChangedToClients);
-            _outgoingMessage.Write((byte) _serverSessionState);
+            _outgoingMessage.Write((byte)LidgrenMessages.SendSessionStateChangedToClients);
+            _outgoingMessage.Write((byte)_serverSessionState);
 
             if (LidgrenSessionManager.Server.ConnectionsCount != 0)
                 LidgrenSessionManager.Server.SendToAll(_outgoingMessage, NetDeliveryMethod.ReliableOrdered);

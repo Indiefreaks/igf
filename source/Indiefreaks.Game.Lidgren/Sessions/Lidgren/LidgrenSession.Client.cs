@@ -28,7 +28,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                         }
                     case NetIncomingMessageType.StatusChanged:
                         {
-                            var status = (NetConnectionStatus) _incomingMessage.ReadByte();
+                            var status = (NetConnectionStatus)_incomingMessage.ReadByte();
                             switch (status)
                             {
                                 case NetConnectionStatus.Connected:
@@ -52,7 +52,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                         }
                     case NetIncomingMessageType.Data:
                         {
-                            var msgType = (LidgrenMessages) _incomingMessage.ReadByte();
+                            var msgType = (LidgrenMessages)_incomingMessage.ReadByte();
 
                             switch (msgType)
                             {
@@ -111,56 +111,56 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
 
                                         object networkValue = null;
 
-                                        if (command.NetworkValueType == typeof (bool))
+                                        if (command.NetworkValueType == typeof(bool))
                                             networkValue = _incomingMessage.ReadBoolean();
-                                        else if (command.NetworkValueType == typeof (byte))
+                                        else if (command.NetworkValueType == typeof(byte))
                                             networkValue = _incomingMessage.ReadByte();
-                                        else if (command.NetworkValueType == typeof (byte[]))
+                                        else if (command.NetworkValueType == typeof(byte[]))
                                         {
                                             int tempNumberOfBytes = _incomingMessage.ReadInt32();
                                             networkValue = _incomingMessage.ReadBytes(tempNumberOfBytes);
                                         }
-                                        else if (command.NetworkValueType == typeof (char))
+                                        else if (command.NetworkValueType == typeof(char))
                                             command.NetworkValue = Convert.ToChar(_incomingMessage.ReadByte());
-                                        else if (command.NetworkValueType == typeof (char[]))
+                                        else if (command.NetworkValueType == typeof(char[]))
                                         {
                                             int tempNumberOfChars = _incomingMessage.ReadInt32();
                                             for (int i = 0; i < tempNumberOfChars; i++)
                                             {
-                                                command.NetworkValue = _incomingMessage.ReadBytes(tempNumberOfChars*8);
+                                                command.NetworkValue = _incomingMessage.ReadBytes(tempNumberOfChars * 8);
                                             }
                                         }
-                                        else if (command.NetworkValueType == typeof (Color))
+                                        else if (command.NetworkValueType == typeof(Color))
                                             command.NetworkValue = new Color(_incomingMessage.ReadVector4());
-                                        else if (command.NetworkValueType == typeof (double))
+                                        else if (command.NetworkValueType == typeof(double))
                                             networkValue = _incomingMessage.ReadDouble();
-                                        else if (command.NetworkValueType == typeof (float))
+                                        else if (command.NetworkValueType == typeof(float))
                                             networkValue = _incomingMessage.ReadSingle();
-                                        else if (command.NetworkValueType == typeof (int))
+                                        else if (command.NetworkValueType == typeof(int))
                                             networkValue = _incomingMessage.ReadInt32();
-                                        else if (command.NetworkValueType == typeof (long))
+                                        else if (command.NetworkValueType == typeof(long))
                                             networkValue = _incomingMessage.ReadInt64();
-                                        else if (command.NetworkValueType == typeof (Matrix))
+                                        else if (command.NetworkValueType == typeof(Matrix))
                                             networkValue = _incomingMessage.ReadMatrix();
-                                        else if (command.NetworkValueType == typeof (Quaternion))
+                                        else if (command.NetworkValueType == typeof(Quaternion))
                                             networkValue = _incomingMessage.ReadRotation(24);
-                                        else if (command.NetworkValueType == typeof (sbyte))
+                                        else if (command.NetworkValueType == typeof(sbyte))
                                             networkValue = _incomingMessage.ReadSByte();
-                                        else if (command.NetworkValueType == typeof (short))
+                                        else if (command.NetworkValueType == typeof(short))
                                             networkValue = _incomingMessage.ReadInt16();
-                                        else if (command.NetworkValueType == typeof (string))
+                                        else if (command.NetworkValueType == typeof(string))
                                             networkValue = _incomingMessage.ReadString();
-                                        else if (command.NetworkValueType == typeof (uint))
+                                        else if (command.NetworkValueType == typeof(uint))
                                             networkValue = _incomingMessage.ReadUInt32();
-                                        else if (command.NetworkValueType == typeof (ulong))
+                                        else if (command.NetworkValueType == typeof(ulong))
                                             networkValue = _incomingMessage.ReadInt64();
-                                        else if (command.NetworkValueType == typeof (ushort))
+                                        else if (command.NetworkValueType == typeof(ushort))
                                             networkValue = _incomingMessage.ReadUInt16();
-                                        else if (command.NetworkValueType == typeof (Vector2))
+                                        else if (command.NetworkValueType == typeof(Vector2))
                                             networkValue = _incomingMessage.ReadVector2();
-                                        else if (command.NetworkValueType == typeof (Vector3))
+                                        else if (command.NetworkValueType == typeof(Vector3))
                                             networkValue = _incomingMessage.ReadVector3();
-                                        else if (command.NetworkValueType == typeof (Vector4))
+                                        else if (command.NetworkValueType == typeof(Vector4))
                                             networkValue = _incomingMessage.ReadVector4();
                                         //else
                                         //    throw new CoreException("Not supported NetworkValueType");
@@ -170,7 +170,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
 
                                         if (command.ApplyServerResult != null)
                                             command.ApplyServerResult(command, networkValue);
-                  
+
                                         break;
                                     }
                                 case LidgrenMessages.ExecuteServerCommandOnClientsNoDataExchanged:
@@ -189,7 +189,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
 
                                         break;
                                     }
-                                
+
                                 default:
                                     break;
                             }
@@ -197,7 +197,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                         }
                     case NetIncomingMessageType.DiscoveryResponse:
                         {
-                            var sessionType = (SessionType) _incomingMessage.ReadByte();
+                            var sessionType = (SessionType)_incomingMessage.ReadByte();
                             int currentGamerCount = _incomingMessage.ReadVariableInt32();
                             string hostName = _incomingMessage.SenderEndPoint.Address.ToString();
                             int openPrivateSlots = _incomingMessage.ReadVariableInt32();
@@ -212,7 +212,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                             {
                                 for (int i = 0; i < sessionPropertiesCount; i++)
                                 {
-                                    sessionProperties[i] = BitConverter.ToInt32(_incomingMessage.ReadBytes(4),0);
+                                    sessionProperties[i] = BitConverter.ToInt32(_incomingMessage.ReadBytes(4), 0);
                                 }
                             }
 
@@ -241,7 +241,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         {
             if (SceneEntitiesToSynchronize.Count > 0)
             {
-                var entity = (SceneEntity) SceneEntitiesToSynchronize.Dequeue();
+                var entity = (SceneEntity)SceneEntitiesToSynchronize.Dequeue();
 
                 int entityUniqueId = _incomingMessage.ReadVariableInt32();
 
@@ -283,7 +283,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         protected override void NotifyServerSynchronizationDoneOnClient()
         {
             _outgoingMessage = LidgrenSessionManager.Client.CreateMessage();
-            _outgoingMessage.Write((byte) LidgrenMessages.SendSynchronizationDoneToServer);
+            _outgoingMessage.Write((byte)LidgrenMessages.SendSynchronizationDoneToServer);
 
             LidgrenSessionManager.Client.SendMessage(_outgoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
@@ -291,7 +291,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         private void SendAllLocalPlayersToServer()
         {
             _outgoingMessage = LidgrenSessionManager.Client.CreateMessage();
-            _outgoingMessage.Write((byte) LidgrenMessages.SendLocalPlayersToServer);
+            _outgoingMessage.Write((byte)LidgrenMessages.SendLocalPlayersToServer);
             _outgoingMessage.WriteVariableInt32(LidgrenSessionManager.LocalPlayers.Count);
 
             foreach (IdentifiedPlayer player in LidgrenSessionManager.LocalPlayers.Values)
@@ -317,21 +317,21 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                                  {
                                      DisplayName = displayName,
                                  };
-                if(isHost)
+                if (isHost)
                     player.SetIsHost();
 
 
-                if (LidgrenSessionManager.LocalPlayers.Values.All(p => p != player))
+
+                if (!LidgrenSessionManager.CurrentSession.IsHost)
                 {
                     _remotePlayers.Add(player);
                     _allPlayers.Add(player);
+
+                    if (isOnServer)
+                        _remotePlayerIpEndPoints.Add(player, LidgrenSessionManager.Client.ServerConnection.RemoteEndPoint);
+                    else
+                        _remotePlayerIpEndPoints.Add(player, _incomingMessage.ReadIPEndPoint());
                 }
-
-
-                if(isOnServer)
-                    _remotePlayerIpEndPoints.Add(player, LidgrenSessionManager.Client.ServerConnection.RemoteEndPoint);
-                else
-                    _remotePlayerIpEndPoints.Add(player, _incomingMessage.ReadIPEndPoint());
 
                 OnPlayerJoined(player);
             }
@@ -350,8 +350,12 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
                                  };
 
                 _remotePlayers.Add(player);
-                _remotePlayerIpEndPoints.Add(player, ipEndPoint);
-                _allPlayers.Add(player);
+
+                if (!LidgrenSessionManager.CurrentSession.IsHost)
+                {
+                    _remotePlayerIpEndPoints.Add(player, ipEndPoint);
+                    _allPlayers.Add(player);
+                }
 
                 OnPlayerJoined(player);
             }
@@ -382,14 +386,14 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
         public override void ExecuteCommandOnServer(Command command)
         {
             _outgoingMessage = LidgrenSessionManager.Client.CreateMessage();
-            
+
             if (command.NetworkValue != null)
             {
-                _outgoingMessage.Write((byte) LidgrenMessages.ExecuteCommandOnServerDataExchanged);
+                _outgoingMessage.Write((byte)LidgrenMessages.ExecuteCommandOnServerDataExchanged);
             }
             else
             {
-                _outgoingMessage.Write((byte) LidgrenMessages.ExecuteCommandOnServerNoDataExchanged);
+                _outgoingMessage.Write((byte)LidgrenMessages.ExecuteCommandOnServerNoDataExchanged);
             }
 
             _outgoingMessage.Write(command.Id);
@@ -402,7 +406,7 @@ namespace Indiefreaks.Xna.Sessions.Lidgren
 
         private void RetrieveSessionStateChangedFromServer()
         {
-            var newStatus = (SessionState) _incomingMessage.ReadByte();
+            var newStatus = (SessionState)_incomingMessage.ReadByte();
             _clientSessionState = newStatus;
 
             switch (_clientSessionState)
